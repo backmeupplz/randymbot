@@ -72,8 +72,9 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
 export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
   bot.use(async (ctx, next) => {
     try {
+      const message = ctx.message || ctx.channelPost
       // Check if reply to bot's message
-      if (!ctx.message || !ctx.message.reply_to_message || ctx.message.reply_to_message.from.username !== process.env.USERNAME) {
+      if (!message || !message.reply_to_message || !message.reply_to_message.text || message.reply_to_message.text.indexOf('Розыгрыш начался! Нажмите') < 0) {
         throw new Error()
       }
       // Check if admin replied
@@ -82,7 +83,7 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
         throw new Error()
       }
       // Get reply message
-      const reply = ctx.message.reply_to_message
+      const reply = message.reply_to_message
       // Check if there is raffle to the reply message
       const raffle = await getRaffle(reply.chat.id, reply.message_id)
       if (!raffle) {
