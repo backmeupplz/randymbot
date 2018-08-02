@@ -136,7 +136,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
   const name =
     winner.user.username ? `@${winner.user.username}` :
     `${winner.user.first_name}${winner.user.last_name ? ` ${winner.user.last_name}` : ''}`
-  const text = `В этот раз победитель — [${name}](tg://user?id=${winner.user.id})! Поздравляем!\n\nВсего было участников — ${ids.length}.`
+  const text = `🎉 В этот раз победитель — [${name}](tg://user?id=${winner.user.id})! Поздравляем!\n\nВсего было участников — ${ids.length}.`
   await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text, {
     parse_mode: 'Markdown',
   })
