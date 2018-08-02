@@ -12,6 +12,12 @@ This is the code for the giveaway Telegram bot I've built. Enjoy and feel free t
 
 And you should be good to go! Feel free to fork and submit pull requests. Thanks!
 
+# Environment variables
+* `TOKEN` — Telegram bot token
+* `USERNAME` — Telegram bot username
+
+Also, please, consider looking at `.env.sample`.
+
 # Continuous integration
 Any commit pushed to master gets deployed to @randymbot via [CI Ninja](https://github.com/backmeupplz/ci-ninja).
 

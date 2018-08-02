@@ -1,0 +1,29 @@
+{
+  "name": "randymbot",
+  "version": "1.0.0",
+  "description": "Telegram giveaway bot",
+  "main": "dist/app.js",
+  "scripts": {
+    "distribute": "yarn build-ts && node dist/app.js",
+    "develop": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold\" \"yarn watch-ts\" \"yarn watch-js\"",
+    "build-ts": "tsc --skipLibCheck",
+    "watch-ts": "tsc -w --skipLibCheck",
+    "watch-js": "nodemon dist/app.js"
+  },
+  "repository": "https://github.com/backmeupplz/randymbot.git",
+  "author": "backmeupplz <backmeupplz@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/dotenv": "^4.0.3",
+    "@types/mongoose": "^5.2.3",
+    "concurrently": "^3.6.1",
+    "dotenv": "^6.0.0",
+    "mongoose": "^5.2.6",
+    "nodemon": "^1.18.3",
+    "reflect-metadata": "^0.1.12",
+    "telegraf": "^3.22.1",
+    "tslint": "^5.11.0",
+    "typegoose": "^5.2.1",
+    "typescript": "^3.0.1"
+  }
+}
