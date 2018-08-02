@@ -36,6 +36,11 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
     const chatId = Number(datas[0])
     const messageId = Number(datas[1])
     let raffle = await getRaffle(chatId, messageId)
+    // Check if raffle is there
+    if (!raffle) {
+      await (<any>ctx).answerCbQuery('Пожалуйста, попробуйте через пару минут', undefined, true)
+      return
+    }
     // Check if already in
     if (raffle.participantsIds.indexOf(ctx.from.id) > -1) {
       await (<any>ctx).answerCbQuery('Вы уже принимаете участие, отлично!', undefined, true)
