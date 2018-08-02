@@ -69,31 +69,32 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
     try {
       // Check if reply to bot's message
       if (!ctx.message || !ctx.message.reply_to_message || ctx.message.reply_to_message.from.username !== process.env.USERNAME) {
-        return next()
+        throw new Error()
       }
       // Check if admin replied
       const isAdmin = await checkIfAdmin(ctx)
       if (!isAdmin) {
-        return next()
+        throw new Error()
       }
       // Get reply message
       const reply = ctx.message.reply_to_message
       // Check if there is raffle to the reply message
       const raffle = await getRaffle(reply.chat.id, reply.message_id)
       if (!raffle) {
-        return next()
+        throw new Error()
       }
       // Check if no winner yet
       if (raffle.winner) {
-        return next()
+        throw new Error()
       }
       // Finish raffle
       await finishRaffle(raffle, ctx)
     } catch (err) {
       // Do nothing
+    } finally {
+      // Continue
+      next()
     }
-    // Continue
-    next()
   })
 }
 

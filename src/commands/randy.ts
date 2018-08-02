@@ -18,7 +18,11 @@ export function setupRandy(bot: Telegraf<ContextMessageUpdate>) {
       return
     } else {
       startRaffle(ctx)
-      await ctx.deleteMessage()
+      try {
+        await ctx.deleteMessage()
+      } catch (err) {
+        // Do nothing
+      }
     }
   })
 }
