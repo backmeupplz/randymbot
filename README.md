@@ -1,7 +1,7 @@
 [![@randymbot](/img/logo.png?raw=true)](https://t.me/randymbot)
 
 # [@randymbot](https://t.me/randymbot) Telegram bot code
-This is the code for the giveaway Telegram bot I've built. Enjoy and feel free to reuse!
+This is the code for the raffle Telegram bot I've built. Enjoy and feel free to reuse!
 
 # Installation and local launch
 1. Clone this repo: `git clone https://github.com/backmeupplz/randymbot`
@@ -15,6 +15,7 @@ And you should be good to go! Feel free to fork and submit pull requests. Thanks
 # Environment variables
 * `TOKEN` — Telegram bot token
 * `USERNAME` — Telegram bot username
+* `MONGO`— URL of the mongo database
 
 Also, please, consider looking at `.env.sample`.
 

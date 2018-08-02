@@ -5,6 +5,8 @@ dotenv.config({ path: `${__dirname}/../.env` })
 // Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { setupStartAndHelp } from './commands/startAndHelp'
+import { setupRandy } from './commands/randy'
+import { setupCallback } from './helpers/raffle'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -13,8 +15,7 @@ bot.startPolling()
 
 // Setup commands
 setupStartAndHelp(bot)
+setupRandy(bot)
 
-bot.use((ctx, next) => {
-  console.log(ctx)
-  next()
-})
+// Setup callbacks
+setupCallback(bot)
