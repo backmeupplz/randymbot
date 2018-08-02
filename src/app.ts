@@ -10,7 +10,10 @@ import { setupCallback, setupListener } from './helpers/raffle'
 const telegraf = require('telegraf')
 
 // Setup the bot
-const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, { username: process.env.USERNAME })
+const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, {
+  username: process.env.USERNAME,
+  channelMode: true,
+})
 bot.startPolling()
 
 // Setup listener
