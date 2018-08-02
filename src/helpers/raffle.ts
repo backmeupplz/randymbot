@@ -31,6 +31,7 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
  */
 export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
   (<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
+    console.log(data, ctx.from.username)
     // Get raffle
     const datas = data.split('~')
     const chatId = Number(datas[0])
