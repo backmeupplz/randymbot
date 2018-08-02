@@ -15,9 +15,11 @@
   "license": "MIT",
   "dependencies": {
     "@types/dotenv": "^4.0.3",
+    "@types/lodash": "^4.14.115",
     "@types/mongoose": "^5.2.3",
     "concurrently": "^3.6.1",
     "dotenv": "^6.0.0",
+    "lodash": "^4.17.10",
     "mongoose": "^5.2.6",
     "nodemon": "^1.18.3",
     "reflect-metadata": "^0.1.12",

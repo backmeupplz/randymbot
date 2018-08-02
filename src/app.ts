@@ -6,12 +6,15 @@ dotenv.config({ path: `${__dirname}/../.env` })
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { setupStartAndHelp } from './commands/startAndHelp'
 import { setupRandy } from './commands/randy'
-import { setupCallback } from './helpers/raffle'
+import { setupCallback, setupListener } from './helpers/raffle'
 const telegraf = require('telegraf')
 
 // Setup the bot
 const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, { username: process.env.USERNAME })
 bot.startPolling()
+
+// Setup listener
+setupListener(bot)
 
 // Setup commands
 setupStartAndHelp(bot)
