@@ -4,60 +4,67 @@ import { addRaffle, getRaffle, Raffle } from '../models'
 import { ExtraEditMessage } from 'telegraf/typings/telegram-types'
 import { shuffle, random } from 'lodash'
 import { checkIfAdmin } from './checkAdmin'
+import { findChat } from '../models/chat'
+import { loc } from './locale'
 
 // Raffle text
-const raffleText = 'Розыгрыш начался! Нажмите на кнопку ниже, чтобы принять участие. Победитель будет выбран случайным образом из участников, когда администраторы ответят на это сообщение. Желаю удачи!'
+const raffleText = 'raffle_text'
 
 /**
  * Starting a new raffle
  * @param ctx Context of the message that started
  */
 export async function startRaffle(ctx: ContextMessageUpdate) {
+  // Get chat
+  const chat = await findChat(ctx.chat.id)
   // Send message
-  const sent = await ctx.replyWithMarkdown(raffleText)
+  const sent = await ctx.replyWithMarkdown(loc(raffleText, chat.language))
   // Add raffle
   const raffle = await addRaffle(sent.chat.id, sent.message_id)
   // Add buttons
   const options: ExtraEditMessage = {
-    reply_markup: getButtons(raffle),
+    reply_markup: getButtons(raffle, chat.language),
   };
   (<any>options).reply_markup = JSON.stringify(options.reply_markup)
-  await ctx.telegram.editMessageText(sent.chat.id, sent.message_id, undefined, raffleText, options)
+  await ctx.telegram.editMessageText(sent.chat.id, sent.message_id, undefined, loc(raffleText, chat.language), options)
 }
 
 /**
- * Setting up callbacl for the raffle participation button
+ * Setting up callback for the raffle participation button
  * @param bot Bot to setup the callback
  */
 export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
   (<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
     // Get raffle
     const datas = data.split('~')
+    if (datas[0] === 'l') return;
     const chatId = Number(datas[0])
     const messageId = Number(datas[1])
     let raffle = await getRaffle(chatId, messageId)
+    // Get chat
+    const chat = await findChat(ctx.chat.id)
     // Check if raffle is there
     if (!raffle) {
-      await (<any>ctx).answerCbQuery('Пожалуйста, попробуйте через пару минут', undefined, true)
+      await (<any>ctx).answerCbQuery(loc('please_retry', chat.language), undefined, true)
       return
     }
     // Check if already in
     if (raffle.participantsIds.indexOf(ctx.from.id) > -1) {
-      await (<any>ctx).answerCbQuery('Вы уже принимаете участие, отлично!', undefined, true)
+      await (<any>ctx).answerCbQuery(loc('already_participating', chat.language), undefined, true)
       return
     }
     // Add participant and update number
     raffle.participantsIds.push(ctx.from.id)
     raffle = await raffle.save()
     // Reply that they are in
-    await await (<any>ctx).answerCbQuery('Отлично, вы отметились, как участник!', undefined, true)
+    await await (<any>ctx).answerCbQuery(loc('participated', chat.language), undefined, true)
     // Update counter of participants
     try {
       // Add buttons
       const options: ExtraEditMessage = {
-        reply_markup: getButtons(raffle),
+        reply_markup: getButtons(raffle, chat.language),
       }
-      const text = `${raffleText}\n\nКоличество участников: ${raffle.participantsIds.length}`
+      const text = `${loc(raffleText, chat.language)}\n\n${loc('participants_number', chat.language)}: ${raffle.participantsIds.length}`
       await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text, options)
     } catch (err) {
       // Do nothing
@@ -74,7 +81,7 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
     try {
       const message = ctx.message || ctx.channelPost
       // Check if reply to bot's message
-      if (!message || !message.reply_to_message || !message.reply_to_message.text || message.reply_to_message.text.indexOf('Розыгрыш начался! Нажмите') < 0) {
+      if (!message || !message.reply_to_message || !message.reply_to_message.text || (message.reply_to_message.text.indexOf('Розыгрыш начался! Нажмите') < 0 && message.reply_to_message.text.indexOf('Raffle has begun! Press') < 0)) {
         throw new Error()
       }
       // Check if admin replied
@@ -107,13 +114,14 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
 /**
  * Buttons for a raffle
  * @param raffle Raffle to provide buttons to
+ * @param language Languageof thebuttons
  * @returns buttons for a raffle
  */
-function getButtons(raffle: Raffle) {
+function getButtons(raffle: Raffle, language: string) {
   return {
     inline_keyboard: [
       [{
-        text: 'Участвовать!',
+        text: loc('participate_button', language),
         callback_data: `${raffle.chatId}~${raffle.messageId}`,
       }],
     ],
@@ -128,9 +136,11 @@ function getButtons(raffle: Raffle) {
 async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
   // Get participants ids
   let ids = raffle.participantsIds
+  // Get chat
+  const chat = await findChat(ctx.chat.id)
   // Check if there were participants
   if (ids.length <= 0) {
-    const text = 'В этот раз участников розыгрыша не было 😅'
+    const text = loc('no_participants', chat.language)
     await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text)
     return
   }
@@ -143,7 +153,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
   const name =
     winner.user.username ? `@${winner.user.username}` :
     `${winner.user.first_name}${winner.user.last_name ? ` ${winner.user.last_name}` : ''}`
-  const text = `🎉 В этот раз победитель — [${name}](tg://user?id=${winner.user.id})! Поздравляем!\n\nВсего было участников — ${ids.length}.`
+  const text = `🎉 ${loc('winner', chat.language)} — [${name}](tg://user?id=${winner.user.id})! ${loc('congratulations', chat.language)}!\n\n${loc('participants_number', chat.language)} — ${ids.length}.`
   await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text, {
     parse_mode: 'Markdown',
   })

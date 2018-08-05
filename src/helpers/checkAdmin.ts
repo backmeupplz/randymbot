@@ -3,9 +3,10 @@ import { ContextMessageUpdate, Telegraf } from 'telegraf'
 /**
  * Checking if user is admin at chat, deletes message if not
  * @param ctx Context of the message
+ * @param shouldDelete If the message shouldbe deleted
  * @returns true if the user is admin
  */
-export async function checkIfAdmin(ctx: ContextMessageUpdate) {
+export async function checkIfAdmin(ctx: ContextMessageUpdate, shouldDelete: boolean = true) {
   try {
     // Channel and private are always true
     if (['channel', 'private'].indexOf(ctx.chat.type) > -1) return true
@@ -16,7 +17,9 @@ export async function checkIfAdmin(ctx: ContextMessageUpdate) {
     // Delete message if not admin
     if (!isAdmin) {
       try {
-        await ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id)
+        if (shouldDelete) {
+          await ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id)
+        }
       } catch (err) {
         // Do nothing
       }
@@ -26,7 +29,9 @@ export async function checkIfAdmin(ctx: ContextMessageUpdate) {
   } catch (err) {
     // Delete message
     try {
-      await ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id)
+      if (shouldDelete) {
+        await ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id)
+      }
     } catch (err) {
       // Do nothing
     }

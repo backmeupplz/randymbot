@@ -2,6 +2,8 @@
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { checkIfAdmin } from '../helpers/checkAdmin'
 import { startRaffle } from '../helpers/raffle'
+import { findChat } from '../models/chat'
+import { loc } from '../helpers/locale'
 
 /**
  * Setting up the randy command
@@ -14,7 +16,8 @@ export function setupRandy(bot: Telegraf<ContextMessageUpdate>) {
     if (!isAdmin) return
     // Reply
     if (ctx.chat.type === 'private') {
-      ctx.reply('Простите, но эта команда не работает в личке с ботом.')
+      const chat = await findChat(ctx.chat.id)
+      ctx.reply(loc('no_work_private', chat.language))
       return
     } else {
       startRaffle(ctx)

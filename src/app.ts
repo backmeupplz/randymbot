@@ -7,6 +7,7 @@ import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { setupStartAndHelp } from './commands/startAndHelp'
 import { setupRandy } from './commands/randy'
 import { setupCallback, setupListener } from './helpers/raffle'
+import { setupLanguage, setupLanguageCallback } from './commands/language'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -22,6 +23,8 @@ setupListener(bot)
 // Setup commands
 setupStartAndHelp(bot)
 setupRandy(bot)
+setupLanguage(bot)
 
 // Setup callbacks
 setupCallback(bot)
+setupLanguageCallback(bot)
