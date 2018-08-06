@@ -48,6 +48,11 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       await (<any>ctx).answerCbQuery(loc('please_retry', chat.language), undefined, true)
       return
     }
+    // Check if raffle is finished
+    if (raffle.winner) {
+      await (<any>ctx).answerCbQuery(loc('raffle_over', chat.language), undefined, true)
+      return
+    }
     // Check if already in
     if (raffle.participantsIds.indexOf(ctx.from.id) > -1) {
       await (<any>ctx).answerCbQuery(loc('already_participating', chat.language), undefined, true)

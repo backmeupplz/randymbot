@@ -59,4 +59,8 @@ const localizations: { [index: string]: {[ index:string]: string } } = {
     ru: 'Поздравляем',
     en: 'Congratulations',
   },
+  'raffle_over': {
+    ru: 'Простите, но розыгрыш уже закончен',
+    en: 'Sorry, the raffle is over now',
+  },
 }
