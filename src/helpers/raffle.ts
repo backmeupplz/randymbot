@@ -1,14 +1,11 @@
 // Dependencies
 import { ContextMessageUpdate, Telegraf } from 'telegraf'
 import { addRaffle, getRaffle, Raffle } from '../models'
-import { ExtraEditMessage } from 'telegraf/typings/telegram-types'
+import { ExtraEditMessage, ChatMember } from 'telegraf/typings/telegram-types'
 import { shuffle, random } from 'lodash'
 import { checkIfAdmin } from './checkAdmin'
 import { findChat } from '../models/chat'
 import { loc } from './locale'
-
-// Raffle text
-const raffleText = 'raffle_text'
 
 /**
  * Starting a new raffle
@@ -18,7 +15,7 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
   // Get chat
   const chat = await findChat(ctx.chat.id)
   // Send message
-  const sent = await ctx.replyWithMarkdown(loc(raffleText, chat.language))
+  const sent = await ctx.replyWithMarkdown(loc(chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text', chat.language))
   // Add raffle
   const raffle = await addRaffle(sent.chat.id, sent.message_id)
   // Add buttons
@@ -26,7 +23,7 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
     reply_markup: getButtons(raffle, chat.language),
   };
   (<any>options).reply_markup = JSON.stringify(options.reply_markup)
-  await ctx.telegram.editMessageText(sent.chat.id, sent.message_id, undefined, loc(raffleText, chat.language), options)
+  await ctx.telegram.editMessageText(sent.chat.id, sent.message_id, undefined, loc(chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text', chat.language), options)
 }
 
 /**
@@ -37,7 +34,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
   (<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
     // Get raffle
     const datas = data.split('~')
-    if (datas[0] === 'l') return;
+    if (['l', 'n'].indexOf(datas[0]) > -1) return
     const chatId = Number(datas[0])
     const messageId = Number(datas[1])
     let raffle = await getRaffle(chatId, messageId)
@@ -49,7 +46,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       return
     }
     // Check if raffle is finished
-    if (raffle.winner) {
+    if (raffle.winners) {
       await (<any>ctx).answerCbQuery(loc('raffle_over', chat.language), undefined, true)
       return
     }
@@ -69,7 +66,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       const options: ExtraEditMessage = {
         reply_markup: getButtons(raffle, chat.language),
       }
-      const text = `${loc(raffleText, chat.language)}\n\n${loc('participants_number', chat.language)}: ${raffle.participantsIds.length}`
+      const text = `${loc(chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text', chat.language)}\n\n${loc('participants_number', chat.language)}: ${raffle.participantsIds.length}`
       await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text, options)
     } catch (err) {
       // Do nothing
@@ -102,7 +99,7 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
         throw new Error()
       }
       // Check if no winner yet
-      if (raffle.winner) {
+      if (raffle.winners) {
         throw new Error()
       }
       // Finish raffle
@@ -149,20 +146,49 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text)
     return
   }
-  // Get winner
+  // Check if not enough participants
+  if (ids.length < chat.number) {
+    const text = loc('not_enough_participants', chat.language)
+    await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text)
+    return
+  }
+  // Get winners
   ids = shuffle(ids)
-  const winnerIndex = random(ids.length-1)
-  const winnerId = ids[winnerIndex]
-  const winner = await ctx.telegram.getChatMember(raffle.chatId, winnerId)
+  const winners: {
+    name: string;
+    winner: ChatMember;
+  }[] = []
+  while (winners.length < chat.number) {
+    const winnerIndex = random(ids.length-1)
+    const winnerId = ids[winnerIndex]
+    const winner = await ctx.telegram.getChatMember(raffle.chatId, winnerId)
+    const name =
+      winner.user.username ? `@${winner.user.username}` :
+      `${winner.user.first_name}${winner.user.last_name ? ` ${winner.user.last_name}` : ''}`
+    if (winners.map(w => w.winner.user.id).indexOf(winner.user.id) < 0) {
+      winners.push({ name, winner })
+    }
+  }
   // Announce winner
-  const name =
-    winner.user.username ? `@${winner.user.username}` :
-    `${winner.user.first_name}${winner.user.last_name ? ` ${winner.user.last_name}` : ''}`
-  const text = `🎉 ${loc('winner', chat.language)} — [${name}](tg://user?id=${winner.user.id})! ${loc('congratulations', chat.language)}!\n\n${loc('participants_number', chat.language)} — ${ids.length}.`
-  await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text, {
-    parse_mode: 'Markdown',
-  })
-  // Save winner
-  raffle.winner = winner.user.id
+  if (winners.length == 1) {
+    const winner = winners[0].winner
+    const name = winners[0].name
+    const text = `🎉 ${loc('winner', chat.language)} — [${name}](tg://user?id=${winner.user.id})! ${loc('congratulations', chat.language)}!\n\n${loc('participants_number', chat.language)} — ${ids.length}.`
+    await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text, {
+      parse_mode: 'Markdown',
+    })
+  } else {
+    const names = winners.map(w => w.name)
+    let text = `🎉 ${loc('winners', chat.language)}:\n`
+    for (let i = 0; i < names.length; i++) {
+      text = `${text}\n${i + 1}. [${names[i]}](tg://user?id=${winners[i].winner.user.id})`
+    }
+    text = `${text}\n\n${loc('congratulations', chat.language)}!\n\n${loc('participants_number', chat.language)} — ${ids.length}.`
+    await ctx.telegram.editMessageText(raffle.chatId, raffle.messageId, undefined, text, {
+      parse_mode: 'Markdown',
+    })
+  }
+  // Save winners
+  raffle.winners = winners.map(w => w.winner.user.id).join(',')
   await (<any>raffle).save()
 }

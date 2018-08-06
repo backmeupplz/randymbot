@@ -8,6 +8,7 @@ import { setupStartAndHelp } from './commands/startAndHelp'
 import { setupRandy } from './commands/randy'
 import { setupCallback, setupListener } from './helpers/raffle'
 import { setupLanguage, setupLanguageCallback } from './commands/language'
+import { setupNumberCallback, setupNumber } from './commands/number'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -24,7 +25,9 @@ setupListener(bot)
 setupStartAndHelp(bot)
 setupRandy(bot)
 setupLanguage(bot)
+setupNumber(bot)
 
 // Setup callbacks
 setupCallback(bot)
 setupLanguageCallback(bot)
+setupNumberCallback(bot)

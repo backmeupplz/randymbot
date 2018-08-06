@@ -11,7 +11,7 @@ export class Raffle extends Typegoose {
   participantsIds: number[]
 
   @prop()
-  winner?: number
+  winners?: string
 }
 
 // Get Raffle model

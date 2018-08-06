@@ -7,6 +7,8 @@ export class Chat extends Typegoose {
   chatId: number
   @prop({ required: true, default: 'en' })
   language: string
+  @prop({ required: true, default: 1 })
+  number: number
 }
 
 // Get Chat model
