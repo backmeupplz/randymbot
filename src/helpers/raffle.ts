@@ -83,7 +83,7 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
     try {
       const message = ctx.message || ctx.channelPost
       // Check if reply to bot's message
-      if (!message || !message.reply_to_message || !message.reply_to_message.text || (message.reply_to_message.text.indexOf('Розыгрыш начался! Нажмите') < 0 && message.reply_to_message.text.indexOf('Raffle has begun! Press') < 0)) {
+      if (!message || !message.reply_to_message || !message.reply_to_message.text || (message.reply_to_message.text.indexOf('Розыгрыш начался! Нажмите') < 0 && message.reply_to_message.text.indexOf('Raffle has begun! Press') < 0 && message.reply_to_message.text.indexOf('Cekilis basladi! Katilmak') < 0)) {
         throw new Error()
       }
       // Check if admin replied
