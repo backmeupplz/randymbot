@@ -63,6 +63,10 @@ function getButtons() {
         text: 'Turkce',
         callback_data: `l~tr`,
       }],
+      [{
+        text: 'Українська',
+        callback_data: `l~uk`,
+      }],
     ],
   }
 }
