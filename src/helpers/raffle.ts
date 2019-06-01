@@ -130,25 +130,26 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
           message.reply_to_message.text.indexOf('Raffle has begun! Press') <
             0 &&
           message.reply_to_message.text.indexOf('Cekilis basladi! Katilmak') <
-            0)
+            0 &&
+          message.reply_to_message.text.indexOf('Розіграш розпочався!') < 0)
       ) {
-        throw new Error()
+        throw new Error('Not checking')
       }
       // Check if admin replied
       const isAdmin = await checkIfAdmin(ctx)
       if (!isAdmin) {
-        throw new Error()
+        throw new Error('No admin')
       }
       // Get reply message
       const reply = message.reply_to_message
       // Check if there is raffle to the reply message
       const raffle = await getRaffle(reply.chat.id, reply.message_id)
       if (!raffle) {
-        throw new Error()
+        throw new Error('No raffle')
       }
       // Check if no winner yet
       if (raffle.winners) {
-        throw new Error()
+        throw new Error('No winners')
       }
       // Finish raffle
       await finishRaffle(raffle, ctx)
@@ -188,22 +189,12 @@ function getButtons(raffle: Raffle, language: string) {
 async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
   // Get participants ids
   let ids = raffle.participantsIds
+  const idsOriginalLength = ids.length
   // Get chat
   const chat = await findChat(ctx.chat.id)
   // Check if there were participants
   if (ids.length <= 0) {
     const text = loc('no_participants', chat.language)
-    await ctx.telegram.editMessageText(
-      raffle.chatId,
-      raffle.messageId,
-      undefined,
-      text
-    )
-    return
-  }
-  // Check if not enough participants
-  if (ids.length < chat.number) {
-    const text = loc('not_enough_participants', chat.language)
     await ctx.telegram.editMessageText(
       raffle.chatId,
       raffle.messageId,
@@ -219,16 +210,31 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     winner: ChatMember
   }[] = []
   while (winners.length < chat.number) {
+    // Check if not enough participants
+    if (ids.length + winners.length < chat.number) {
+      const text = loc('not_enough_participants', chat.language)
+      await ctx.telegram.editMessageText(
+        raffle.chatId,
+        raffle.messageId,
+        undefined,
+        text
+      )
+      return
+    }
     const winnerIndex = random(ids.length - 1)
-    const winnerId = ids[winnerIndex]
-    const winner = await ctx.telegram.getChatMember(raffle.chatId, winnerId)
-    const name = winner.user.username
-      ? `@${winner.user.username}`
-      : `${winner.user.first_name}${
-          winner.user.last_name ? ` ${winner.user.last_name}` : ''
-        }`
-    if (winners.map(w => w.winner.user.id).indexOf(winner.user.id) < 0) {
-      winners.push({ name, winner })
+    const winnerId = ids.splice(winnerIndex, 1)[0]
+    try {
+      const winner = await ctx.telegram.getChatMember(raffle.chatId, winnerId)
+      const name = winner.user.username
+        ? `@${winner.user.username}`
+        : `${winner.user.first_name}${
+            winner.user.last_name ? ` ${winner.user.last_name}` : ''
+          }`
+      if (winners.map(w => w.winner.user.id).indexOf(winner.user.id) < 0) {
+        winners.push({ name, winner })
+      }
+    } catch (err) {
+      // Do nothing
     }
   }
   winners = shuffle(winners)
@@ -241,7 +247,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     })! ${loc('congratulations', chat.language)}!\n\n${loc(
       'participants_number',
       chat.language
-    )} — ${ids.length}.`
+    )} — ${idsOriginalLength}.`
     await ctx.telegram.editMessageText(
       raffle.chatId,
       raffle.messageId,

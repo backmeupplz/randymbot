@@ -17,6 +17,7 @@ const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, {
   channelMode: true,
 })
 bot.startPolling()
+console.log('Bot is up and running')
 
 // Setup listener
 setupListener(bot)

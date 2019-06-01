@@ -6,8 +6,14 @@ import { ContextMessageUpdate, Telegraf } from 'telegraf'
  * @param shouldDelete If the message shouldbe deleted
  * @returns true if the user is admin
  */
-export async function checkIfAdmin(ctx: ContextMessageUpdate, shouldDelete: boolean = true) {
+export async function checkIfAdmin(
+  ctx: ContextMessageUpdate,
+  shouldDelete: boolean = true
+) {
   try {
+    if (ctx.from.id === parseInt(process.env.ADMIN, 10)) {
+      return true
+    }
     // Channel and private are always true
     if (['channel', 'private'].indexOf(ctx.chat.type) > -1) return true
     // Check if admin
