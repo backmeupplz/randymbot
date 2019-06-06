@@ -10,11 +10,8 @@ export async function checkIfAdmin(
   ctx: ContextMessageUpdate,
   shouldDelete: boolean = true
 ) {
-  if (ctx.chat.type === 'chanel') {
-    return true
-  }
   try {
-    if (ctx.from.id === parseInt(process.env.ADMIN, 10)) {
+    if (ctx.from && ctx.from.id === parseInt(process.env.ADMIN, 10)) {
       return true
     }
     // Channel and private are always true
@@ -36,6 +33,7 @@ export async function checkIfAdmin(
     // Return result
     return isAdmin
   } catch (err) {
+    console.log(err)
     // Delete message
     try {
       if (shouldDelete) {
