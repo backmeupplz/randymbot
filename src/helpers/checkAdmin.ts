@@ -10,6 +10,9 @@ export async function checkIfAdmin(
   ctx: ContextMessageUpdate,
   shouldDelete: boolean = true
 ) {
+  if (ctx.chat.type === 'chanel') {
+    return true
+  }
   try {
     if (ctx.from.id === parseInt(process.env.ADMIN, 10)) {
       return true

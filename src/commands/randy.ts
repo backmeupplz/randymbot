@@ -10,7 +10,7 @@ import { loc } from '../helpers/locale'
  * @param bot Bot to setup the command
  */
 export function setupRandy(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command('randy', async (ctx) => {
+  bot.command('randy', async ctx => {
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
     if (!isAdmin) return
