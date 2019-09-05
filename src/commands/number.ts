@@ -23,7 +23,7 @@ export function setupNumber(bot: Telegraf<ContextMessageUpdate>) {
       +numberString > 0 &&
       +numberString < 10000000
     ) {
-      chat.number + numberString
+      chat.number = +numberString
       chat = await chat.save()
       // Reply
       return ctx.reply(loc('number_selected', chat.language))
