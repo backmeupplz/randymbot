@@ -9,7 +9,7 @@ import { loc } from '../helpers/locale'
  * @param bot Bot to setup the command
  */
 export function setupLanguage(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command('language', async (ctx) => {
+  bot.command('language', async ctx => {
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
     if (!isAdmin) return
@@ -17,7 +17,7 @@ export function setupLanguage(bot: Telegraf<ContextMessageUpdate>) {
     const chat = await findChat(ctx.chat.id)
     // Reply
     ctx.reply(loc('select_language', chat.language), {
-      reply_markup: getButtons()
+      reply_markup: getButtons(),
     })
   })
 }
@@ -27,10 +27,10 @@ export function setupLanguage(bot: Telegraf<ContextMessageUpdate>) {
  * @param bot Bot to setup the callback
  */
 export function setupLanguageCallback(bot: Telegraf<ContextMessageUpdate>) {
-  (<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
+  ;(<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
     // Get raffle
     const datas = data.split('~')
-    if (datas[0] !== 'l') return;
+    if (datas[0] !== 'l') return
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx, false)
     if (!isAdmin) return
@@ -40,7 +40,12 @@ export function setupLanguageCallback(bot: Telegraf<ContextMessageUpdate>) {
     chat.language = datas[1]
     chat = await chat.save()
     // Update message
-    await ctx.telegram.editMessageText(ctx.chat.id, (<any>ctx).update.callback_query.message.message_id, undefined, loc('language_selected', chat.language))
+    await ctx.telegram.editMessageText(
+      ctx.chat.id,
+      (<any>ctx).update.callback_query.message.message_id,
+      undefined,
+      loc('language_selected', chat.language)
+    )
   })
 }
 
@@ -51,26 +56,43 @@ export function setupLanguageCallback(bot: Telegraf<ContextMessageUpdate>) {
 function getButtons() {
   return {
     inline_keyboard: [
-      [{
-        text: 'English',
-        callback_data: `l~en`,
-      }],
-      [{
-        text: 'Русский',
-        callback_data: `l~ru`,
-      }],
-       [{
-        text: 'Português',
-        callback_data: `l~pt`,
-      }],
-      [{
-        text: 'Turkce',
-        callback_data: `l~tr`,
-      }],
-      [{
-        text: 'Українська',
-        callback_data: `l~uk`,
-      }],
+      [
+        {
+          text: 'English',
+          callback_data: `l~en`,
+        },
+      ],
+      [
+        {
+          text: 'Русский',
+          callback_data: `l~ru`,
+        },
+      ],
+      [
+        {
+          text: 'Português',
+          callback_data: `l~pt`,
+        },
+      ],
+      [
+        {
+          text: 'Turkce',
+          callback_data: `l~tr`,
+        },
+      ],
+      [
+        {
+          text: 'Українська',
+          callback_data: `l~uk`,
+        },
+      ],
+      ,
+      [
+        {
+          text: 'العَرَبِيَّة‎',
+          callback_data: `l~ar`,
+        },
+      ],
     ],
   }
 }

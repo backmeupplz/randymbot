@@ -14,6 +14,8 @@ const localizations: { [index: string]: { [index: string]: string } } = {
       'Merhaba! Ben Randy Marsh. Bir sohbet veya kanalda rastgele bir cekilis katilimcisini ("Katil" dugmesine basan) secebilirim. Kaynak kodum [burada](https://github.com/backmeupplz/randymbot). Ayrica /language ile botun dilini ve /number ile cekilisi kazanacak kisi sayisini da degistirebilirsiniz (varsayilan 1).\n\n1. Beni bir kanala veya gruba ekle, /randy komutunu gonder ve cekilis baslasin!\n2. Cekilisi bitirmek icin cekilis iletime herhangi bir mesajla yanit verin ve katilimcilardan rastgele bir kazanan secilecektir.\n\nBaska sorularin mi var? Destek kanalimiza gelin — @borodutch\\_support 🦄',
     uk:
       'Привіт! Це Ренді Марш. Я вмію випадковим чином вибирати учасника чату або каналу з тих, що натиснули на кнопку "Взяти участь". Мій вихідний код [ось тут](https://github.com/backmeupplz/randymbot). Змінити мову можна командою /language. Змінити кількість переможців (стандартно — 1) командою /number.\n\n1. Додайте мене на канал або в чат, надішліть команду /randy і почнеться розіграш.\n2. Дайте відповідь на повідомлення про розіграш будь-яким повідомленням, і розіграш завершиться, а переможець буде обраний з учасників.\n\nЗалишилися питання? Почитайте наш канал підтримки — @borodutch\\_support 🦄',
+    ar:
+      'مرحبًا بكم! (أنا (راندي مارش يمكنني اختيار مشارك السحب عشوائياً (الذي ضغط زر "المشاركة") في مجموعة أو قناة. رمز مصدري هو [هنا](https://github.com/backmeupplz/randymbot). يمكنك أيضًا تغيير اللغة /language وعدد الفائزين لكل سحب /number (الافتراضي هو 1، يمكنك استخدام تنسيق /number 100).\n\n1. إضافة لي إلى قناة أو مجموعة ، وإرسال الأمر /randy والسحب سيبدأ.\n2. الرد مع أي رسالة إلى رسالة السحب الخاصة بي لإنهاء السحب، وسيتم اختيار الفائز العشوائي من المشاركين.\n\nأمازلت تملك أسئلة؟ انتقل إلى قناة الدعم الخاصة بنا — @borodutch_support 🦄',
   },
   public_help_start: {
     ru:
@@ -26,6 +28,8 @@ const localizations: { [index: string]: { [index: string]: string } } = {
       'Merhaba! Ben Randy Marsh. Bir sohbet veya kanalda rastgele bir cekilis katilimcisini ("Katil" dugmesine basan) secebilirim. Kaynak kodum [burada](https://github.com/backmeupplz/randymbot). Ayrica /language ile botun dilini ve /number ile cekilisi kazanacak kisi sayisini da degistirebilirsiniz (varsayilan 1).\n\n1. Beni bir kanala veya gruba ekle, /randy komutunu gonder ve cekilis baslasin!\n2. Cekilisi bitirmek icin cekilis iletime herhangi bir mesajla yanit verin ve katilimcilardan rastgele bir kazanan secilecektir.\n\nBaska sorularin mi var? Destek kanalimiza gelin — @borodutch\\_support 🦄',
     uk:
       'Привіт! Це Ренді Марш. Я вмію випадковим чином вибирати учасника чату або каналу з тих, що натиснули на кнопку "Взяти участь". Мій вихідний код [ось тут](https://github.com/backmeupplz/randymbot). Змінити мову можна командою /language. Змінити кількість переможців (стандартно — 1) командою /number.\n\n1. Надішліть команду /randy і почнеться розіграш.\n2. Дайте відповідь на повідомлення про розіграш будь-яким повідомленням, і розіграш завершиться, а переможець буде обраний з учасників.\n\nЗалишилися питання? Почитайте наш канал підтримки — @borodutch_support 🦄',
+    ar:
+      'مرحبًا بكم! (أنا (راندي مارش يمكنني اختيار مشارك السحب عشوائياً (الذي ضغط زر "المشاركة") في مجموعة أو قناة. رمز مصدري هو [هنا](https://github.com/backmeupplz/randymbot). يمكنك أيضًا تغيير اللغة /language وعدد الفائزين لكل سحب /number (الافتراضي هو 1، يمكنك استخدام تنسيق /number 100).\n\n1. إضافة لي إلى قناة أو مجموعة ، وإرسال الأمر /randy والسحب سيبدأ.\n2. الرد مع أي رسالة إلى رسالة السحب الخاصة بي لإنهاء السحب، وسيتم اختيار الفائز العشوائي من المشاركين.\n\nأمازلت تملك أسئلة؟ انتقل إلى قناة الدعم الخاصة بنا — @borodutch_support 🦄',
   },
   no_work_private: {
     ru: 'Простите, но эта команда не работает в личке с ботом.',
@@ -33,6 +37,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Desculpe, mas este comando não está disponível em conversas privadas.',
     tr: 'Uzgunum, bu komut ozel mesajlarda mevcut degil.',
     uk: 'Вибачте, але ця команда не працює в діалозі з ботом.',
+    ar: 'عذراً، ولكن هذا الأمر غير متوفر في الرسائل الخاصة.',
   },
   select_language: {
     ru: 'Пожалуйста, выберите язык',
@@ -40,6 +45,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Por favor, escolha o idioma',
     tr: 'Lutfen dilinizi seciniz',
     uk: 'Будь ласка, оберіть мову',
+    ar: 'الرجاء تحديد اللغة',
   },
   language_selected: {
     ru: 'Спасибо, теперь я говорю по-русски!',
@@ -47,6 +53,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Obrigado! Agora eu falarei português',
     tr: 'Tesekkurler! Artik Turkce konusuyorum',
     uk: 'Дякую, тепер я говорю українською!',
+    ar: 'شكرا! الآن أنا أتكلم العربية',
   },
   raffle_text: {
     ru:
@@ -59,6 +66,8 @@ const localizations: { [index: string]: { [index: string]: string } } = {
       'Cekilis basladi! Katilmak icin asagidaki dugmeye basin. Bir yonetici bu mesaja cevap verdiginde kazanan kisi, katilimcilar arasindan rastgele olarak secilecektir. Iyi sanslar!',
     uk:
       'Розіграш розпочався! Натисніть на кнопку нижче, щоб взяти участь. Переможець буде обраний випадковим чином з учасників, коли адміністратори дадуть відповідь на це повідомлення. Бажаю удачі!',
+    ar:
+      'لقد بدأ السحب! اضغط على الزر أدناه للمشاركة. سيتم اختيار الفائز بشكل عشوائي من بين المشاركين عند رد المشرف على هذه الرسالة. حظ سعيد!',
   },
   raffle_text_multiple: {
     ru:
@@ -71,6 +80,8 @@ const localizations: { [index: string]: { [index: string]: string } } = {
       'Cekilis basladi! Katilmak icin asagidaki dugmeye basin. Bir yonetici bu mesaja cevap verdiginde kazanan kisi, katilimcilar arasindan rastgele olarak secilecektir. Iyi sanslar!',
     uk:
       'Розіграш розпочався! Натисніть на кнопку нижче, щоб взяти участь. Переможці будуть обрані випадковим чином з учасників, коли адміністратори дадуть відповідь на це повідомлення. Бажаю удачі!',
+    ar:
+      'لقد بدأ السحب! اضغط على الزر أدناه للمشاركة. سيتم اختيار الفائزين بشكل عشوائي من بين المشاركين عند رد المشرف على هذه الرسالة. حظ سعيد!',
   },
   please_retry: {
     ru: 'Пожалуйста, попробуйте через пару минут',
@@ -78,6 +89,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Por favor, tente novamente daqui a alguns instantes',
     tr: 'Lutfen birkac dakika icinde tekrar deneyiniz',
     uk: 'Будь ласка, спробуйте за декілька хвилин',
+    ar: 'من فضلك، حاول في بضع دقائق',
   },
   already_participating: {
     ru: 'Вы уже принимаете участие, отлично!',
@@ -85,6 +97,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Você já está participando. Muito bem!',
     tr: 'Zaten cekilise katildiniz, geriye kazanmak kaldi!',
     uk: 'Ви вже берете участь, чудово!',
+    ar: 'كنت تشارك بالفعل، رائع!',
   },
   participated: {
     ru: 'Отлично, вы отметились, как участник!',
@@ -92,6 +105,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Muito bem, vocês agora está participando do sorteio!',
     tr: 'Harika, cekilise katildiniz!',
     uk: 'Відмінно, ви відзначилися, як учасник!',
+    ar: 'عظيم، أنت الآن تشارك في هذا السحب!',
   },
   participants_number: {
     ru: 'Количество участников',
@@ -99,6 +113,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Número de participantes',
     tr: 'Katilimci sayisi',
     uk: 'Кількість учасників',
+    ar: 'عدد المشاركين',
   },
   participate_button: {
     ru: 'Участвовать!',
@@ -106,6 +121,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Participar!',
     tr: 'Katil!',
     uk: 'Взяти участь!',
+    ar: 'المشاركة!',
   },
   no_participants: {
     ru: 'В этот раз участников розыгрыша не было 😅',
@@ -113,6 +129,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Sem participantes dessa vez 😅',
     tr: 'Katilimci yok 😅',
     uk: 'Цього разу учасників розіграшу не було 😅',
+    ar: 'لا يوجد مشاركون هذه المرة 😅',
   },
   winner: {
     ru: 'В этот раз победитель',
@@ -120,6 +137,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'O vencedor é',
     tr: 'Ve Kazanan kisi',
     uk: 'Цього разу переможець',
+    ar: 'الفائز هو',
   },
   winners: {
     ru: 'В этот раз победители',
@@ -127,6 +145,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Os ganhadores são',
     tr: 'Ve Kazanan kisilerr',
     uk: 'Цього разу переможці',
+    ar: 'الفائزون هم',
   },
   congratulations: {
     ru: 'Поздравляем',
@@ -134,6 +153,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Parabéns',
     tr: 'Tebrikler',
     uk: 'Вітаємо',
+    ar: 'تهانينا',
   },
   raffle_over: {
     ru: 'Простите, но розыгрыш уже закончен',
@@ -141,6 +161,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Pedimos desculpas, mas o sorteio terminou',
     tr: 'Uzgunum, cekilis simdi bitti',
     uk: 'Вибачте, але розіграш вже завершено',
+    ar: 'آسف، السحب إنتهى الآن',
   },
   select_number: {
     ru: 'Пожалуйста, выберите, сколько победителей должно быть в розыгрыше',
@@ -148,6 +169,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Por favor selecione o número de ganhadores do sorteio',
     tr: 'Lutfen cekilis icin kazanacak kisi sayisini seciniz',
     uk: 'Будь ласка, виберіть, скільки переможців має бути в розіграші',
+    ar: 'من فضلك، اختر عدد الفائزين للسحب',
   },
   number_selected: {
     ru: 'Отлично, вы выбрали количество победителей!',
@@ -155,6 +177,7 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Ótimo! Você selecionou o número de ganhadores!',
     tr: 'Harika! Kazanacak kisi sayisini sectin!',
     uk: 'Чудово, ви вибрали кількість переможців!',
+    ar: 'رائع ! لقد اخترت عدد الفائزين!',
   },
   not_enough_participants: {
     ru: 'В этот раз участников розыгрыша было недостаточно 😅',
@@ -162,5 +185,6 @@ const localizations: { [index: string]: { [index: string]: string } } = {
     pt: 'Sem participantes suficientes 😅',
     tr: 'Cekilis icin yeteri kadar katilimci yok 😅',
     uk: 'Цього разу учасників розіграшу було недостатньо 😅',
+    ar: 'لا يكفي المشاركين هذه المرة 😅',
   },
 }
