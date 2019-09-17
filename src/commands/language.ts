@@ -61,8 +61,6 @@ function getButtons() {
           text: 'English',
           callback_data: `l~en`,
         },
-      ],
-      [
         {
           text: 'Русский',
           callback_data: `l~ru`,
@@ -73,8 +71,6 @@ function getButtons() {
           text: 'Português',
           callback_data: `l~pt`,
         },
-      ],
-      [
         {
           text: 'Turkce',
           callback_data: `l~tr`,
@@ -85,11 +81,8 @@ function getButtons() {
           text: 'Українська',
           callback_data: `l~uk`,
         },
-      ],
-      ,
-      [
         {
-          text: 'العَرَبِيَّة‎',
+          text: 'Arabic',
           callback_data: `l~ar`,
         },
       ],
