@@ -131,7 +131,8 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
             0 &&
           message.reply_to_message.text.indexOf('Cekilis basladi! Katilmak') <
             0 &&
-          message.reply_to_message.text.indexOf('Розіграш розпочався!') < 0)
+          message.reply_to_message.text.indexOf('Розіграш розпочався!') < 0 &&
+          message.reply_to_message.text.indexOf('المشرف على هذه الرسالة.') < 0)
       ) {
         throw new Error('Not checking')
       }
