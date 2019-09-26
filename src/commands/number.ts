@@ -16,7 +16,7 @@ export function setupNumber(bot: Telegraf<ContextMessageUpdate>) {
     // Get chat
     let chat = await findChat(ctx.chat.id)
     // Check if `/number XXX` format
-    const numberString = ctx.message.text.substr(8).trim()
+    const numberString = (ctx.message || ctx.channelPost).text.substr(8).trim()
     if (
       numberString &&
       !isNaN(+numberString) &&
