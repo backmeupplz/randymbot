@@ -244,6 +244,9 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
   console.log(
     `Finishing raffle for chat ${raffle.chatId}, winners length: ${winners.length}`
   )
+  // Save winners
+  raffle.winners = winners.map(w => w.winner.user.id).join(',')
+  await (<any>raffle).save()
   // Announce winner
   if (winners.length == 1) {
     const winner = winners[0].winner
@@ -321,7 +324,4 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       }
     }
   }
-  // Save winners
-  raffle.winners = winners.map(w => w.winner.user.id).join(',')
-  await (<any>raffle).save()
 }
