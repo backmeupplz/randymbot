@@ -278,7 +278,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       text = `${text}\n\n${loc('congratulations', chat.language)}!\n\n${loc(
         'participants_number',
         chat.language
-      )} — ${ids.length}.`
+      )} — ${idsOriginalLength}.`
       await ctx.telegram.editMessageText(
         raffle.chatId,
         raffle.messageId,
@@ -300,7 +300,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       text = `${text}\n\n${loc('congratulations', chat.language)}!\n\n${loc(
         'participants_number',
         chat.language
-      )} — ${ids.length}.`
+      )} — ${idsOriginalLength}.`
       console.log(`Announcing winners for ${raffle.chatId}`, raffle.messageId)
       console.log(text)
       await ctx.telegram.editMessageText(
