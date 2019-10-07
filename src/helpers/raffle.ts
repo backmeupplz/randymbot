@@ -83,7 +83,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
     raffle.participantsIds.push(ctx.from.id)
     raffle = await raffle.save()
     // Reply that they are in
-    await await (<any>ctx).answerCbQuery(
+    await (<any>ctx).answerCbQuery(
       loc('participated', chat.language),
       undefined,
       true
@@ -301,6 +301,8 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
         'participants_number',
         chat.language
       )} — ${ids.length}.`
+      console.log(`Announcing winners for ${raffle.chatId}`, raffle.messageId)
+      console.log(text)
       await ctx.telegram.editMessageText(
         raffle.chatId,
         raffle.messageId,
