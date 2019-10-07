@@ -15,7 +15,7 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
   // Get chat
   const chat = await findChat(ctx.chat.id)
   // Send message
-  const sent = await ctx.replyWithMarkdown(
+  const sent = await ctx.replyWithHTML(
     loc(chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text', chat.language)
   )
   // Add raffle
@@ -23,6 +23,7 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
   // Add buttons
   const options: ExtraEditMessage = {
     reply_markup: getButtons(raffle, chat.language),
+    parse_mode: 'HTML',
   }
   ;(<any>options).reply_markup = JSON.stringify(options.reply_markup)
   await ctx.telegram.editMessageText(
