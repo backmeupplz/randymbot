@@ -34,3 +34,5 @@ setupTestLocale(bot)
 setupCallback(bot)
 setupLanguageCallback(bot)
 setupNumberCallback(bot)
+
+bot.catch(console.error)
