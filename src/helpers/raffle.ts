@@ -188,6 +188,7 @@ function getButtons(raffle: Raffle, language: string) {
  * @param ctx Context of message that finished raffle
  */
 async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
+  console.log(`Finishing raffle for chat ${raffle.chatId}`)
   // Get participants ids
   let ids = raffle.participantsIds
   const idsOriginalLength = ids.length
@@ -239,6 +240,9 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     }
   }
   winners = shuffle(winners)
+  console.log(
+    `Finishing raffle for chat ${raffle.chatId}, winners length: ${winners.length}`
+  )
   // Announce winner
   if (winners.length == 1) {
     const winner = winners[0].winner
