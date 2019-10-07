@@ -259,26 +259,62 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       }
     )
   } else {
-    const names = winners.map(w => w.name)
-    let text = `🎉 ${loc('winners', chat.language)}:\n`
-    for (let i = 0; i < names.length; i++) {
-      text = `${text}\n${i + 1}. [${names[i]}](tg://user?id=${
-        winners[i].winner.user.id
-      })`
-    }
-    text = `${text}\n\n${loc('congratulations', chat.language)}!\n\n${loc(
-      'participants_number',
-      chat.language
-    )} — ${ids.length}.`
-    await ctx.telegram.editMessageText(
-      raffle.chatId,
-      raffle.messageId,
-      undefined,
-      text,
-      {
-        parse_mode: 'Markdown',
+    const names = winners.map(w => w.name.replace('<', '').replace('>', ''))
+    if (names.length <= 50) {
+      let text = `🎉 ${loc('winners', chat.language)}:\n`
+      for (let i = 0; i < names.length; i++) {
+        text = `${text}\n${i + 1}. <a href="tg://user?id=${
+          winners[i].winner.user.id
+        }">${names[i]}</a>`
       }
-    )
+      text = `${text}\n\n${loc('congratulations', chat.language)}!\n\n${loc(
+        'participants_number',
+        chat.language
+      )} — ${ids.length}.`
+      await ctx.telegram.editMessageText(
+        raffle.chatId,
+        raffle.messageId,
+        undefined,
+        text,
+        {
+          parse_mode: 'HTML',
+        }
+      )
+    } else {
+      let commonI = 0
+      let text = `🎉 ${loc('winners', chat.language)}:\n`
+      const firstNames = names.splice(0, 50)
+      const firstWinners = winners.splice(0, 50)
+      for (let i = 0; i < firstNames.length; i++) {
+        commonI++
+        text = `${text}\n${commonI}. <a href="tg://user?id=${firstWinners[i].winner.user.id}">${firstNames[i]}</a>`
+      }
+      text = `${text}\n\n${loc('congratulations', chat.language)}!\n\n${loc(
+        'participants_number',
+        chat.language
+      )} — ${ids.length}.`
+      await ctx.telegram.editMessageText(
+        raffle.chatId,
+        raffle.messageId,
+        undefined,
+        text,
+        {
+          parse_mode: 'HTML',
+        }
+      )
+      while (names.length > 0) {
+        let text = ``
+        const nextNames = names.splice(0, 50)
+        const nextWinners = winners.splice(0, 50)
+        for (let i = 0; i < nextNames.length; i++) {
+          commonI++
+          text = `${text}\n${commonI}. <a href="tg://user?id=${nextWinners[i].winner.user.id}">${nextNames[i]}</a>`
+        }
+        await ctx.telegram.sendMessage(raffle.chatId, text, {
+          parse_mode: 'HTML',
+        })
+      }
+    }
   }
   // Save winners
   raffle.winners = winners.map(w => w.winner.user.id).join(',')
