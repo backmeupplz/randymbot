@@ -239,4 +239,12 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     ar:
       'Great, now bot will check if the participant is subscribed to the following channel before allowing to participate: ',
   },
+  check_subscription: {
+    ru: 'Вы должны быть подписаны на ',
+    en: 'You should be subscribed to ',
+    pt: 'You should be subscribed to ',
+    tr: 'You should be subscribed to ',
+    uk: 'You should be subscribed to ',
+    ar: 'You should be subscribed to ',
+  },
 }

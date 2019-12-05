@@ -79,6 +79,28 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       )
       return
     }
+    // Check if participant subscribed
+    if (chat.subscribe) {
+      try {
+        const member = await ctx.telegram.getChatMember(
+          `@${chat.subscribe}`,
+          ctx.from.id
+        )
+        if (
+          !member.status ||
+          member.status === 'left' ||
+          member.status === 'kicked'
+        ) {
+          throw new Error()
+        }
+      } catch (err) {
+        return (<any>ctx).answerCbQuery(
+          `${loc('check_subscription', chat.language)}@${chat.subscribe}`,
+          undefined,
+          true
+        )
+      }
+    }
     // Add participant and update number
     raffle.participantsIds.push(ctx.from.id)
     raffle = await raffle.save()
