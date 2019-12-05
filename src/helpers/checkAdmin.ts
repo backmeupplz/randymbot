@@ -1,4 +1,4 @@
-import { ContextMessageUpdate, Telegraf } from 'telegraf'
+import { ContextMessageUpdate } from 'telegraf'
 
 /**
  * Checking if user is admin at chat, deletes message if not
