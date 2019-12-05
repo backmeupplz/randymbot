@@ -44,6 +44,7 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
  */
 export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
   ;(<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
+    console.log(data, ctx.chat.id)
     // Get raffle
     const datas = data.split('~')
     if (['l', 'n'].indexOf(datas[0]) > -1) return
