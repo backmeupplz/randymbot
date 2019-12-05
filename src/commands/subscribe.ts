@@ -38,8 +38,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
     } catch (err) {
       return ctx.reply(loc('bot_not_admin', chat.language), {
         disable_notification: true,
-        parse_mode: 'Markdown',
-      } as any)
+      })
     }
     // Check if bot is admin in subscribe chat
     try {
@@ -57,8 +56,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
         `${loc('bot_not_admin_chat', chat.language)}@${subscribeString}`,
         {
           disable_notification: true,
-          parse_mode: 'Markdown',
-        } as any
+        }
       )
     }
     // Add subscibe string
@@ -69,8 +67,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
       `${loc('subscribe_success', chat.language)}@${subscribeString}`,
       {
         disable_notification: true,
-        parse_mode: 'Markdown',
-      } as any
+      }
     )
   })
 }
