@@ -18,6 +18,7 @@ export function setupLanguage(bot: Telegraf<ContextMessageUpdate>) {
     // Reply
     ctx.reply(loc('select_language', chat.language), {
       reply_markup: getButtons(),
+      disable_notification: true,
     })
   })
 }

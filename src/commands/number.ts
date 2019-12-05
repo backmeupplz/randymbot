@@ -26,11 +26,14 @@ export function setupNumber(bot: Telegraf<ContextMessageUpdate>) {
       chat.number = +numberString
       chat = await chat.save()
       // Reply
-      return ctx.reply(loc('number_selected', chat.language))
+      return ctx.reply(loc('number_selected', chat.language), {
+        disable_notification: true,
+      })
     }
     // Reply
     return ctx.reply(loc('select_number', chat.language), {
       reply_markup: getButtons(),
+      disable_notification: true,
     })
   })
 }
