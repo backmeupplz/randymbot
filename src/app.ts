@@ -22,6 +22,8 @@ const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, {
 bot.startPolling()
 console.log('Bot is up and running')
 
+// Setup callback
+setupCallback(bot)
 // Setup listener
 setupListener(bot)
 
@@ -35,7 +37,6 @@ setupSubscribe(bot)
 setupNosubscribe(bot)
 
 // Setup callbacks
-setupCallback(bot)
 setupLanguageCallback(bot)
 setupNumberCallback(bot)
 
