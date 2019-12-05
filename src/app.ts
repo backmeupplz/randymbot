@@ -10,6 +10,8 @@ import { setupCallback, setupListener } from './helpers/raffle'
 import { setupLanguage, setupLanguageCallback } from './commands/language'
 import { setupNumberCallback, setupNumber } from './commands/number'
 import { setupTestLocale } from './commands/testLocales'
+import { setupSubscribe } from './commands/subscribe'
+import { setupNosubscribe } from './commands/nosubscribe'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -29,6 +31,8 @@ setupRandy(bot)
 setupLanguage(bot)
 setupNumber(bot)
 setupTestLocale(bot)
+setupSubscribe(bot)
+setupNosubscribe(bot)
 
 // Setup callbacks
 setupCallback(bot)

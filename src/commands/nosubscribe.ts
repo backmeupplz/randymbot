@@ -5,6 +5,11 @@ import { loc } from '../helpers/locale'
 
 export function setupNosubscribe(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('nosubscribe', async ctx => {
+    if (ctx.chat.type === 'private') {
+      const chat = await findChat(ctx.chat.id)
+      ctx.reply(loc('no_work_private', chat.language))
+      return
+    }
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
     if (!isAdmin) return
