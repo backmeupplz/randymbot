@@ -34,13 +34,13 @@ export async function addRaffle(chatId: number) {
  * @param messageId Message id of the raffle
  * @returns requested raffle
  */
-export async function getRaffle(chatId: number, id: any) {
+export async function getRaffle(chatId: number, id: string | number) {
   try {
     const raffle = await RaffleModel.findById(id)
     if (raffle) {
       return raffle
     }
   } catch (err) {
-    return RaffleModel.findOne({ chatId, messageId: id })
+    return RaffleModel.findOne({ chatId, messageId: Number(id) })
   }
 }

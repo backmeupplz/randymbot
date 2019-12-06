@@ -46,8 +46,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
     const datas = data.split('~')
     if (['l', 'n'].indexOf(datas[0]) > -1) return
     const chatId = Number(datas[0])
-    const messageId = Number(datas[1])
-    let raffle = await getRaffle(chatId, messageId)
+    let raffle = await getRaffle(chatId, datas[1])
     // Get chat
     const chat = await findChat(ctx.chat.id)
     // Check if raffle is there
