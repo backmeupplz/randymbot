@@ -6,6 +6,7 @@ import { shuffle, random } from 'lodash'
 import { checkIfAdmin } from './checkAdmin'
 import { findChat } from '../models/chat'
 import { loc } from './locale'
+import { InstanceType } from 'typegoose'
 
 /**
  * Starting a new raffle
@@ -14,28 +15,24 @@ import { loc } from './locale'
 export async function startRaffle(ctx: ContextMessageUpdate) {
   // Get chat
   const chat = await findChat(ctx.chat.id)
-  // Send message
-  const sent = await ctx.replyWithHTML(
-    loc(chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text', chat.language)
-  )
   // Add raffle
-  const raffle = await addRaffle(sent.chat.id, sent.message_id)
+  const raffle = await addRaffle(ctx.chat.id)
   // Add buttons
   const options: ExtraEditMessage = {
     reply_markup: getButtons(raffle, chat.language),
     parse_mode: 'HTML',
   }
-  ;(<any>options).reply_markup = JSON.stringify(options.reply_markup)
-  await ctx.telegram.editMessageText(
-    sent.chat.id,
-    sent.message_id,
-    undefined,
+  // Send message
+  const sent = await ctx.replyWithHTML(
     loc(
       chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text',
       chat.language
     ),
     options
   )
+  // Save sent message id
+  raffle.messageId = sent.message_id
+  await raffle.save()
 }
 
 /**
@@ -44,7 +41,6 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
  */
 export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
   ;(<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
-    console.log(data, ctx.chat.id)
     // Get raffle
     const datas = data.split('~')
     if (['l', 'n'].indexOf(datas[0]) > -1) return
@@ -148,15 +144,7 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
       if (
         !message ||
         !message.reply_to_message ||
-        !message.reply_to_message.text ||
-        (message.reply_to_message.text.indexOf('Розыгрыш начался! Нажмите') <
-          0 &&
-          message.reply_to_message.text.indexOf('Raffle has begun! Press') <
-            0 &&
-          message.reply_to_message.text.indexOf('Cekilis basladi! Katilmak') <
-            0 &&
-          message.reply_to_message.text.indexOf('Розіграш розпочався!') < 0 &&
-          message.reply_to_message.text.indexOf('المشرف على هذه الرسالة.') < 0)
+        !message.reply_to_message.text
       ) {
         throw new Error('Not checking')
       }
@@ -193,13 +181,13 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
  * @param language Languageof thebuttons
  * @returns buttons for a raffle
  */
-function getButtons(raffle: Raffle, language: string) {
+function getButtons(raffle: InstanceType<Raffle>, language: string) {
   return {
     inline_keyboard: [
       [
         {
           text: loc('participate_button', language),
-          callback_data: `${raffle.chatId}~${raffle.messageId}`,
+          callback_data: `${raffle.chatId}~${raffle.id}`,
         },
       ],
     ],

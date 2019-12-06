@@ -5,8 +5,8 @@ import { prop, arrayProp, Typegoose } from 'typegoose'
 export class Raffle extends Typegoose {
   @prop({ required: true, index: true })
   chatId: number
-  @prop({ required: true, index: true })
-  messageId: number
+  @prop({ index: true })
+  messageId?: number
   @arrayProp({ required: true, default: [], items: Number })
   participantsIds: number[]
 
@@ -23,9 +23,9 @@ const RaffleModel = new Raffle().getModelForClass(Raffle)
  * @param messageId Message id of the raffle
  * @returns created raffle
  */
-export async function addRaffle(chatId: number, messageId: number) {
-  let raffle = new RaffleModel({ chatId, messageId })
-  return await raffle.save()
+export async function addRaffle(chatId: number) {
+  let raffle = new RaffleModel({ chatId })
+  return raffle.save()
 }
 
 /**
@@ -34,6 +34,10 @@ export async function addRaffle(chatId: number, messageId: number) {
  * @param messageId Message id of the raffle
  * @returns requested raffle
  */
-export async function getRaffle(chatId: number, messageId: number) {
-  return await RaffleModel.findOne({ chatId, messageId })
+export async function getRaffle(chatId: number, id: number) {
+  const raffle = await RaffleModel.findById(id)
+  if (raffle) {
+    return raffle
+  }
+  return RaffleModel.findOne({ chatId, messageId: id })
 }
