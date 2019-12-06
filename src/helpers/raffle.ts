@@ -290,35 +290,60 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
   // Announce winner
   if (winners.length == 1) {
     const winner = winners[0].winner
-    const name = winners[0].name
-    const text = `🎉 ${loc('winner', chat.language)} — [${name}](tg://user?id=${
-      winner.user.id
-    })! ${loc('congratulations', chat.language)}!\n\n${loc(
-      'participants_number',
-      chat.language
-    )} — ${idsOriginalLength}.`
+    const name = winners[0].name.replace('<', '').replace('>', '')
+    let text: string
+    if (raffle.winnerMessage) {
+      text = raffle.winnerMessage.text
+        .replace(
+          '$winner',
+          `<a href="tg://user?id=${winner.user.id}">${name}</a>`
+        )
+        .replace('$numberOfParticipants', `${idsOriginalLength}`)
+    } else {
+      text = `🎉 ${loc('winner', chat.language)} — <a href="tg://user?id=${
+        winner.user.id
+      }">${name}</a>! ${loc('congratulations', chat.language)}!\n\n${loc(
+        'participants_number',
+        chat.language
+      )} — ${idsOriginalLength}.`
+    }
     await ctx.telegram.editMessageText(
       raffle.chatId,
       raffle.messageId,
       undefined,
       text,
       {
-        parse_mode: 'Markdown',
+        parse_mode: 'HTML',
       }
     )
   } else {
     const names = winners.map(w => w.name.replace('<', '').replace('>', ''))
-    if (names.length <= 50) {
-      let text = `🎉 ${loc('winners', chat.language)}:\n`
-      for (let i = 0; i < names.length; i++) {
-        text = `${text}\n${i + 1}. <a href="tg://user?id=${
-          winners[i].winner.user.id
-        }">${names[i]}</a>`
+    if (names.length <= 50 || raffle.winnerMessage) {
+      let text: string
+      if (raffle.winnerMessage) {
+        text = raffle.winnerMessage.text
+          .replace(
+            '$winner',
+            names
+              .map(
+                (name, i) =>
+                  `<a href="tg://user?id=${winners[i].winner.user.id}">${name}</a>`
+              )
+              .join(', ')
+          )
+          .replace('$numberOfParticipants', `${idsOriginalLength}`)
+      } else {
+        text = `🎉 ${loc('winners', chat.language)}:\n`
+        for (let i = 0; i < names.length; i++) {
+          text = `${text}\n${i + 1}. <a href="tg://user?id=${
+            winners[i].winner.user.id
+          }">${names[i]}</a>`
+        }
+        text = `${text}\n\n${loc('congratulations', chat.language)}!\n\n${loc(
+          'participants_number',
+          chat.language
+        )} — ${idsOriginalLength}.`
       }
-      text = `${text}\n\n${loc('congratulations', chat.language)}!\n\n${loc(
-        'participants_number',
-        chat.language
-      )} — ${idsOriginalLength}.`
       await ctx.telegram.editMessageText(
         raffle.chatId,
         raffle.messageId,

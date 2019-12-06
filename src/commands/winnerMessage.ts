@@ -4,7 +4,7 @@ import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
 
 export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command('raffleMessage', async ctx => {
+  bot.command('winnerMessage', async ctx => {
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
     if (!isAdmin) return
@@ -16,16 +16,16 @@ export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
       return
     }
     // Send instructions
-    await ctx.reply(loc('raffle_message', chat.language), {
+    await ctx.reply(loc('winner_message', chat.language), {
       disable_notification: true,
     })
-    // Check if needs to send current message
-    if (chat.raffleMessage) {
-      return ctx.telegram.sendCopy(ctx.chat.id, chat.raffleMessage)
+    // Send current message if there is one
+    if (chat.winnerMessage) {
+      return ctx.telegram.sendCopy(ctx.chat.id, chat.winnerMessage)
     }
   })
 
-  bot.command('noRaffleMessage', async ctx => {
+  bot.command('noWinnerMessage', async ctx => {
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
     if (!isAdmin) return
@@ -37,10 +37,10 @@ export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
       return
     }
     // Turn off raffle message
-    chat.raffleMessage = undefined
+    chat.winnerMessage = undefined
     await chat.save()
     // Send instructions
-    return ctx.reply(loc('raffle_message_off', chat.language), {
+    return ctx.reply(loc('winner_message_off', chat.language), {
       disable_notification: true,
     })
   })
@@ -60,9 +60,10 @@ export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
         !message.reply_to_message ||
         !message.text ||
         !message.text.includes('$numberOfParticipants') ||
+        !message.text.includes('$winner') ||
         message.reply_to_message.from.username !== bot.options.username ||
         !message.reply_to_message.text ||
-        !message.reply_to_message.text.includes('💪')
+        !message.reply_to_message.text.includes('🎉')
       ) {
         return
       }
@@ -71,9 +72,10 @@ export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
       // Send mesage
       await ctx.telegram.sendCopy(ctx.chat.id, message, {
         disable_notification: true,
+        parse_mode: 'HTML',
       })
       // Setuo message
-      chat.raffleMessage = message
+      chat.winnerMessage = message
       await chat.save()
       // Reply success
       ctx.reply(loc('success', chat.language), {

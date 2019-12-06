@@ -14,6 +14,8 @@ export class Chat extends Typegoose {
 
   @prop()
   raffleMessage?: Message
+  @prop()
+  winnerMessage?: Message
 }
 
 // Get Chat model

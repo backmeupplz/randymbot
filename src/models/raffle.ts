@@ -16,6 +16,8 @@ export class Raffle extends Typegoose {
 
   @prop()
   raffleMessage?: Message
+  @prop()
+  winnerMessage?: Message
 }
 
 // Get Raffle model
