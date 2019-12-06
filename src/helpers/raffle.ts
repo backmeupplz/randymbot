@@ -136,7 +136,10 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       let text: string
       if (raffle.raffleMessage) {
         const raffleMessage = raffle.raffleMessage
-        text = raffleMessage.text.replace('$numberOfParticipants', '0')
+        text = raffleMessage.text.replace(
+          '$numberOfParticipants',
+          `${raffle.participantsIds.length}`
+        )
       } else {
         text = `${loc(
           chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text',
