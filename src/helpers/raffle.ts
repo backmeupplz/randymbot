@@ -182,7 +182,7 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
         throw new Error('Not checking')
       }
       // Check if admin replied
-      const isAdmin = await checkIfAdmin(ctx)
+      const isAdmin = await checkIfAdmin(ctx, false)
       if (!isAdmin) {
         throw new Error('No admin')
       }
