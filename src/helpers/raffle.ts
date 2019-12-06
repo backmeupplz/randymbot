@@ -26,6 +26,10 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
     raffle.raffleMessage = chat.raffleMessage
     await raffle.save()
   }
+  if (chat.winnerMessage) {
+    raffle.winnerMessage = chat.winnerMessage
+    await raffle.save()
+  }
   // Add buttons
   const options: ExtraEditMessage = {
     reply_markup: getButtons(raffle, chat.language),
