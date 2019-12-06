@@ -34,7 +34,7 @@ export async function addRaffle(chatId: number) {
  * @param messageId Message id of the raffle
  * @returns requested raffle
  */
-export async function getRaffle(chatId: number, id: number) {
+export async function getRaffle(chatId: number, id: any) {
   const raffle = await RaffleModel.findById(id)
   if (raffle) {
     return raffle
