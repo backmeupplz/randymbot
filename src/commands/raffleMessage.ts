@@ -48,7 +48,7 @@ export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
   bot.use(async (ctx, next) => {
     try {
       // Check if admin
-      const isAdmin = await checkIfAdmin(ctx)
+      const isAdmin = await checkIfAdmin(ctx, false)
       if (!isAdmin) return
       // Check if private
       if (ctx.chat.type === 'private') return
