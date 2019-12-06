@@ -247,4 +247,34 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     uk: 'You should be subscribed to ',
     ar: 'You should be subscribed to ',
   },
+  raffle_message: {
+    ru:
+      'Ответьте на это сообщение, чтобы установить новое сообщение розыгрыша. Именно ответьте (надеемся, что все понимают разницу между обычным сообщение и ответом). Обязательно используйте "$numberOfParticipants" в сообщении — иначе установка не сработает. Удачи! 💪 Текущее сообщение (если оно установленно), приведено ниже.',
+    en:
+      'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
+    pt:
+      'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
+    tr:
+      'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
+    uk:
+      'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
+    ar:
+      'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
+  },
+  raffle_message_off: {
+    ru: 'Теперь Ренди будет использовать стандартное сообщение о розыгрыше.',
+    en: 'Randy will use standard raffle message now.',
+    pt: 'Randy will use standard raffle message now.',
+    tr: 'Randy will use standard raffle message now.',
+    uk: 'Randy will use standard raffle message now.',
+    ar: 'Randy will use standard raffle message now.',
+  },
+  success: {
+    ru: 'Успех!',
+    en: 'Success!',
+    pt: 'Success!',
+    tr: 'Success!',
+    uk: 'Success!',
+    ar: 'Success!',
+  },
 }

@@ -1,5 +1,6 @@
 // Dependencies
 import { prop, arrayProp, Typegoose } from 'typegoose'
+import { Message } from 'telegram-typings'
 
 // Winner class definition
 export class Raffle extends Typegoose {
@@ -12,6 +13,9 @@ export class Raffle extends Typegoose {
 
   @prop()
   winners?: string
+
+  @prop()
+  raffleMessage?: Message
 }
 
 // Get Raffle model

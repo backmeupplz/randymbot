@@ -12,6 +12,7 @@ import { setupNumberCallback, setupNumber } from './commands/number'
 import { setupTestLocale } from './commands/testLocales'
 import { setupSubscribe } from './commands/subscribe'
 import { setupNosubscribe } from './commands/nosubscribe'
+import { setupRaffleMessage } from './commands/raffleMessage'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -35,6 +36,7 @@ setupNumber(bot)
 setupTestLocale(bot)
 setupSubscribe(bot)
 setupNosubscribe(bot)
+setupRaffleMessage(bot)
 
 // Setup callbacks
 setupLanguageCallback(bot)

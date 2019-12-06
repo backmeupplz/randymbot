@@ -1,7 +1,7 @@
 // Dependencies
 import { prop, Typegoose } from 'typegoose'
+import { Message } from 'telegram-typings'
 
-// Winner class definition
 export class Chat extends Typegoose {
   @prop({ required: true, index: true })
   chatId: number
@@ -11,6 +11,9 @@ export class Chat extends Typegoose {
   number: number
   @prop()
   subscribe?: string
+
+  @prop()
+  raffleMessage?: Message
 }
 
 // Get Chat model

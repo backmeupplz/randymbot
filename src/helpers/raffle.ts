@@ -1,7 +1,11 @@
 // Dependencies
 import { ContextMessageUpdate, Telegraf } from 'telegraf'
 import { addRaffle, getRaffle, Raffle } from '../models'
-import { ExtraEditMessage, ChatMember } from 'telegraf/typings/telegram-types'
+import {
+  ExtraEditMessage,
+  ChatMember,
+  Message,
+} from 'telegraf/typings/telegram-types'
 import { shuffle, random } from 'lodash'
 import { checkIfAdmin } from './checkAdmin'
 import { findChat } from '../models/chat'
@@ -17,19 +21,36 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
   const chat = await findChat(ctx.chat.id)
   // Add raffle
   const raffle = await addRaffle(ctx.chat.id)
+  // Save raffle message if required
+  if (chat.raffleMessage) {
+    raffle.raffleMessage = chat.raffleMessage
+    await raffle.save()
+  }
   // Add buttons
   const options: ExtraEditMessage = {
     reply_markup: getButtons(raffle, chat.language),
     parse_mode: 'HTML',
   }
   // Send message
-  const sent = await ctx.replyWithHTML(
-    loc(
-      chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text',
-      chat.language
-    ),
-    options
-  )
+  let sent: Message
+  if (raffle.raffleMessage) {
+    const raffleMessage = raffle.raffleMessage
+    raffleMessage.text = raffleMessage.text.replace(
+      '$numberOfParticipants',
+      '0'
+    )
+    sent = await ctx.telegram.sendCopy(ctx.chat.id, raffleMessage, {
+      reply_markup: getButtons(raffle, chat.language),
+    })
+  } else {
+    sent = await ctx.replyWithHTML(
+      loc(
+        chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text',
+        chat.language
+      ),
+      options
+    )
+  }
   // Save sent message id
   raffle.messageId = sent.message_id
   await raffle.save()
@@ -41,7 +62,6 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
  */
 export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
   ;(<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
-    console.log(`${ctx.chat.id} ${data}`)
     // Get raffle
     const datas = data.split('~')
     if (['l', 'n'].indexOf(datas[0]) > -1) return
@@ -113,12 +133,18 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       const options: ExtraEditMessage = {
         reply_markup: getButtons(raffle, chat.language),
       }
-      const text = `${loc(
-        chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text',
-        chat.language
-      )}\n\n${loc('participants_number', chat.language)}: ${
-        raffle.participantsIds.length
-      }`
+      let text: string
+      if (raffle.raffleMessage) {
+        const raffleMessage = raffle.raffleMessage
+        text = raffleMessage.text.replace('$numberOfParticipants', '0')
+      } else {
+        text = `${loc(
+          chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text',
+          chat.language
+        )}\n\n${loc('participants_number', chat.language)}: ${
+          raffle.participantsIds.length
+        }`
+      }
       await ctx.telegram.editMessageText(
         raffle.chatId,
         raffle.messageId,
