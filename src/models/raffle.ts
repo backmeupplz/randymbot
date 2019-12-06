@@ -35,9 +35,12 @@ export async function addRaffle(chatId: number) {
  * @returns requested raffle
  */
 export async function getRaffle(chatId: number, id: any) {
-  const raffle = await RaffleModel.findById(id)
-  if (raffle) {
-    return raffle
+  try {
+    const raffle = await RaffleModel.findById(id)
+    if (raffle) {
+      return raffle
+    }
+  } catch (err) {
+    return RaffleModel.findOne({ chatId, messageId: id })
   }
-  return RaffleModel.findOne({ chatId, messageId: id })
 }
