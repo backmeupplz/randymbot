@@ -3,7 +3,7 @@ import { checkIfAdmin } from '../helpers/checkAdmin'
 import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
 
-export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
+export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('winnerMessage', async ctx => {
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
