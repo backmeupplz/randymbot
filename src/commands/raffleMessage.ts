@@ -47,23 +47,24 @@ export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
 
   bot.use(async (ctx, next) => {
     try {
-      console.log('raffleMessage')
       // Check if admin
       const isAdmin = await checkIfAdmin(ctx, false)
       if (!isAdmin) return
-      console.log('raffleMessage 2')
       // Check if private
       if (ctx.chat.type === 'private') return
       // Check if reply
-      console.log('raffleMessage 3')
       const message = ctx.message || ctx.channelPost
+      const usernameCorrect =
+        (message.reply_to_message.from &&
+          message.reply_to_message.from.username === bot.options.username) ||
+        ctx.chat.type === 'channel'
       if (
         !message ||
         !message.reply_to_message ||
-        !message.reply_to_message ||
+        !message.reply_to_message.text ||
         !message.text ||
         !message.text.includes('$numberOfParticipants') ||
-        message.reply_to_message.from.username !== bot.options.username ||
+        !usernameCorrect ||
         !message.reply_to_message.text ||
         !message.reply_to_message.text.includes('💪')
       ) {
