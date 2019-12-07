@@ -54,6 +54,10 @@ export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
       if (ctx.chat.type === 'private') return
       // Check if reply
       const message = ctx.message || ctx.channelPost
+      const usernameCorrect =
+        (message.reply_to_message.from &&
+          message.reply_to_message.from.username === bot.options.username) ||
+        ctx.chat.type === 'channel'
       if (
         !message ||
         !message.reply_to_message ||
@@ -61,7 +65,7 @@ export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
         !message.text ||
         !message.text.includes('$numberOfParticipants') ||
         !message.text.includes('$winner') ||
-        message.reply_to_message.from.username !== bot.options.username ||
+        !usernameCorrect ||
         !message.reply_to_message.text ||
         !message.reply_to_message.text.includes('🎉')
       ) {
