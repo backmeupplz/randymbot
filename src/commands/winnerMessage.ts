@@ -61,7 +61,7 @@ export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
       if (
         !message ||
         !message.reply_to_message ||
-        !message.reply_to_message ||
+        !message.reply_to_message.text ||
         !message.text ||
         !message.text.includes('$numberOfParticipants') ||
         !message.text.includes('$winner') ||
