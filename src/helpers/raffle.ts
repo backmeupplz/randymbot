@@ -102,24 +102,26 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
     }
     // Check if participant subscribed
     if (chat.subscribe) {
-      try {
-        const member = await ctx.telegram.getChatMember(
-          `@${chat.subscribe}`,
-          ctx.from.id
-        )
-        if (
-          !member.status ||
-          member.status === 'left' ||
-          member.status === 'kicked'
-        ) {
-          throw new Error()
+      for (const subscribe of chat.subscribe.split(',')) {
+        try {
+          const member = await ctx.telegram.getChatMember(
+            `@${subscribe}`,
+            ctx.from.id
+          )
+          if (
+            !member.status ||
+            member.status === 'left' ||
+            member.status === 'kicked'
+          ) {
+            throw new Error()
+          }
+        } catch (err) {
+          return (<any>ctx).answerCbQuery(
+            `${loc('check_subscription', chat.language)}@${subscribe}`,
+            undefined,
+            true
+          )
         }
-      } catch (err) {
-        return (<any>ctx).answerCbQuery(
-          `${loc('check_subscription', chat.language)}@${chat.subscribe}`,
-          undefined,
-          true
-        )
       }
     }
     // Add participant and update number

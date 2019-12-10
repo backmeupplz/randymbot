@@ -16,11 +16,11 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
     // Get chat
     let chat = await findChat(ctx.chat.id)
     // Check format
-    const subscribeString = (ctx.message || ctx.channelPost).text
+    const subscribeStringTemp = (ctx.message || ctx.channelPost).text
       .substr(11)
       .trim()
       .replace('@', '')
-    if (!subscribeString) {
+    if (!subscribeStringTemp) {
       return ctx.reply(loc('subscribe_format', chat.language), {
         disable_notification: true,
         parse_mode: 'Markdown',
@@ -40,31 +40,38 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
         disable_notification: true,
       })
     }
-    // Check if bot is admin in subscribe chat
-    try {
-      const subscribeChatAdmins = await ctx.telegram.getChatAdministrators(
-        `@${subscribeString}`
-      )
-      const isBotAdmin = subscribeChatAdmins
-        .map(m => m.user.username)
-        .includes(bot.options.username)
-      if (!isBotAdmin) {
-        throw new Error()
-      }
-    } catch (err) {
-      return ctx.reply(
-        `${loc('bot_not_admin_chat', chat.language)}@${subscribeString}`,
-        {
-          disable_notification: true,
+    const subscribeStrings = subscribeStringTemp.split(',').map(s => s.trim())
+    for (const subscribeString of subscribeStrings) {
+      // Check if bot is admin in subscribe chat
+      try {
+        const subscribeChatAdmins = await ctx.telegram.getChatAdministrators(
+          `@${subscribeString}`
+        )
+        const isBotAdmin = subscribeChatAdmins
+          .map(m => m.user.username)
+          .includes(bot.options.username)
+        if (!isBotAdmin) {
+          throw new Error()
         }
-      )
+      } catch (err) {
+        return ctx.reply(
+          `${loc('bot_not_admin_chat', chat.language)}${subscribeStrings
+            .map(s => `@${s}`)
+            .join(', ')}`,
+          {
+            disable_notification: true,
+          }
+        )
+      }
     }
     // Add subscibe string
-    chat.subscribe = subscribeString
+    chat.subscribe = subscribeStrings.join(',')
     await chat.save()
     // Report success
     return ctx.reply(
-      `${loc('subscribe_success', chat.language)}@${subscribeString}`,
+      `${loc('subscribe_success', chat.language)}${subscribeStrings
+        .map(s => `@${s}`)
+        .join(', ')}`,
       {
         disable_notification: true,
       }
