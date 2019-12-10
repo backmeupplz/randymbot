@@ -19,7 +19,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
     const subscribeStringTemp = (ctx.message || ctx.channelPost).text
       .substr(11)
       .trim()
-      .replace('@', '')
+      .replace(/@/g, '')
     if (!subscribeStringTemp) {
       return ctx.reply(loc('subscribe_format', chat.language), {
         disable_notification: true,
