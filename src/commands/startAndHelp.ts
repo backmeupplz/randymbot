@@ -9,7 +9,7 @@ import { loc } from '../helpers/locale'
  * @param bot Bot to setup the commands
  */
 export function setupStartAndHelp(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command(['start', 'help'], async ctx => {
+  bot.command(['start', 'help'], async (ctx) => {
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
     if (!isAdmin) return
@@ -22,6 +22,7 @@ export function setupStartAndHelp(bot: Telegraf<ContextMessageUpdate>) {
         : loc('public_help_start', chat.language)
     ctx.replyWithMarkdown(text, {
       disable_notification: true,
+      disable_web_page_preview: true,
     })
   })
 }
