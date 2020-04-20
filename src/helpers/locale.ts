@@ -1,5 +1,5 @@
 export function loc(text: string, language: string) {
-  return localizations[text][language]
+  return localizations[text][language] || localizations[text].en
 }
 
 export const localizations: { [index: string]: { [index: string]: string } } = {
@@ -192,111 +192,74 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
       'Пожалуйста, укажите хендл канала, на который надо проверять подписку, в формате `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`.',
     en:
       'Please, set the channel to check subscription to with the format `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`.',
-    pt:
-      'Please, set the channel to check subscription to with the format `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`.',
     tr:
       'Lütfen, aboneliğini kontrol ettirmek istediğiniz kanalı/kanalları şu formatta belirleyiniz: `/subscribe @kameraonu`, `/subscribe @kanal_adi, @baska_kanal, @ve_baskabir_kanal`.',
-    uk:
-      'Please, set the channel to check subscription to with the format `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`.',
-    ar:
-      'Please, set the channel to check subscription to with the format `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`.',
   },
   nosubscribe_success: {
     ru: 'Ренди не будет проверять подписку на какой-либо канал.',
     en: 'Randy will not check subscription.',
-    pt: 'Randy will not check subscription.',
     tr: 'Randy, artık aboneliği kontrol etmeyecek.',
-    uk: 'Randy will not check subscription.',
-    ar: 'Randy will not check subscription.',
   },
   bot_not_admin: {
     ru: 'Пожалуйста, сделайте @randymbot админом в этом чате.',
     en: 'Please make @randymbot an admin in this chat.',
-    pt: 'Please make @randymbot an admin in this chat.',
     tr: 'Lütfen, @randymbot u yönetici yapın',
-    uk: 'Please make @randymbot an admin in this chat.',
-    ar: 'Please make @randymbot an admin in this chat.',
   },
   bot_not_admin_chat: {
     ru: 'Пожалуйста, сделайте @randymbot админом чате ',
     en: 'Please make @randymbot an admin in the chat ',
-    pt: 'Please make @randymbot an admin in the chat ',
     tr: 'Lütfen, @randymbot u yönetici yapın',
-    uk: 'Please make @randymbot an admin in the chat ',
-    ar: 'Please make @randymbot an admin in the chat ',
   },
   subscribe_success: {
     ru:
       'Отлично, теперь бот будет проверять подписку пользователя на следующий канал перед разрешением участвовать в конкурсе: ',
     en:
       'Great, now bot will check if the participant is subscribed to the following channel before allowing to participate: ',
-    pt:
-      'Great, now bot will check if the participant is subscribed to the following channel before allowing to participate: ',
     tr:
       'Harika! şimdi bot, katılımcının çekilişe katılmasına izin vermeden önce aşağıdaki kanala abone olup olmadığını kontrol edecek:',
-    uk:
-      'Great, now bot will check if the participant is subscribed to the following channel before allowing to participate: ',
-    ar:
-      'Great, now bot will check if the participant is subscribed to the following channel before allowing to participate: ',
   },
   check_subscription: {
     ru: 'Вы должны быть подписаны на ',
     en: 'You should be subscribed to ',
-    pt: 'You should be subscribed to ',
     tr: 'Abone olmalısınız ',
-    uk: 'You should be subscribed to ',
-    ar: 'You should be subscribed to ',
   },
   raffle_message: {
     ru:
       'Ответьте на это сообщение, чтобы установить новое сообщение розыгрыша. Именно ответьте (надеемся, что все понимают разницу между обычным сообщение и ответом). Обязательно используйте "$numberOfParticipants" без кавычек в сообщении — иначе установка не сработает. Удачи! 💪 Текущее сообщение (если оно установленно), приведено ниже.',
     en:
       'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
-    pt:
-      'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
     tr:
       'Özel bir çekiliş mesajı ayarlamak için bu iletiyi yanıtlayın. Bu iletiyi yanıtladığınızdan emin olun (umarız herkes "yanıt" kelimesinin ne anlama geldiğini biliyordur). İletinizde tırnak işaretleri olmadan "$numberOfParticipants" mesajının geçtiğinden emin olun — onsuz çalışmaz. Kapiş! 💪 Geçerli çekiliş mesajı (ayarlanmışsa) aşağıdadır:',
-    uk:
-      'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
-    ar:
-      'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
   },
   raffle_message_off: {
     ru: 'Теперь Ренди будет использовать стандартное сообщение о розыгрыше.',
     en: 'Randy will use standard raffle message now.',
-    pt: 'Randy will use standard raffle message now.',
     tr: 'Randy, artık varsayılan çekiliş mesajını kullanacak.',
-    uk: 'Randy will use standard raffle message now.',
-    ar: 'Randy will use standard raffle message now.',
   },
   winner_message: {
     ru:
       'Ответьте на это сообщение, чтобы установить новое сообщение о победе. Именно ответьте (надеемся, что все понимают разницу между обычным сообщение и ответом). Обязательно используйте "$numberOfParticipants" и "$winner" без кавычек в сообщении — иначе установка не сработает. Удачи! 🎉 Текущее сообщение (если оно установленно), приведено ниже.',
     en:
       'Reply to this message to setup a custom winner message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" and "$winner" without quotation marks in your message — it won\'t work without it. Cheers! 🎉 The current winner message (if set) is below.',
-    pt:
-      'Reply to this message to setup a custom winner message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" and "$winner" without quotation marks in your message — it won\'t work without it. Cheers! 🎉 The current winner message (if set) is below.',
     tr:
       'Özel bir kazanan mesajı ayarlamak için bu iletiyi yanıtlayın. Bu iletiyi yanıtladığınızdan emin olun (umarız herkes "yanıt" kelimesinin ne anlama geldiğini biliyordur). İletinizde tırnak işaretleri olmadan  "$numberOfParticipants" ve "$winner" mesajının geçtiğinden emin olun —  onlarsız çalışmaz. Kapiş! 🎉 Geçerli kazanan mesajı (ayarlanmışsa) aşağıdadır:',
-    uk:
-      'Reply to this message to setup a custom winner message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" and "$winner" without quotation marks in your message — it won\'t work without it. Cheers! 🎉 The current winner message (if set) is below.',
-    ar:
-      'Reply to this message to setup a custom winner message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" and "$winner" without quotation marks in your message — it won\'t work without it. Cheers! 🎉 The current winner message (if set) is below.',
   },
   winner_message_off: {
     ru: 'Теперь Ренди будет использовать стандартное сообщение о победе.',
     en: 'Randy will use standard winner message now.',
-    pt: 'Randy will use standard winner message now.',
     tr: 'Randy, artık varsayılan kazanan mesajını kullanacak.',
-    uk: 'Randy will use standard winner message now.',
-    ar: 'Randy will use standard winner message now.',
   },
   success: {
     ru: 'Успех!',
     en: 'Success!',
-    pt: 'Success!',
     tr: 'Başarılı!',
-    uk: 'Success!',
-    ar: 'Success!',
+  },
+  nodelete_true: {
+    ru: 'Теперь Ренди не будет редактировать (удалять) оригинально сообщение.',
+    en: 'Now Randy will not edit (delete) original message.',
+  },
+  nodelete_false: {
+    ru: 'Теперь Ренди будет редактировать (удалять) оригинально сообщение.',
+    en: 'Now Randy will edit (delete) original message.',
   },
 }
