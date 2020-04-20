@@ -241,15 +241,22 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
   const idsOriginalLength = ids.length
   // Get chat
   const chat = await findChat(ctx.chat.id)
+  const nodelete = chat.nodelete
   // Check if there were participants
   if (ids.length <= 0) {
     const text = loc('no_participants', chat.language)
-    await ctx.telegram.editMessageText(
-      raffle.chatId,
-      raffle.messageId,
-      undefined,
-      text
-    )
+    if (!nodelete) {
+      await ctx.telegram.editMessageText(
+        raffle.chatId,
+        raffle.messageId,
+        undefined,
+        text
+      )
+    } else {
+      await ctx.telegram.sendMessage(raffle.chatId, text, {
+        parse_mode: 'HTML',
+      })
+    }
     return
   }
   // Get winners
@@ -262,12 +269,18 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     // Check if not enough participants
     if (ids.length + winners.length < chat.number) {
       const text = loc('not_enough_participants', chat.language)
-      await ctx.telegram.editMessageText(
-        raffle.chatId,
-        raffle.messageId,
-        undefined,
-        text
-      )
+      if (!nodelete) {
+        await ctx.telegram.editMessageText(
+          raffle.chatId,
+          raffle.messageId,
+          undefined,
+          text
+        )
+      } else {
+        await ctx.telegram.sendMessage(raffle.chatId, text, {
+          parse_mode: 'HTML',
+        })
+      }
       return
     }
     const winnerIndex = random(ids.length - 1)
@@ -313,15 +326,21 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
         chat.language
       )} — ${idsOriginalLength}.`
     }
-    await ctx.telegram.editMessageText(
-      raffle.chatId,
-      raffle.messageId,
-      undefined,
-      text,
-      {
+    if (!nodelete) {
+      await ctx.telegram.editMessageText(
+        raffle.chatId,
+        raffle.messageId,
+        undefined,
+        text,
+        {
+          parse_mode: 'HTML',
+        }
+      )
+    } else {
+      await ctx.telegram.sendMessage(raffle.chatId, text, {
         parse_mode: 'HTML',
-      }
-    )
+      })
+    }
   } else {
     const names = winners.map((w) => w.name.replace('<', '').replace('>', ''))
     if (names.length <= 50 || raffle.winnerMessage) {
@@ -350,15 +369,21 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
           chat.language
         )} — ${idsOriginalLength}.`
       }
-      await ctx.telegram.editMessageText(
-        raffle.chatId,
-        raffle.messageId,
-        undefined,
-        text,
-        {
+      if (!nodelete) {
+        await ctx.telegram.editMessageText(
+          raffle.chatId,
+          raffle.messageId,
+          undefined,
+          text,
+          {
+            parse_mode: 'HTML',
+          }
+        )
+      } else {
+        await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
-        }
-      )
+        })
+      }
     } else {
       let commonI = 0
       let text = `🎉 ${loc('winners', chat.language)}:\n`
@@ -373,8 +398,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
         chat.language
       )} — ${idsOriginalLength}.`
       console.log(`Announcing winners for ${raffle.chatId}`, raffle.messageId)
-      console.log(text)
-      if (!chat.nodelete) {
+      if (!nodelete) {
         await ctx.telegram.editMessageText(
           raffle.chatId,
           raffle.messageId,
