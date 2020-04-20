@@ -279,7 +279,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
         : `${winner.user.first_name}${
             winner.user.last_name ? ` ${winner.user.last_name}` : ''
           }`
-      if (winners.map(w => w.winner.user.id).indexOf(winner.user.id) < 0) {
+      if (winners.map((w) => w.winner.user.id).indexOf(winner.user.id) < 0) {
         winners.push({ name, winner })
       }
     } catch (err) {
@@ -291,7 +291,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     `Finishing raffle for chat ${raffle.chatId}, winners length: ${winners.length}`
   )
   // Save winners
-  raffle.winners = winners.map(w => w.winner.user.id).join(',')
+  raffle.winners = winners.map((w) => w.winner.user.id).join(',')
   await (<any>raffle).save()
   // Announce winner
   if (winners.length == 1) {
@@ -323,7 +323,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       }
     )
   } else {
-    const names = winners.map(w => w.name.replace('<', '').replace('>', ''))
+    const names = winners.map((w) => w.name.replace('<', '').replace('>', ''))
     if (names.length <= 50 || raffle.winnerMessage) {
       let text: string
       if (raffle.winnerMessage) {
@@ -374,15 +374,21 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       )} — ${idsOriginalLength}.`
       console.log(`Announcing winners for ${raffle.chatId}`, raffle.messageId)
       console.log(text)
-      await ctx.telegram.editMessageText(
-        raffle.chatId,
-        raffle.messageId,
-        undefined,
-        text,
-        {
+      if (!chat.nodelete) {
+        await ctx.telegram.editMessageText(
+          raffle.chatId,
+          raffle.messageId,
+          undefined,
+          text,
+          {
+            parse_mode: 'HTML',
+          }
+        )
+      } else {
+        await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
-        }
-      )
+        })
+      }
       while (names.length > 0) {
         let text = ``
         const nextNames = names.splice(0, 50)
