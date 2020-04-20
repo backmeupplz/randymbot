@@ -255,11 +255,11 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Başarılı!',
   },
   nodelete_true: {
-    ru: 'Теперь Ренди не будет редактировать (удалять) оригинально сообщение.',
+    ru: 'Теперь Ренди не будет редактировать (удалять) оригинальное сообщение.',
     en: 'Now Randy will not edit (delete) original message.',
   },
   nodelete_false: {
-    ru: 'Теперь Ренди будет редактировать (удалять) оригинально сообщение.',
+    ru: 'Теперь Ренди будет редактировать (удалять) оригинальное сообщение.',
     en: 'Now Randy will edit (delete) original message.',
   },
 }
