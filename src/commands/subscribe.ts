@@ -4,7 +4,7 @@ import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
 
 export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command('subscribe', async ctx => {
+  bot.command('subscribe', async (ctx) => {
     if (ctx.chat.type === 'private') {
       const chat = await findChat(ctx.chat.id)
       ctx.reply(loc('no_work_private', chat.language))
@@ -30,7 +30,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
     try {
       const chatAdmins = await ctx.getChatAdministrators()
       const isBotAdmin = chatAdmins
-        .map(m => m.user.username)
+        .map((m) => m.user.username)
         .includes(bot.options.username)
       if (!isBotAdmin) {
         throw new Error()
@@ -40,15 +40,17 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
         disable_notification: true,
       })
     }
-    const subscribeStrings = subscribeStringTemp.split(',').map(s => s.trim())
+    const subscribeStrings = subscribeStringTemp.split(',').map((s) => s.trim())
     for (const subscribeString of subscribeStrings) {
       // Check if bot is admin in subscribe chat
       try {
         const subscribeChatAdmins = await ctx.telegram.getChatAdministrators(
-          `@${subscribeString}`
+          `${
+            !isNaN(+subscribeString) ? '' : '@'
+          }${subscribeString}${subscribeString}`
         )
         const isBotAdmin = subscribeChatAdmins
-          .map(m => m.user.username)
+          .map((m) => m.user.username)
           .includes(bot.options.username)
         if (!isBotAdmin) {
           throw new Error()
@@ -56,7 +58,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
       } catch (err) {
         return ctx.reply(
           `${loc('bot_not_admin_chat', chat.language)}${subscribeStrings
-            .map(s => `@${s}`)
+            .map((s) => `@${s}`)
             .join(', ')}`,
           {
             disable_notification: true,
@@ -70,7 +72,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
     // Report success
     return ctx.reply(
       `${loc('subscribe_success', chat.language)}${subscribeStrings
-        .map(s => `@${s}`)
+        .map((s) => `@${s}`)
         .join(', ')}`,
       {
         disable_notification: true,
