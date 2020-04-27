@@ -105,7 +105,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       for (const subscribe of chat.subscribe.split(',')) {
         try {
           const member = await ctx.telegram.getChatMember(
-            `@${subscribe}`,
+            `${!isNaN(+subscribe) ? '' : '@'}${subscribe}`,
             ctx.from.id
           )
           if (
@@ -117,7 +117,9 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
           }
         } catch (err) {
           return (<any>ctx).answerCbQuery(
-            `${loc('check_subscription', chat.language)}@${subscribe}`,
+            `${loc('check_subscription', chat.language)}${
+              !isNaN(+subscribe) ? '' : '@'
+            }${subscribe}`,
             undefined,
             true
           )
