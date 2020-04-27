@@ -45,9 +45,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
       // Check if bot is admin in subscribe chat
       try {
         const subscribeChatAdmins = await ctx.telegram.getChatAdministrators(
-          `${
-            !isNaN(+subscribeString) ? '' : '@'
-          }${subscribeString}${subscribeString}`
+          `${!isNaN(+subscribeString) ? '' : '@'}${subscribeString}`
         )
         const isBotAdmin = subscribeChatAdmins
           .map((m) => m.user.username)
@@ -58,7 +56,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
       } catch (err) {
         return ctx.reply(
           `${loc('bot_not_admin_chat', chat.language)}${subscribeStrings
-            .map((s) => `@${s}`)
+            .map((s) => `${!isNaN(+s) ? '' : '@'}${s}`)
             .join(', ')}`,
           {
             disable_notification: true,
