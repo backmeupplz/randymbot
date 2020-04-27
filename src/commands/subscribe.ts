@@ -70,7 +70,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
     // Report success
     return ctx.reply(
       `${loc('subscribe_success', chat.language)}${subscribeStrings
-        .map((s) => `@${s}`)
+        .map((s) => `${!isNaN(+s) ? '' : '@'}${s}`)
         .join(', ')}`,
       {
         disable_notification: true,
