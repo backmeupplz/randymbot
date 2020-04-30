@@ -46,6 +46,7 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
     )
     sent = await ctx.telegram.sendCopy(ctx.chat.id, raffleMessage, {
       reply_markup: getButtons(raffle, chat.language),
+      parse_mode: 'HTML',
       disable_web_page_preview: true,
     })
   } else {
@@ -142,6 +143,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       // Add buttons
       const options: ExtraEditMessage = {
         reply_markup: getButtons(raffle, chat.language),
+        parse_mode: 'HTML',
         disable_web_page_preview: true,
       }
       let text: string
@@ -256,7 +258,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
         raffle.messageId,
         undefined,
         text,
-        { disable_web_page_preview: true }
+        { disable_web_page_preview: true, parse_mode: 'HTML' }
       )
     } else {
       await ctx.telegram.sendMessage(raffle.chatId, text, {
@@ -282,7 +284,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
           raffle.messageId,
           undefined,
           text,
-          { disable_web_page_preview: true }
+          { disable_web_page_preview: true, parse_mode: 'HTML' }
         )
       } else {
         await ctx.telegram.sendMessage(raffle.chatId, text, {
