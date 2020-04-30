@@ -34,6 +34,7 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
   const options: ExtraEditMessage = {
     reply_markup: getButtons(raffle, chat.language),
     parse_mode: 'HTML',
+    disable_web_page_preview: true,
   }
   // Send message
   let sent: Message
@@ -45,6 +46,7 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
     )
     sent = await ctx.telegram.sendCopy(ctx.chat.id, raffleMessage, {
       reply_markup: getButtons(raffle, chat.language),
+      disable_web_page_preview: true,
     })
   } else {
     sent = await ctx.replyWithHTML(
@@ -257,6 +259,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     } else {
       await ctx.telegram.sendMessage(raffle.chatId, text, {
         parse_mode: 'HTML',
+        disable_web_page_preview: true,
       })
     }
     return
@@ -281,6 +284,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       } else {
         await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
+          disable_web_page_preview: true,
         })
       }
       return
@@ -341,6 +345,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     } else {
       await ctx.telegram.sendMessage(raffle.chatId, text, {
         parse_mode: 'HTML',
+        disable_web_page_preview: true,
       })
     }
   } else {
@@ -384,6 +389,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       } else {
         await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
+          disable_web_page_preview: true,
         })
       }
     } else {
@@ -413,6 +419,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       } else {
         await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
+          disable_web_page_preview: true,
         })
       }
       while (names.length > 0) {
@@ -425,6 +432,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
         }
         await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
+          disable_web_page_preview: true,
         })
       }
     }
