@@ -47,7 +47,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     uk: 'Будь ласка, оберіть мову',
     ar: 'الرجاء تحديد اللغة',
   },
-  language_selected: {
+  language_selected_randy: {
     ru: 'Спасибо, теперь я говорю по-русски!',
     en: 'Thank you! Now I speak English',
     pt: 'Obrigado! Agora eu falarei português',

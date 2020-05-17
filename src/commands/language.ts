@@ -9,7 +9,7 @@ import { loc } from '../helpers/locale'
  * @param bot Bot to setup the command
  */
 export function setupLanguage(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command('language', async ctx => {
+  bot.command('language', async (ctx) => {
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
     if (!isAdmin) return
@@ -45,7 +45,7 @@ export function setupLanguageCallback(bot: Telegraf<ContextMessageUpdate>) {
       ctx.chat.id,
       (<any>ctx).update.callback_query.message.message_id,
       undefined,
-      loc('language_selected', chat.language)
+      loc('language_selected_randy', chat.language)
     )
   })
 }
