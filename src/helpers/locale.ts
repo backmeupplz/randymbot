@@ -16,6 +16,8 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
       'Привіт! Це Ренді Марш. Я вмію випадковим чином вибирати учасника чату або каналу з тих, що натиснули на кнопку "Взяти участь". Мій вихідний код [ось тут](https://github.com/backmeupplz/randymbot). Змінити мову можна командою /language. Змінити кількість переможців (стандартно — 1) командою /number.\n\n1. Додайте мене на канал або в чат, надішліть команду /randy і почнеться розіграш.\n2. Дайте відповідь на повідомлення про розіграш будь-яким повідомленням, і розіграш завершиться, а переможець буде обраний з учасників.\n\nIf you want to check whether a user is subscribed to a particular channel you can set up the bot with the following format `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`. If you want to turn it off, use /nosubscribe. Want to set custom raffle message? Use /raffleMessage. Want to use default raffle message? Use /noRaffleMessage. /winnerMessage and /noWinnerMessage work similarly. Use /nodelete if you don\'t want to delete the original message.\n\nЗалишилися питання? Почитайте наш канал підтримки — @borodutch\\_support 🦄\n\nAlso check out another one of my projects — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). It is a smart todo list app that uses cognitive psychology to trick your brain into finishing projects and showing results. It\'s free for 30 days with no strings attached, so go give it a shot if you want to improve your productivity. It helped me — it can help you as well.',
     ar:
       'مرحبًا بكم! (أنا (راندي مارش يمكنني اختيار مشارك السحب عشوائياً (الذي ضغط زر "المشاركة") في مجموعة أو قناة. رمز مصدري هو [هنا](https://github.com/backmeupplz/randymbot). يمكنك أيضًا تغيير اللغة /language وعدد الفائزين لكل سحب /number (الافتراضي هو 1، يمكنك استخدام تنسيق /number 100).\n\n1. إضافة لي إلى قناة أو مجموعة ، وإرسال الأمر /randy والسحب سيبدأ.\n2. الرد مع أي رسالة إلى رسالة السحب الخاصة بي لإنهاء السحب، وسيتم اختيار الفائز العشوائي من المشاركين.\n\nIf you want to check whether a user is subscribed to a particular channel you can set up the bot with the following format `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`. If you want to turn it off, use /nosubscribe. Want to set custom raffle message? Use /raffleMessage. Want to use default raffle message? Use /noRaffleMessage. /winnerMessage and /noWinnerMessage work similarly. Use /nodelete if you don\'t want to delete the original message.\n\nأمازلت تملك أسئلة؟ انتقل إلى قناة الدعم الخاصة بنا — @borodutch\\_support 🦄\n\nAlso check out another one of my projects — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). It is a smart todo list app that uses cognitive psychology to trick your brain into finishing projects and showing results. It\'s free for 30 days with no strings attached, so go give it a shot if you want to improve your productivity. It helped me — it can help you as well.',
+    es:
+      '"¡Hola! Soy Randy Marsh. Puedo selecionar aleatoriamente el participante de un sorteo (que toque el botón \\"Participar\\") en un grupo o canal. Mi código fuente está [aqui] (https://github.com/backmeupplz/randymbot). Usted também puede cambiar el idioma en /language y el número de ganadores en cada sorteo (por defecto es 1, puede usar el formato /number 100).\\n\\n1. Añádame a un canal o grupo, envíe el comando /randy y el sorteo comenzará.\\n2. Responda con cualquier mensaje a mi mensaje de sorteo para terminarlo, y se eligirá alteatoriamente un ganador entre los particpantes.\\n\\nSi desea saber si un usuario está suscrito a un canal en particular, puede configurar el bot con el siguiente formato `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`. Si desea apagarlo, use /nosubscribe. ¿Desea establecer un mensaje de sorteo personalizado? Use /raffleMessage. ¿Desea usar el mensaje de sorteo predeterminado? Use /noRaffleMessage. /winnerMessage y /noWinnerMessage funcionan de manera similar para el mensaje de los ganadores. Use /nodelete si no desea eliminar el mensaje original.\\n\\n¿Aun tiene perguntas? Visite nuestro canal de soporte — @borodutch\\\\_ support 🦄\\n\\nTambién revise otro de mis proyectos — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). Es una aplicación inteligente de gestión de tareas pendientes que usa psicología cognitiva para hacer trampas a su cerebro a fin de terminar proyectos y mostrar los resultados. Es gratuita por 30 días sin obligaciones, así que pruébela si desea aumentar su productividad. Me ha ayudado a mi — podría ayudarle a usted también."',
   },
   public_help_start: {
     ru:
@@ -30,6 +32,8 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
       'Привіт! Це Ренді Марш. Я вмію випадковим чином вибирати учасника чату або каналу з тих, що натиснули на кнопку "Взяти участь". Мій вихідний код [ось тут](https://github.com/backmeupplz/randymbot). Змінити мову можна командою /language. Змінити кількість переможців (стандартно — 1) командою /number.\n\n1. Надішліть команду /randy і почнеться розіграш.\n2. Дайте відповідь на повідомлення про розіграш будь-яким повідомленням, і розіграш завершиться, а переможець буде обраний з учасників.\n\nIf you want to check whether a user is subscribed to a particular channel you can set up the bot with the following format `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`. If you want to turn it off, use /nosubscribe. Want to set custom raffle message? Use /raffleMessage. Want to use default raffle message? Use /noRaffleMessage. /winnerMessage and /noWinnerMessage work similarly. Use /nodelete if you don\'t want to delete the original message.\n\nЗалишилися питання? Почитайте наш канал підтримки — @borodutch\\_support 🦄\n\nAlso check out another one of my projects — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). It is a smart todo list app that uses cognitive psychology to trick your brain into finishing projects and showing results. It\'s free for 30 days with no strings attached, so go give it a shot if you want to improve your productivity. It helped me — it can help you as well.',
     ar:
       'مرحبًا بكم! (أنا (راندي مارش يمكنني اختيار مشارك السحب عشوائياً (الذي ضغط زر "المشاركة") في مجموعة أو قناة. رمز مصدري هو [هنا](https://github.com/backmeupplz/randymbot). يمكنك أيضًا تغيير اللغة /language وعدد الفائزين لكل سحب /number (الافتراضي هو 1، يمكنك استخدام تنسيق /number 100).\n\n1. إضافة لي إلى قناة أو مجموعة ، وإرسال الأمر /randy والسحب سيبدأ.\n2. الرد مع أي رسالة إلى رسالة السحب الخاصة بي لإنهاء السحب، وسيتم اختيار الفائز العشوائي من المشاركين.\n\nIf you want to check whether a user is subscribed to a particular channel you can set up the bot with the following format `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`. If you want to turn it off, use /nosubscribe. Want to set custom raffle message? Use /raffleMessage. Want to use default raffle message? Use /noRaffleMessage. /winnerMessage and /noWinnerMessage work similarly. Use /nodelete if you don\'t want to delete the original message.\n\nأمازلت تملك أسئلة؟ انتقل إلى قناة الدعم الخاصة بنا — @borodutch\\_support 🦄\n\nAlso check out another one of my projects — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). It is a smart todo list app that uses cognitive psychology to trick your brain into finishing projects and showing results. It\'s free for 30 days with no strings attached, so go give it a shot if you want to improve your productivity. It helped me — it can help you as well.',
+    es:
+      '"¡Hola! Soy Randy Marsh. Puedo selecionar aleatoriamente el participante de un sorteo (que toque el botón \\"Participar\\") en un grupo o canal. Mi código fuente está [aqui] (https://github.com/backmeupplz/randymbot). Usted também puede cambiar el idioma en /language y el número de ganadores en cada sorteo (por defecto es 1, puede usar el formato /number 100).\\n\\n1. Añádame a un canal o grupo, envíe el comando /randy y el sorteo comenzará.\\n2. Responda con cualquier mensaje a mi mensaje de sorteo para terminarlo, y se eligirá alteatoriamente un ganador entre los particpantes.\\n\\nSi desea saber si un usuario está suscrito a un canal en particular, puede configurar el bot con el siguiente formato `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`. Si desea apagarlo, use /nosubscribe. ¿Desea establecer un mensaje de sorteo personalizado? Use /raffleMessage. ¿Desea usar el mensaje de sorteo predeterminado? Use /noRaffleMessage. /winnerMessage y /noWinnerMessage funcionan de manera similar para el mensaje de los ganadores. Use /nodelete si no desea eliminar el mensaje original.\\n\\n¿Aun tiene perguntas? Visite nuestro canal de soporte — @borodutch\\\\_ support 🦄\\n\\nTambién revise otro de mis proyectos — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). Es una aplicación inteligente de gestión de tareas pendientes que usa psicología cognitiva para hacer trampas a su cerebro a fin de terminar proyectos y mostrar los resultados. Es gratuita por 30 días sin obligaciones, así que pruébela si desea aumentar su productividad. Me ha ayudado a mi — podría ayudarle a usted también."',
   },
   no_work_private: {
     ru: 'Простите, но эта команда не работает в личке с ботом.',
@@ -38,6 +42,8 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Üzgünüm, bu komut özel mesajlarda kullanılamaz.',
     uk: 'Вибачте, але ця команда не працює в діалозі з ботом.',
     ar: 'عذراً، ولكن هذا الأمر غير متوفر في الرسائل الخاصة.',
+    es:
+      'Lo sentimos, pero este comando no está disponible en mensajes privados.',
   },
   select_language: {
     ru: 'Пожалуйста, выберите язык',
@@ -46,6 +52,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Lütfen dilinizi seçiniz',
     uk: 'Будь ласка, оберіть мову',
     ar: 'الرجاء تحديد اللغة',
+    es: 'Selecciones el lenguaje',
   },
   language_selected_randy: {
     ru: 'Спасибо, теперь я говорю по-русски!',
@@ -54,6 +61,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Teşekkürler! Artık Türkçe konuşuyorum',
     uk: 'Дякую, тепер я говорю українською!',
     ar: 'شكرا! الآن أنا أتكلم العربية',
+    es: 'Gracias! Ahora hablo Español',
   },
   raffle_text: {
     ru:
@@ -68,6 +76,8 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
       'Розіграш розпочався! Натисніть на кнопку нижче, щоб взяти участь. Переможець буде обраний випадковим чином з учасників, коли адміністратори дадуть відповідь на це повідомлення. Бажаю удачі!',
     ar:
       'لقد بدأ السحب! اضغط على الزر أدناه للمشاركة. سيتم اختيار الفائز بشكل عشوائي من بين المشاركين عند رد المشرف على هذه الرسالة. حظ سعيد!',
+    es:
+      '¡La rifa ha comenzado! Presione el botón de abajo para participar. El ganador será seleccionado al azar de los participantes cuando un administrador responda a este mensaje. ¡Buena suerte!',
   },
   raffle_text_multiple: {
     ru:
@@ -82,6 +92,8 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
       'Розіграш розпочався! Натисніть на кнопку нижче, щоб взяти участь. Переможці будуть обрані випадковим чином з учасників, коли адміністратори дадуть відповідь на це повідомлення. Бажаю удачі!',
     ar:
       'لقد بدأ السحب! اضغط على الزر أدناه للمشاركة. سيتم اختيار الفائزين بشكل عشوائي من بين المشاركين عند رد المشرف على هذه الرسالة. حظ سعيد!',
+    es:
+      '¡La rifa ha comenzado! Presione el botón de abajo para participar. Los ganadores serán seleccionados al azar de los participantes cuando un administrador responda a este mensaje. ¡Buena suerte!',
   },
   please_retry: {
     ru: 'Пожалуйста, попробуйте через пару минут',
@@ -90,6 +102,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Lütfen, birkaç dakika içerisinde tekrar deneyiniz',
     uk: 'Будь ласка, спробуйте за декілька хвилин',
     ar: 'من فضلك، حاول في بضع دقائق',
+    es: 'Por favor, reintente en un par de minutos',
   },
   already_participating: {
     ru: 'Вы уже принимаете участие, отлично!',
@@ -98,6 +111,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Zaten çekilişe katıldınız, geriye kazanmak kaldı!',
     uk: 'Ви вже берете участь, чудово!',
     ar: 'كنت تشارك بالفعل، رائع!',
+    es: 'Ya estas participando, ¡maravilloso!',
   },
   participated: {
     ru: 'Отлично, вы отметились, как участник!',
@@ -106,6 +120,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Harika, cekilişe katıldınız!',
     uk: 'Відмінно, ви відзначилися, як учасник!',
     ar: 'عظيم، أنت الآن تشارك في هذا السحب!',
+    es: '¡Genial, ahora estás participando en este sorteo!',
   },
   participants_number: {
     ru: 'Количество участников',
@@ -114,6 +129,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Katılımcı sayısı',
     uk: 'Кількість учасників',
     ar: 'عدد المشاركين',
+    es: 'Numeros de participantes',
   },
   participate_button: {
     ru: 'Участвовать!',
@@ -122,6 +138,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Katıl!',
     uk: 'Взяти участь!',
     ar: 'المشاركة!',
+    es: '¡Participar!',
   },
   no_participants: {
     ru: 'В этот раз участников розыгрыша не было 😅',
@@ -130,6 +147,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Katılımcı yok 😅',
     uk: 'Цього разу учасників розіграшу не було 😅',
     ar: 'لا يوجد مشاركون هذه المرة 😅',
+    es: 'No hay suficientes participantes esta vez 😅',
   },
   winner: {
     ru: 'В этот раз победитель',
@@ -138,6 +156,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Ve Kazanan kişi',
     uk: 'Цього разу переможець',
     ar: 'الفائز هو',
+    es: 'El ganador es',
   },
   winners: {
     ru: 'В этот раз победители',
@@ -146,6 +165,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Ve Kazanan kişiler',
     uk: 'Цього разу переможці',
     ar: 'الفائزون هم',
+    es: 'Los ganadores son',
   },
   congratulations: {
     ru: 'Поздравляем',
@@ -154,6 +174,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Tebrikler',
     uk: 'Вітаємо',
     ar: 'تهانينا',
+    es: 'Felicidades',
   },
   raffle_over: {
     ru: 'Простите, но розыгрыш уже закончен',
@@ -162,6 +183,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Üzgünüm, çekiliş şimdi bitti',
     uk: 'Вибачте, але розіграш вже завершено',
     ar: 'آسف، السحب إنتهى الآن',
+    es: 'Lo siento, el sorteo ya terminó',
   },
   select_number: {
     ru: 'Пожалуйста, выберите, сколько победителей должно быть в розыгрыше',
@@ -170,6 +192,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Lütfen çekiliş için kazanacak kişi sayısını seçiniz',
     uk: 'Будь ласка, виберіть, скільки переможців має бути в розіграші',
     ar: 'من فضلك، اختر عدد الفائزين للسحب',
+    es: 'Por favor, seleccione el número de ganadores para el sorteo',
   },
   number_selected: {
     ru: 'Отлично, вы выбрали количество победителей!',
@@ -178,6 +201,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Harika! Kazanacak kişi sayısını belirledin!',
     uk: 'Чудово, ви вибрали кількість переможців!',
     ar: 'رائع ! لقد اخترت عدد الفائزين!',
+    es: '¡Excelente! ¡Has seleccionado el número de ganadores!',
   },
   not_enough_participants: {
     ru: 'В этот раз участников розыгрыша было недостаточно 😅',
@@ -186,6 +210,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Çekiliş için yeteri kadar katılımcı yok 😅',
     uk: 'Цього разу учасників розіграшу було недостатньо 😅',
     ar: 'لا يكفي المشاركين هذه المرة 😅',
+    es: 'No hay suficientes participantes esta vez 😅',
   },
   subscribe_format: {
     ru:
@@ -194,21 +219,26 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
       'Please, set the channel to check subscription to with the format `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`.',
     tr:
       'Lütfen, aboneliğini kontrol ettirmek istediğiniz kanalı/kanalları şu formatta belirleyiniz: `/subscribe @kameraonu`, `/subscribe @kanal_adi, @baska_kanal, @ve_baskabir_kanal`.',
+    es:
+      'Por favor, configure el canal para verificar la suscripción con el formato `/subscribe @channel_handle`, `/subscribe @channel_handle, @another_channel, @and_another_one`.',
   },
   nosubscribe_success: {
     ru: 'Ренди не будет проверять подписку на какой-либо канал.',
     en: 'Randy will not check subscription.',
     tr: 'Randy, artık aboneliği kontrol etmeyecek.',
+    es: 'Randy no verificará la suscripción.',
   },
   bot_not_admin: {
     ru: 'Пожалуйста, сделайте @randymbot админом в этом чате.',
     en: 'Please make @randymbot an admin in this chat.',
     tr: 'Lütfen, @randymbot u yönetici yapın',
+    es: 'Por favor, haga de @randymbot un administrador en este grupo.',
   },
   bot_not_admin_chat: {
     ru: 'Пожалуйста, сделайте @randymbot админом чате ',
     en: 'Please make @randymbot an admin in the chat ',
     tr: 'Lütfen, @randymbot u yönetici yapın',
+    es: 'Por favor, haga de @randymbot un administrador en este chat.',
   },
   subscribe_success: {
     ru:
@@ -217,11 +247,14 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
       'Great, now bot will check if the participant is subscribed to the following channel before allowing to participate: ',
     tr:
       'Harika! şimdi bot, katılımcının çekilişe katılmasına izin vermeden önce aşağıdaki kanala abone olup olmadığını kontrol edecek:',
+    es:
+      'Genial, ahora el bot verificará si el participante está suscrito al siguiente canal antes de permitir participar:',
   },
   check_subscription: {
     ru: 'Вы должны быть подписаны на ',
     en: 'You should be subscribed to ',
     tr: 'Abone olmalısınız ',
+    es: 'Deberías estar suscrito',
   },
   raffle_message: {
     ru:
@@ -230,11 +263,14 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
       'Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.',
     tr:
       'Özel bir çekiliş mesajı ayarlamak için bu iletiyi yanıtlayın. Bu iletiyi yanıtladığınızdan emin olun (umarız herkes "yanıt" kelimesinin ne anlama geldiğini biliyordur). İletinizde tırnak işaretleri olmadan "$numberOfParticipants" mesajının geçtiğinden emin olun — onsuz çalışmaz. Kapiş! 💪 Geçerli çekiliş mesajı (ayarlanmışsa) aşağıdadır:',
+    es:
+      'Responda a este mensaje para configurar un mensaje de rifa personalizado. Asegúrese de responder a este mensaje (esperamos que todos sepan lo que significa la palabra "responder" en este momento). Asegúrese de incluir "$ numberOfParticipants" sin comillas en su mensaje; no funcionará sin él. ¡Saludos! 💪 El mensaje de la rifa actual (si está configurado) está debajo.',
   },
   raffle_message_off: {
     ru: 'Теперь Ренди будет использовать стандартное сообщение о розыгрыше.',
     en: 'Randy will use standard raffle message now.',
     tr: 'Randy, artık varsayılan çekiliş mesajını kullanacak.',
+    es: 'Randy usará el mensaje estándar de la rifa ahora.',
   },
   winner_message: {
     ru:
@@ -243,23 +279,29 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
       'Reply to this message to setup a custom winner message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" and "$winner" without quotation marks in your message — it won\'t work without it. Cheers! 🎉 The current winner message (if set) is below.',
     tr:
       'Özel bir kazanan mesajı ayarlamak için bu iletiyi yanıtlayın. Bu iletiyi yanıtladığınızdan emin olun (umarız herkes "yanıt" kelimesinin ne anlama geldiğini biliyordur). İletinizde tırnak işaretleri olmadan  "$numberOfParticipants" ve "$winner" mesajının geçtiğinden emin olun —  onlarsız çalışmaz. Kapiş! 🎉 Geçerli kazanan mesajı (ayarlanmışsa) aşağıdadır:',
+    es:
+      'Responda a este mensaje para configurar un mensaje de ganador personalizado. Asegúrese de responder a este mensaje (esperamos que todos sepan lo que significa la palabra "responder" en este momento). Asegúrese de incluir "$ numberOfParticipants" y "$ ganador" sin comillas en su mensaje; no funcionará sin él. ¡Saludos! 🎉 El mensaje del ganador actual (si está configurado) está debajo.',
   },
   winner_message_off: {
     ru: 'Теперь Ренди будет использовать стандартное сообщение о победе.',
     en: 'Randy will use standard winner message now.',
     tr: 'Randy, artık varsayılan kazanan mesajını kullanacak.',
+    es: 'Randy usará el mensaje estándar del ganador ahora.',
   },
   success: {
     ru: 'Успех!',
     en: 'Success!',
     tr: 'Başarılı!',
+    es: '¡Logrado!',
   },
   nodelete_true: {
     ru: 'Теперь Ренди не будет редактировать (удалять) оригинальное сообщение.',
     en: 'Now Randy will not edit (delete) original message.',
+    es: 'Ahora Randy no editará (eliminará) el mensaje original.',
   },
   nodelete_false: {
     ru: 'Теперь Ренди будет редактировать (удалять) оригинальное сообщение.',
     en: 'Now Randy will edit (delete) original message.',
+    es: 'Ahora Randy editará (eliminará) el mensaje original.',
   },
 }

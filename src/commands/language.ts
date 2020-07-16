@@ -87,6 +87,12 @@ function getButtons() {
           callback_data: `l~ar`,
         },
       ],
+      [
+        {
+          text: 'Español',
+          callback_data: `l~es`,
+        },
+      ],
     ],
   }
 }
