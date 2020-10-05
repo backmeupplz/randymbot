@@ -14,6 +14,13 @@ export async function checkIfAdmin(
     if (ctx.from && ctx.from.id === parseInt(process.env.ADMIN, 10)) {
       return true
     }
+    if (
+      ctx.from &&
+      ctx.from.username &&
+      ctx.from.username === 'GroupAnonymousBot'
+    ) {
+      return true
+    }
     // Channel and private are always true
     if (['channel', 'private'].indexOf(ctx.chat.type) > -1) return true
     // Check if admin
