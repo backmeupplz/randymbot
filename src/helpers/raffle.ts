@@ -40,10 +40,17 @@ export async function startRaffle(ctx: ContextMessageUpdate) {
   let sent: Message
   if (raffle.raffleMessage) {
     const raffleMessage = raffle.raffleMessage
-    raffleMessage.text = raffleMessage.text.replace(
-      '$numberOfParticipants',
-      '0'
-    )
+    if (raffleMessage.text) {
+      raffleMessage.text = raffleMessage.text.replace(
+        '$numberOfParticipants',
+        '0'
+      )
+    } else {
+      raffleMessage.caption = raffleMessage.caption.replace(
+        '$numberOfParticipants',
+        '0'
+      )
+    }
     sent = await ctx.telegram.sendCopy(ctx.chat.id, raffleMessage, {
       reply_markup: getButtons(raffle, chat.language),
       parse_mode: 'HTML',
@@ -149,10 +156,15 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       let text: string
       if (raffle.raffleMessage) {
         const raffleMessage = raffle.raffleMessage
-        text = raffleMessage.text.replace(
-          '$numberOfParticipants',
-          `${raffle.participantsIds.length}`
-        )
+        text = raffleMessage.text
+          ? raffleMessage.text.replace(
+              '$numberOfParticipants',
+              `${raffle.participantsIds.length}`
+            )
+          : raffleMessage.caption.replace(
+              '$numberOfParticipants',
+              `${raffle.participantsIds.length}`
+            )
       } else {
         text = `${loc(
           chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text',
@@ -161,13 +173,23 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
           raffle.participantsIds.length
         }`
       }
-      await ctx.telegram.editMessageText(
-        raffle.chatId,
-        raffle.messageId,
-        undefined,
-        text,
-        options
-      )
+      if (raffle.raffleMessage.text) {
+        await ctx.telegram.editMessageText(
+          raffle.chatId,
+          raffle.messageId,
+          undefined,
+          text,
+          options
+        )
+      } else {
+        await ctx.telegram.editMessageCaption(
+          raffle.chatId,
+          raffle.messageId,
+          undefined,
+          text,
+          options as any
+        )
+      }
     } catch (err) {
       // Do nothing
     }
@@ -186,7 +208,7 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
       if (
         !message ||
         !message.reply_to_message ||
-        !message.reply_to_message.text
+        (!message.reply_to_message.text && !message.reply_to_message.caption)
       ) {
         throw new Error('Not checking')
       }
@@ -253,13 +275,23 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
   if (ids.length <= 0) {
     const text = loc('no_participants', chat.language)
     if (!nodelete) {
-      await ctx.telegram.editMessageText(
-        raffle.chatId,
-        raffle.messageId,
-        undefined,
-        text,
-        { disable_web_page_preview: true, parse_mode: 'HTML' }
-      )
+      if (raffle.raffleMessage.text) {
+        await ctx.telegram.editMessageText(
+          raffle.chatId,
+          raffle.messageId,
+          undefined,
+          text,
+          { disable_web_page_preview: true, parse_mode: 'HTML' }
+        )
+      } else {
+        await ctx.telegram.editMessageCaption(
+          raffle.chatId,
+          raffle.messageId,
+          undefined,
+          text,
+          { disable_web_page_preview: true, parse_mode: 'HTML' } as any
+        )
+      }
     } else {
       await ctx.telegram.sendMessage(raffle.chatId, text, {
         parse_mode: 'HTML',
@@ -279,13 +311,23 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     if (ids.length + winners.length < chat.number) {
       const text = loc('not_enough_participants', chat.language)
       if (!nodelete) {
-        await ctx.telegram.editMessageText(
-          raffle.chatId,
-          raffle.messageId,
-          undefined,
-          text,
-          { disable_web_page_preview: true, parse_mode: 'HTML' }
-        )
+        if (raffle.raffleMessage.text) {
+          await ctx.telegram.editMessageText(
+            raffle.chatId,
+            raffle.messageId,
+            undefined,
+            text,
+            { disable_web_page_preview: true, parse_mode: 'HTML' }
+          )
+        } else {
+          await ctx.telegram.editMessageCaption(
+            raffle.chatId,
+            raffle.messageId,
+            undefined,
+            text,
+            { disable_web_page_preview: true, parse_mode: 'HTML' } as any
+          )
+        }
       } else {
         await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
@@ -338,16 +380,29 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       )} — ${idsOriginalLength}.`
     }
     if (!nodelete) {
-      await ctx.telegram.editMessageText(
-        raffle.chatId,
-        raffle.messageId,
-        undefined,
-        text,
-        {
-          parse_mode: 'HTML',
-          disable_web_page_preview: true,
-        }
-      )
+      if (raffle.raffleMessage.text) {
+        await ctx.telegram.editMessageText(
+          raffle.chatId,
+          raffle.messageId,
+          undefined,
+          text,
+          {
+            parse_mode: 'HTML',
+            disable_web_page_preview: true,
+          }
+        )
+      } else {
+        await ctx.telegram.editMessageCaption(
+          raffle.chatId,
+          raffle.messageId,
+          undefined,
+          text,
+          {
+            parse_mode: 'HTML',
+            disable_web_page_preview: true,
+          } as any
+        )
+      }
     } else {
       await ctx.telegram.sendMessage(raffle.chatId, text, {
         parse_mode: 'HTML',
@@ -383,16 +438,29 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
         )} — ${idsOriginalLength}.`
       }
       if (!nodelete) {
-        await ctx.telegram.editMessageText(
-          raffle.chatId,
-          raffle.messageId,
-          undefined,
-          text,
-          {
-            parse_mode: 'HTML',
-            disable_web_page_preview: true,
-          }
-        )
+        if (raffle.raffleMessage.text) {
+          await ctx.telegram.editMessageText(
+            raffle.chatId,
+            raffle.messageId,
+            undefined,
+            text,
+            {
+              parse_mode: 'HTML',
+              disable_web_page_preview: true,
+            }
+          )
+        } else {
+          await ctx.telegram.editMessageCaption(
+            raffle.chatId,
+            raffle.messageId,
+            undefined,
+            text,
+            {
+              parse_mode: 'HTML',
+              disable_web_page_preview: true,
+            } as any
+          )
+        }
       } else {
         await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
@@ -414,16 +482,29 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       )} — ${idsOriginalLength}.`
       console.log(`Announcing winners for ${raffle.chatId}`, raffle.messageId)
       if (!nodelete) {
-        await ctx.telegram.editMessageText(
-          raffle.chatId,
-          raffle.messageId,
-          undefined,
-          text,
-          {
-            parse_mode: 'HTML',
-            disable_web_page_preview: true,
-          }
-        )
+        if (raffle.raffleMessage.text) {
+          await ctx.telegram.editMessageText(
+            raffle.chatId,
+            raffle.messageId,
+            undefined,
+            text,
+            {
+              parse_mode: 'HTML',
+              disable_web_page_preview: true,
+            }
+          )
+        } else {
+          await ctx.telegram.editMessageCaption(
+            raffle.chatId,
+            raffle.messageId,
+            undefined,
+            text,
+            {
+              parse_mode: 'HTML',
+              disable_web_page_preview: true,
+            } as any
+          )
+        }
       } else {
         await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',

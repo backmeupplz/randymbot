@@ -4,7 +4,7 @@ import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
 
 export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command('raffleMessage', async ctx => {
+  bot.command('raffleMessage', async (ctx) => {
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
     if (!isAdmin) return
@@ -25,7 +25,7 @@ export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
     }
   })
 
-  bot.command('noRaffleMessage', async ctx => {
+  bot.command('noRaffleMessage', async (ctx) => {
     // Check if admin
     const isAdmin = await checkIfAdmin(ctx)
     if (!isAdmin) return
@@ -58,8 +58,10 @@ export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
         !message ||
         !message.reply_to_message ||
         !message.reply_to_message.text ||
-        !message.text ||
-        !message.text.includes('$numberOfParticipants') ||
+        (!message.text && !message.caption) ||
+        (message.text && !message.text.includes('$numberOfParticipants')) ||
+        (message.caption &&
+          !message.caption.includes('$numberOfParticipants')) ||
         !(
           (message.reply_to_message.from &&
             message.reply_to_message.from.username === bot.options.username) ||
