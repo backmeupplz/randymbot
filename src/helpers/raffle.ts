@@ -173,7 +173,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
           raffle.participantsIds.length
         }`
       }
-      if (raffle.raffleMessage.text) {
+      if (!raffle.raffleMessage || raffle.raffleMessage.text) {
         await ctx.telegram.editMessageText(
           raffle.chatId,
           raffle.messageId,
@@ -275,7 +275,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
   if (ids.length <= 0) {
     const text = loc('no_participants', chat.language)
     if (!nodelete) {
-      if (raffle.raffleMessage.text) {
+      if (!raffle.raffleMessage || raffle.raffleMessage.text) {
         await ctx.telegram.editMessageText(
           raffle.chatId,
           raffle.messageId,
@@ -311,7 +311,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     if (ids.length + winners.length < chat.number) {
       const text = loc('not_enough_participants', chat.language)
       if (!nodelete) {
-        if (raffle.raffleMessage.text) {
+        if (!raffle.raffleMessage || raffle.raffleMessage.text) {
           await ctx.telegram.editMessageText(
             raffle.chatId,
             raffle.messageId,
@@ -380,7 +380,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       )} — ${idsOriginalLength}.`
     }
     if (!nodelete) {
-      if (raffle.raffleMessage.text) {
+      if (!raffle.raffleMessage || raffle.raffleMessage.text) {
         await ctx.telegram.editMessageText(
           raffle.chatId,
           raffle.messageId,
@@ -438,7 +438,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
         )} — ${idsOriginalLength}.`
       }
       if (!nodelete) {
-        if (raffle.raffleMessage.text) {
+        if (!raffle.raffleMessage || raffle.raffleMessage.text) {
           await ctx.telegram.editMessageText(
             raffle.chatId,
             raffle.messageId,
@@ -482,7 +482,7 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
       )} — ${idsOriginalLength}.`
       console.log(`Announcing winners for ${raffle.chatId}`, raffle.messageId)
       if (!nodelete) {
-        if (raffle.raffleMessage.text) {
+        if (!raffle.raffleMessage || raffle.raffleMessage.text) {
           await ctx.telegram.editMessageText(
             raffle.chatId,
             raffle.messageId,
