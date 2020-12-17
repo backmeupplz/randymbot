@@ -1,5 +1,5 @@
 // Dependencies
-import { prop, Typegoose } from 'typegoose'
+import { arrayProp, prop, Typegoose } from 'typegoose'
 import { Message } from 'telegram-typings'
 
 export class Chat extends Typegoose {
@@ -18,6 +18,11 @@ export class Chat extends Typegoose {
   raffleMessage?: Message
   @prop()
   winnerMessage?: Message
+
+  @arrayProp({ required: true, default: [], items: Number })
+  adminChatIds: number[]
+  @prop()
+  editedChatId?: number
 }
 
 // Get Chat model

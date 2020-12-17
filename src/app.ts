@@ -15,6 +15,8 @@ import { setupNosubscribe } from './commands/nosubscribe'
 import { setupRaffleMessage } from './commands/raffleMessage'
 import { setupWinnerMessage } from './commands/winnerMessage'
 import { setupNodelete } from './commands/nodelete'
+import { setupListenForForwards } from './helpers/listenForForwards'
+import { setupConfigRaffle } from './commands/configRaffle'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -27,8 +29,9 @@ console.log('Bot is up and running')
 
 // Setup callback
 setupCallback(bot)
-// Setup listener
+// Setup listeners
 setupListener(bot)
+setupListenForForwards(bot)
 
 // Setup commands
 setupStartAndHelp(bot)
@@ -41,6 +44,7 @@ setupNosubscribe(bot)
 setupRaffleMessage(bot)
 setupWinnerMessage(bot)
 setupNodelete(bot)
+setupConfigRaffle(bot)
 
 // Setup callbacks
 setupLanguageCallback(bot)
