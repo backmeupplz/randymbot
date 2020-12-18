@@ -4,6 +4,10 @@ import { loc } from '../helpers/locale'
 
 export function setupListenForForwards(bot: Telegraf<ContextMessageUpdate>) {
   bot.use(async (ctx, next) => {
+    // Check if correct type
+    if (!ctx.message) {
+      return next()
+    }
     // Check if private
     if (ctx.message.chat.type !== 'private') {
       return next()
