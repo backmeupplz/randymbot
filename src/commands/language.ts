@@ -32,11 +32,22 @@ export function setupLanguageCallback(bot: Telegraf<ContextMessageUpdate>) {
     // Get raffle
     const datas = data.split('~')
     if (datas[0] !== 'l') return
-    // Check if admin
-    const isAdmin = await checkIfAdmin(ctx, false)
-    if (!isAdmin) return
+    // Check if private
+    let chatId: number
+    if (ctx.chat.type === 'private') {
+      const privateChat = await findChat(ctx.chat.id)
+      chatId = privateChat.editedChatId || privateChat.chatId
+    } else {
+      // Check if admin
+      const isAdmin = await checkIfAdmin(ctx, false)
+      if (!isAdmin) {
+        return
+      }
+      // Set chat id
+      chatId = ctx.chat.id
+    }
     // Get chat
-    let chat = await findChat(ctx.chat.id)
+    let chat = await findChat(chatId)
     // Save language
     chat.language = datas[1]
     chat = await chat.save()
