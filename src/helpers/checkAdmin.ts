@@ -24,9 +24,8 @@ export async function checkIfAdmin(
     // Channel and private are always true
     if (['channel', 'private'].indexOf(ctx.chat.type) > -1) return true
     // Check if admin
-    const admins = await ctx.telegram.getChatAdministrators(ctx.chat.id)
-    const adminsIds = admins.map(admin => admin.user.id)
-    const isAdmin = adminsIds.indexOf(ctx.from.id) > -1
+    const member = await ctx.telegram.getChatMember(ctx.chat.id, ctx.from.id)
+    const isAdmin = ['administrator', 'creator'].includes(member.status)
     // Delete message if not admin
     if (!isAdmin) {
       try {
