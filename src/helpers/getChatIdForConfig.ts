@@ -14,7 +14,7 @@ export async function getChatIdForConfig(
     // Check if in editing mode
     if (!privateChat.editedChatId) {
       if (shouldAllowCommandInPrivate) {
-        return privateChat.id
+        return privateChat.chatId
       } else {
         await ctx.reply(loc('config_raffle_no_chats', privateChat.language))
         return undefined
