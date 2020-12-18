@@ -2,19 +2,17 @@ import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { checkIfAdmin } from '../helpers/checkAdmin'
 import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
+import { getChatIdForConfig } from '../helpers/getChatIdForConfig'
 
 export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command('winnerMessage', async ctx => {
-    // Check if admin
-    const isAdmin = await checkIfAdmin(ctx)
-    if (!isAdmin) return
-    // Get chat
-    const chat = await findChat(ctx.chat.id)
-    // Check if private
-    if (ctx.chat.type === 'private') {
-      ctx.reply(loc('no_work_private', chat.language))
+  bot.command('winnerMessage', async (ctx) => {
+    // Get chat id
+    const chatId = await getChatIdForConfig(ctx)
+    if (!chatId) {
       return
     }
+    // Get chat
+    const chat = await findChat(chatId)
     // Send instructions
     await ctx.reply(loc('winner_message', chat.language), {
       disable_notification: true,
@@ -25,17 +23,14 @@ export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
     }
   })
 
-  bot.command('noWinnerMessage', async ctx => {
-    // Check if admin
-    const isAdmin = await checkIfAdmin(ctx)
-    if (!isAdmin) return
-    // Get chat
-    const chat = await findChat(ctx.chat.id)
-    // Check if private
-    if (ctx.chat.type === 'private') {
-      ctx.reply(loc('no_work_private', chat.language))
+  bot.command('noWinnerMessage', async (ctx) => {
+    // Get chat id
+    const chatId = await getChatIdForConfig(ctx)
+    if (!chatId) {
       return
     }
+    // Get chat
+    const chat = await findChat(chatId)
     // Turn off raffle message
     chat.winnerMessage = undefined
     await chat.save()
@@ -47,14 +42,8 @@ export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
 
   bot.use(async (ctx, next) => {
     try {
-      // Check if admin
-      const isAdmin = await checkIfAdmin(ctx, false)
-      if (!isAdmin) return
-      // Check if private
-      if (ctx.chat.type === 'private') return
       // Check if reply
       const message = ctx.message || ctx.channelPost
-
       if (
         !message ||
         !message.reply_to_message ||
@@ -72,8 +61,13 @@ export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
       ) {
         return
       }
+      // Get chat id
+      const chatId = await getChatIdForConfig(ctx)
+      if (!chatId) {
+        return
+      }
       // Get chat
-      const chat = await findChat(ctx.chat.id)
+      const chat = await findChat(chatId)
       // Send mesage
       await ctx.telegram.sendCopy(ctx.chat.id, message, {
         disable_notification: true,

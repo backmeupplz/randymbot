@@ -1,8 +1,8 @@
-// Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { checkIfAdmin } from '../helpers/checkAdmin'
 import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
+import { getChatIdForConfig } from '../helpers/getChatIdForConfig'
 
 /**
  * Setting up the language command
@@ -10,11 +10,13 @@ import { loc } from '../helpers/locale'
  */
 export function setupLanguage(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('language', async (ctx) => {
-    // Check if admin
-    const isAdmin = await checkIfAdmin(ctx)
-    if (!isAdmin) return
+    // Get chat id
+    const chatId = await getChatIdForConfig(ctx)
+    if (!chatId) {
+      return
+    }
     // Get chat
-    const chat = await findChat(ctx.chat.id)
+    const chat = await findChat(chatId)
     // Reply
     ctx.reply(loc('select_language', chat.language), {
       reply_markup: getButtons(),
@@ -32,22 +34,11 @@ export function setupLanguageCallback(bot: Telegraf<ContextMessageUpdate>) {
     // Get raffle
     const datas = data.split('~')
     if (datas[0] !== 'l') return
-    // Check if private
-    let chatId: number
-    if (ctx.chat.type === 'private') {
-      const privateChat = await findChat(ctx.chat.id)
-      chatId = privateChat.editedChatId || privateChat.chatId
-    } else {
-      // Check if admin
-      const isAdmin = await checkIfAdmin(ctx, false)
-      if (!isAdmin) {
-        return
-      }
-      // Set chat id
-      chatId = ctx.chat.id
-    }
+    // Check if admin
+    const isAdmin = await checkIfAdmin(ctx, false)
+    if (!isAdmin) return
     // Get chat
-    let chat = await findChat(chatId)
+    let chat = await findChat(ctx.chat.id)
     // Save language
     chat.language = datas[1]
     chat = await chat.save()

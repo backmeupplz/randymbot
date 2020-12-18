@@ -5,22 +5,22 @@ import { loc } from '../helpers/locale'
 export function setupListenForForwards(bot: Telegraf<ContextMessageUpdate>) {
   bot.use(async (ctx, next) => {
     // Check if private
-    if (ctx.message?.chat.type !== 'private') {
+    if (ctx.message.chat.type !== 'private') {
       return next()
     }
     // Check if forward
-    const chatId = ctx.message?.forward_from_chat.id
+    const chatId = ctx.message.forward_from_chat.id
     if (!chatId) {
       return next()
     }
     // Check if not a forward from the same chat
-    if (ctx.chat?.id === chatId) {
+    if (ctx.chat.id === chatId) {
       return next()
     }
     // Check if forward from a channel or group
     if (
       !['group', 'supergroup', 'channel'].includes(
-        ctx.message?.forward_from_chat.type
+        ctx.message.forward_from_chat.type
       )
     ) {
       return next()

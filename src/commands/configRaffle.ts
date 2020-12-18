@@ -5,11 +5,11 @@ import { loc } from '../helpers/locale'
 export function setupConfigRaffle(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('configRaffle', async (ctx) => {
     // Check if private
-    if (ctx.chat?.type !== 'private') {
+    if (ctx.chat.type !== 'private') {
       return
     }
     // Get chat
-    const chat = await findChat(ctx.chat?.id)
+    const chat = await findChat(ctx.chat.id)
     // Check if there is a choice
     if (!chat.adminChatIds.length) {
       return ctx.reply(loc('config_raffle_no_chats', chat.language))

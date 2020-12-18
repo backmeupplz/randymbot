@@ -1,20 +1,22 @@
-// Dependencies
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { checkIfAdmin } from '../helpers/checkAdmin'
 import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
+import { getChatIdForConfig } from '../helpers/getChatIdForConfig'
 
 /**
  * Setting up the number command
  * @param bot Bot to setup the command
  */
 export function setupNumber(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command('number', async ctx => {
-    // Check if admin
-    const isAdmin = await checkIfAdmin(ctx)
-    if (!isAdmin) return
+  bot.command('number', async (ctx) => {
+    // Get chat id
+    const chatId = await getChatIdForConfig(ctx)
+    if (!chatId) {
+      return
+    }
     // Get chat
-    let chat = await findChat(ctx.chat.id)
+    let chat = await findChat(chatId)
     // Check if `/number XXX` format
     const numberString = (ctx.message || ctx.channelPost).text.substr(8).trim()
     if (
