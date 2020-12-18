@@ -49,11 +49,13 @@ export function setupNumberCallback(bot: Telegraf<ContextMessageUpdate>) {
     // Get raffle
     const datas = data.split('~')
     if (datas[0] !== 'n') return
-    // Check if admin
-    const isAdmin = await checkIfAdmin(ctx, false)
-    if (!isAdmin) return
+    // Get chat id
+    const chatId = await getChatIdForConfig(ctx)
+    if (!chatId) {
+      return
+    }
     // Get chat
-    let chat = await findChat(ctx.chat.id)
+    let chat = await findChat(chatId)
     // Save language
     chat.number = Number(datas[1])
     chat = await chat.save()
