@@ -48,6 +48,15 @@ export function setupConfigRaffle(bot: Telegraf<ContextMessageUpdate>) {
   })
 
   bot.action('this_chat', async (ctx) => {
+    try {
+      await ctx.answerCbQuery()
+    } catch (err) {
+      try {
+        await ctx.deleteMessage()
+      } catch {
+        // Do nothing
+      }
+    }
     const chat = await findChat(ctx.chat.id)
     chat.editedChatId = undefined
     await chat.save()
@@ -55,6 +64,15 @@ export function setupConfigRaffle(bot: Telegraf<ContextMessageUpdate>) {
   })
 
   bot.action(/c~.+/, async (ctx) => {
+    try {
+      await ctx.answerCbQuery()
+    } catch (err) {
+      try {
+        await ctx.deleteMessage()
+      } catch {
+        // Do nothing
+      }
+    }
     // Get this chat
     const chat = await findChat(ctx.chat.id)
     // Get the edited chat
