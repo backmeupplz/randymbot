@@ -4,14 +4,21 @@ import { loc } from './locale'
 import { checkIfAdminInChat } from './checkIfEditedAdmin'
 import { checkIfAdmin } from './checkAdmin'
 
-export async function getChatIdForConfig(ctx: ContextMessageUpdate) {
+export async function getChatIdForConfig(
+  ctx: ContextMessageUpdate,
+  shouldAllowCommandInPrivate = false
+) {
   if (ctx.chat.type === 'private') {
     // Get private chat
     const privateChat = await findChat(ctx.chat.id)
     // Check if in editing mode
     if (!privateChat.editedChatId) {
-      await ctx.reply(loc('no_work_private', privateChat.language))
-      return undefined
+      if (shouldAllowCommandInPrivate) {
+        return privateChat.id
+      } else {
+        await ctx.reply(loc('config_raffle_no_chats', privateChat.language))
+        return undefined
+      }
     } else {
       // Check if admin
       if (
