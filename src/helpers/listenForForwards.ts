@@ -43,7 +43,9 @@ export function setupListenForForwards(bot: Telegraf<ContextMessageUpdate>) {
       return ctx.reply(loc('mustBeAnAdmin', thisChat.language))
     }
     // Add that chat to user's admin privelege
-    thisChat.adminChatIds.push(chatId)
+    if (!thisChat.adminChatIds.includes(chatId)) {
+      thisChat.adminChatIds.push(chatId)
+    }
     await thisChat.save()
     // Reply with success
     return ctx.reply(loc('config_raffle_instructions', thisChat.language))

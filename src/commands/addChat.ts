@@ -31,7 +31,9 @@ export function setupAddChat(bot: Telegraf<ContextMessageUpdate>) {
     }
     // Add that chat to user's admin privelege
     const gotChat = await ctx.telegram.getChat(chatId)
-    thisChat.adminChatIds.push(gotChat.id)
+    if (!thisChat.adminChatIds.includes(gotChat.id)) {
+      thisChat.adminChatIds.push(gotChat.id)
+    }
     await thisChat.save()
     // Reply with success
     return ctx.reply(loc('config_raffle_instructions', thisChat.language))
