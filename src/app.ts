@@ -17,6 +17,7 @@ import { setupWinnerMessage } from './commands/winnerMessage'
 import { setupNodelete } from './commands/nodelete'
 import { setupListenForForwards } from './helpers/listenForForwards'
 import { setupConfigRaffle } from './commands/configRaffle'
+import { setupAddChat } from './commands/addChat'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -45,6 +46,7 @@ setupRaffleMessage(bot)
 setupWinnerMessage(bot)
 setupNodelete(bot)
 setupConfigRaffle(bot)
+setupAddChat(bot)
 
 // Setup callbacks
 setupLanguageCallback(bot)
