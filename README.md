@@ -8,7 +8,7 @@ This is the code for the raffle Telegram bot I've built. Enjoy and feel free to 
 2. Launch the [mongo database](https://www.mongodb.com/) locally
 3. Create `.env` with the environment variables listed below
 4. Run `yarn install` in the root folder
-5. Run `yarn start`
+5. Run `yarn distribute`
 
 And you should be good to go! Feel free to fork and submit pull requests. Thanks!
 
