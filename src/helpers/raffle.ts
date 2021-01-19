@@ -78,7 +78,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
   ;(<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
     // Get raffle
     const datas = data.split('~')
-    if (['l', 'n'].indexOf(datas[0]) > -1) return
+    if (['l', 'n', 'c'].indexOf(datas[0]) > -1) return
     const chatId = Number(datas[0])
     let raffle = await getRaffle(chatId, datas[1])
     // Get chat
