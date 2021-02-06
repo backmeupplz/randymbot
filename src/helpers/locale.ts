@@ -282,11 +282,13 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     ru: 'Теперь Ренди не будет редактировать (удалять) оригинальное сообщение.',
     en: 'Now Randy will not edit (delete) original message.',
     es: 'Ahora Randy no editará (eliminará) el mensaje original.',
+    tr: 'Randy artık orijinal mesajı düzenlemeyecek (silmeyecek).',
   },
   nodelete_false: {
     ru: 'Теперь Ренди будет редактировать (удалять) оригинальное сообщение.',
     en: 'Now Randy will edit (delete) original message.',
     es: 'Ahora Randy editará (eliminará) el mensaje original.',
+    tr: 'Randy artık orijinal mesajı düzenleyecek (silecek).',
   },
   mustBeAnAdmin: {
     en: 'You have to be an admin in the chat',
