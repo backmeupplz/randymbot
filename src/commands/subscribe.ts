@@ -25,10 +25,13 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
     }
     // Check if bot is admin in this chat
     try {
-      const chatAdmins = await ctx.getChatAdministrators()
-      const isBotAdmin = chatAdmins
-        .map((m) => m.user.username)
-        .includes(bot.options.username)
+      let isBotAdmin = ctx.chat.type === 'private'
+      if (!isBotAdmin) {
+        const chatAdmins = await ctx.getChatAdministrators()
+        isBotAdmin = chatAdmins
+          .map((m) => m.user.username)
+          .includes(bot.options.username)
+      }
       if (!isBotAdmin) {
         throw new Error()
       }
