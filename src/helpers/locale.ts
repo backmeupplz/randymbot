@@ -113,7 +113,7 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     tr: 'Katılımcı sayısı',
     uk: 'Кількість учасників',
     ar: 'عدد المشاركين',
-    es: 'Numeros de participantes',
+    es: 'Cantidad de participantes',
   },
   participate_button: {
     ru: 'Участвовать!',
