@@ -340,6 +340,13 @@ async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
     const winnerId = ids.splice(winnerIndex, 1)[0]
     try {
       const winner = await ctx.telegram.getChatMember(raffle.chatId, winnerId)
+      if (
+        !['administrator', 'creator', 'member', 'restricted'].includes(
+          winner.status
+        )
+      ) {
+        continue
+      }
       const name = winner.user.username
         ? `@${winner.user.username}`
         : `${winner.user.first_name}${
