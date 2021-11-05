@@ -19,6 +19,7 @@ import { setupListenForForwards } from './helpers/listenForForwards'
 import { setupConfigRaffle } from './commands/configRaffle'
 import { setupAddChat } from './commands/addChat'
 import { setupId } from './commands/id'
+import { setupDebug } from './commands/debug'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -49,6 +50,7 @@ setupNodelete(bot)
 setupConfigRaffle(bot)
 setupAddChat(bot)
 setupId(bot)
+setupDebug(bot)
 
 // Setup callbacks
 setupLanguageCallback(bot)
