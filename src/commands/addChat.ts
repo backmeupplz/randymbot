@@ -5,7 +5,7 @@ import { loc } from '../helpers/locale'
 export function setupAddChat(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('addChat', async (ctx) => {
     // Check if private
-    if (ctx.message.chat.type !== 'private') {
+    if (!ctx.message || ctx.message.chat.type !== 'private') {
       return
     }
     // Get randy
