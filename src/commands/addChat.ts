@@ -20,8 +20,12 @@ export function setupAddChat(bot: Telegraf<ContextMessageUpdate>) {
       chatId = +chatId
     }
     // Check if randy is an admin there
-    const randyMember = await ctx.telegram.getChatMember(chatId, randy.id)
-    if (randyMember.status !== 'administrator') {
+    try {
+      const randyMember = await ctx.telegram.getChatMember(chatId, randy.id)
+      if (randyMember.status !== 'administrator') {
+        return ctx.reply(loc('bot_not_admin_chat', thisChat.language))
+      }
+    } catch {
       return ctx.reply(loc('bot_not_admin_chat', thisChat.language))
     }
     // Check if user is administrator in that chat
