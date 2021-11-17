@@ -85,29 +85,41 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
     const chat = await findChat(ctx.chat.id)
     // Check if raffle is there
     if (!raffle) {
-      await (<any>ctx).answerCbQuery(
-        loc('please_retry', chat.language),
-        undefined,
-        true
-      )
+      try {
+        await (<any>ctx).answerCbQuery(
+          loc('please_retry', chat.language),
+          undefined,
+          true
+        )
+      } catch {
+        // do nothing
+      }
       return
     }
     // Check if raffle is finished
     if (raffle.winners) {
-      await (<any>ctx).answerCbQuery(
-        loc('raffle_over', chat.language),
-        undefined,
-        true
-      )
+      try {
+        await (<any>ctx).answerCbQuery(
+          loc('raffle_over', chat.language),
+          undefined,
+          true
+        )
+      } catch {
+        // do nothing
+      }
       return
     }
     // Check if already in
     if (raffle.participantsIds.indexOf(ctx.from.id) > -1) {
-      await (<any>ctx).answerCbQuery(
-        loc('already_participating', chat.language),
-        undefined,
-        true
-      )
+      try {
+        await (<any>ctx).answerCbQuery(
+          loc('already_participating', chat.language),
+          undefined,
+          true
+        )
+      } catch {
+        // do nothing
+      }
       return
     }
     // Check if participant subscribed
@@ -126,13 +138,18 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
             throw new Error()
           }
         } catch (err) {
-          return (<any>ctx).answerCbQuery(
-            `${loc('check_subscription', chat.language)}${
-              !isNaN(+subscribe) ? '' : '@'
-            }${subscribe}`,
-            undefined,
-            true
-          )
+          try {
+            await (<any>ctx).answerCbQuery(
+              `${loc('check_subscription', chat.language)}${
+                !isNaN(+subscribe) ? '' : '@'
+              }${subscribe}`,
+              undefined,
+              true
+            )
+          } catch {
+            // do nothing
+          }
+          return
         }
       }
     }
@@ -140,11 +157,15 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
     raffle.participantsIds.push(ctx.from.id)
     raffle = await raffle.save()
     // Reply that they are in
-    await (<any>ctx).answerCbQuery(
-      loc('participated', chat.language),
-      undefined,
-      true
-    )
+    try {
+      await (<any>ctx).answerCbQuery(
+        loc('participated', chat.language),
+        undefined,
+        true
+      )
+    } catch {
+      // do nothing
+    }
     // Update counter of participants
     try {
       // Add buttons
