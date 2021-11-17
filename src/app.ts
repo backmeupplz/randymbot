@@ -57,3 +57,7 @@ setupLanguageCallback(bot)
 setupNumberCallback(bot)
 
 bot.catch(console.error)
+
+process.on('unhandledRejection', (reason) => {
+  console.log('Unhandled Rejection at:', reason)
+})
