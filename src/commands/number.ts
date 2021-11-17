@@ -60,12 +60,16 @@ export function setupNumberCallback(bot: Telegraf<ContextMessageUpdate>) {
     chat.number = Number(datas[1])
     chat = await chat.save()
     // Update message
-    await ctx.telegram.editMessageText(
-      ctx.chat.id,
-      (<any>ctx).update.callback_query.message.message_id,
-      undefined,
-      loc('number_selected', chat.language)
-    )
+    try {
+      await ctx.telegram.editMessageText(
+        ctx.chat.id,
+        (<any>ctx).update.callback_query.message.message_id,
+        undefined,
+        loc('number_selected', chat.language)
+      )
+    } catch {
+      // do nothing
+    }
   })
 }
 
