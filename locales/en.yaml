@@ -1,0 +1,8 @@
+name: English
+help: |
+  <b>This bot</b> allows you to see how Telegram bots can be built.
+language: Please, select the language.
+language_selected: <b>This bot</b> now speaks English.
+
+only_admin_error: Only admins can configure me.
+only_public_error: This command only works in group chats and channels.

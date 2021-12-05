@@ -1,16 +1,16 @@
 // Dependencies
-import { ContextMessageUpdate, Telegraf } from 'telegraf'
-import { addRaffle, getRaffle, Raffle } from '../models'
 import {
-  ExtraEditMessage,
   ChatMember,
+  ExtraEditMessage,
   Message,
 } from 'telegraf/typings/telegram-types'
-import { shuffle, random } from 'lodash'
-import { checkIfAdmin } from './checkAdmin'
-import { findChat } from '../models/chat'
-import { loc } from './locale'
+import { ContextMessageUpdate, Telegraf } from 'telegraf'
 import { InstanceType } from 'typegoose'
+import { Raffle, addRaffle, getRaffle } from '../models'
+import { checkIfAdmin } from './checkAdmin'
+import { findChat } from '../models/Chat'
+import { loc } from './locale'
+import { random, shuffle } from 'lodash'
 
 /**
  * Starting a new raffle

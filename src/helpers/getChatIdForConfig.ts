@@ -1,8 +1,8 @@
-import { findChat } from '../models/chat'
 import { ContextMessageUpdate } from 'telegraf'
-import { loc } from './locale'
-import { checkIfAdminInChat } from './checkIfEditedAdmin'
 import { checkIfAdmin } from './checkAdmin'
+import { checkIfAdminInChat } from './checkIfEditedAdmin'
+import { findChat } from '../models/Chat'
+import { loc } from './locale'
 
 export async function getChatIdForConfig(
   ctx: ContextMessageUpdate,

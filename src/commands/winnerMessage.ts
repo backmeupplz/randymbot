@@ -1,8 +1,8 @@
-import { Telegraf, ContextMessageUpdate } from 'telegraf'
+import { ContextMessageUpdate, Telegraf } from 'telegraf'
 import { checkIfAdmin } from '../helpers/checkAdmin'
-import { findChat } from '../models/chat'
-import { loc } from '../helpers/locale'
+import { findChat } from '../models/Chat'
 import { getChatIdForConfig } from '../helpers/getChatIdForConfig'
+import { loc } from '../helpers/locale'
 
 export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('winnerMessage', async (ctx) => {

@@ -1,7 +1,7 @@
-import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { findChat } from '../models/chat'
-import { loc } from '../helpers/locale'
+import { ContextMessageUpdate, Telegraf } from 'telegraf'
+import { findChat } from '../models/Chat'
 import { getChatIdForConfig } from '../helpers/getChatIdForConfig'
+import { loc } from '../helpers/locale'
 
 export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('subscribe', async (ctx) => {
@@ -11,7 +11,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
       return
     }
     // Get chat
-    let chat = await findChat(chatId)
+    const chat = await findChat(chatId)
     // Check format
     const subscribeStringTemp = (ctx.message || ctx.channelPost).text
       .substr(11)

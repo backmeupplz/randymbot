@@ -1,101 +1,50 @@
-import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { findChat } from '../models/chat'
-import { loc } from '../helpers/locale'
-import { getChatIdForConfig } from '../helpers/getChatIdForConfig'
+import { InlineKeyboard } from 'grammy'
+import { load } from 'js-yaml'
+import { readFileSync, readdirSync } from 'fs'
+import Context from '@/models/Context'
 
-/**
- * Setting up the language command
- * @param bot Bot to setup the command
- */
-export function setupLanguage(bot: Telegraf<ContextMessageUpdate>) {
-  bot.command('language', async (ctx) => {
-    // Get chat id
-    const chatId = await getChatIdForConfig(ctx, true)
-    if (!chatId) {
-      return
-    }
-    // Get chat
-    const chat = await findChat(chatId)
-    // Reply
-    ctx.reply(loc('select_language', chat.language), {
-      reply_markup: getButtons(),
-      disable_notification: true,
-    })
+interface YamlWithName {
+  name: string
+}
+
+export const localeActions = localesFiles().map((file) => file.split('.')[0])
+
+export function sendLanguage(ctx: Context) {
+  return ctx.reply(ctx.i18n.t('language'), {
+    reply_markup: languageKeyboard(),
   })
 }
 
-/**
- * Setting up callback for the language keyboard
- * @param bot Bot to setup the callback
- */
-export function setupLanguageCallback(bot: Telegraf<ContextMessageUpdate>) {
-  ;(<any>bot).action(async (data: string, ctx: ContextMessageUpdate) => {
-    // Get language
-    const datas = data.split('~')
-    if (datas[0] !== 'l') return
-    // Get chat id
-    const chatId = await getChatIdForConfig(ctx, true)
-    if (!chatId) {
-      return
-    }
-    // Get chat
-    let chat = await findChat(chatId)
-    // Save language
-    chat.language = datas[1]
-    chat = await chat.save()
-    // Update message
-    await ctx.telegram.editMessageText(
-      ctx.chat.id,
-      (<any>ctx).update.callback_query.message.message_id,
-      undefined,
-      loc('language_selected_randy', chat.language)
-    )
-  })
-}
-
-/**
- * Language keyboard
- * @returns language keyboard
- */
-function getButtons() {
-  return {
-    inline_keyboard: [
-      [
-        {
-          text: 'English',
-          callback_data: `l~en`,
-        },
-        {
-          text: 'Русский',
-          callback_data: `l~ru`,
-        },
-      ],
-      [
-        {
-          text: 'Português',
-          callback_data: `l~pt`,
-        },
-        {
-          text: 'Turkce',
-          callback_data: `l~tr`,
-        },
-      ],
-      [
-        {
-          text: 'Українська',
-          callback_data: `l~uk`,
-        },
-        {
-          text: 'Arabic',
-          callback_data: `l~ar`,
-        },
-      ],
-      [
-        {
-          text: 'Español',
-          callback_data: `l~es`,
-        },
-      ],
-    ],
+export async function setLanguage(ctx: Context) {
+  if (!ctx.callbackQuery?.data) {
+    return
   }
+  ctx.dbchat.language = ctx.callbackQuery.data
+  await ctx.dbchat.save()
+  ctx.i18n.locale(ctx.callbackQuery.data)
+  return ctx.editMessageText(ctx.i18n.t('language_selected'), {
+    parse_mode: 'HTML',
+  })
+}
+
+function languageKeyboard() {
+  const locales = localesFiles()
+  const keyboard = new InlineKeyboard()
+  locales.forEach((locale, index) => {
+    const localeCode = locale.split('.')[0]
+    const localeName = (
+      load(
+        readFileSync(`${__dirname}/../../locales/${locale}`, 'utf8')
+      ) as YamlWithName
+    ).name as string
+    keyboard.text(localeName, localeCode)
+    if (index % 2 != 0) {
+      keyboard.row()
+    }
+  })
+  return keyboard
+}
+
+function localesFiles() {
+  return readdirSync(`${__dirname}/../../locales`)
 }

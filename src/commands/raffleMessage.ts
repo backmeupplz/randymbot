@@ -1,7 +1,7 @@
-import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { findChat } from '../models/chat'
-import { loc } from '../helpers/locale'
+import { ContextMessageUpdate, Telegraf } from 'telegraf'
+import { findChat } from '../models/Chat'
 import { getChatIdForConfig } from '../helpers/getChatIdForConfig'
+import { loc } from '../helpers/locale'
 
 export function setupRaffleMessage(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('raffleMessage', async (ctx) => {

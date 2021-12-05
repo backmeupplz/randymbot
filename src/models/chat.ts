@@ -1,43 +1,40 @@
-// Dependencies
-import { arrayProp, prop, Typegoose } from 'typegoose'
-import { Message } from 'telegram-typings'
+import * as findorcreate from 'mongoose-findorcreate'
+import { FindOrCreate } from '@typegoose/typegoose/lib/defaultClasses'
+import { Message } from '@grammyjs/types'
+import {
+  getModelForClass,
+  modelOptions,
+  plugin,
+  prop,
+} from '@typegoose/typegoose'
 
-export class Chat extends Typegoose {
+@plugin(findorcreate)
+@modelOptions({ schemaOptions: { timestamps: true } })
+export class Chat extends FindOrCreate {
   @prop({ required: true, index: true })
-  chatId: number
+  chatId!: number
   @prop({ required: true, default: 'en' })
-  language: string
+  language!: string
   @prop({ required: true, default: 1 })
-  number: number
+  number!: number
   @prop()
   subscribe?: string
   @prop({ required: true, default: false })
-  nodelete: boolean
+  nodelete!: boolean
 
   @prop()
   raffleMessage?: Message
   @prop()
   winnerMessage?: Message
 
-  @arrayProp({ required: true, default: [], items: Number })
-  adminChatIds: number[]
+  @prop({ required: true, default: [] })
+  adminChatIds!: number[]
   @prop()
   editedChatId?: number
 }
 
-// Get Chat model
-const ChatModel = new Chat().getModelForClass(Chat)
+const ChatModel = getModelForClass(Chat)
 
-/**
- * Returns chat, creates one if required
- * @param chatId Chat id of the chat
- * @returns requestedchat
- */
-export async function findChat(chatId: number) {
-  let chat = await ChatModel.findOne({ chatId })
-  if (!chat) {
-    chat = new ChatModel({ chatId })
-    chat = await chat.save()
-  }
-  return chat
+export function findOrCreateChat(chatId: number) {
+  return ChatModel.findOrCreate({ chatId })
 }

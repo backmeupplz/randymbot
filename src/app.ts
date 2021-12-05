@@ -1,63 +1,80 @@
-// Get environment variables
-import * as dotenv from 'dotenv'
-dotenv.config({ path: `${__dirname}/../.env` })
+import 'module-alias/register'
 
-// Dependencies
-import { Telegraf, ContextMessageUpdate } from 'telegraf'
-import { setupStartAndHelp } from './commands/startAndHelp'
-import { setupRandy } from './commands/randy'
-import { setupCallback, setupListener } from './helpers/raffle'
-import { setupLanguage, setupLanguageCallback } from './commands/language'
-import { setupNumberCallback, setupNumber } from './commands/number'
-import { setupTestLocale } from './commands/testLocales'
-import { setupSubscribe } from './commands/subscribe'
-import { setupNosubscribe } from './commands/nosubscribe'
-import { setupRaffleMessage } from './commands/raffleMessage'
-import { setupWinnerMessage } from './commands/winnerMessage'
-import { setupNodelete } from './commands/nodelete'
-import { setupListenForForwards } from './helpers/listenForForwards'
-import { setupConfigRaffle } from './commands/configRaffle'
-import { setupAddChat } from './commands/addChat'
-import { setupId } from './commands/id'
-import { setupDebug } from './commands/debug'
-const telegraf = require('telegraf')
+import 'source-map-support/register'
 
-// Setup the bot
-const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, {
-  username: process.env.USERNAME,
-  channelMode: true,
-})
-bot.startPolling()
-console.log('Bot is up and running')
+import {
+  ignoreOld,
+  onlyAdmin,
+  onlyPublic,
+  sequentialize,
+} from 'grammy-middlewares'
+import { localeActions, sendLanguage, setLanguage } from '@/commands/language'
+import { run } from '@grammyjs/runner'
+import attachChat from '@/middlewares/attachChat'
+import bot from '@/helpers/bot'
+import configureI18n from '@/middlewares/configureI18n'
+import handleHelp from '@/commands/handleHelp'
+import handleRandy from '@/commands/randy'
+import i18n from '@/helpers/i18n'
+import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
+import startMongo from '@/helpers/startMongo'
 
-// Setup callback
-setupCallback(bot)
-// Setup listeners
-setupListener(bot)
-setupListenForForwards(bot)
+async function runApp() {
+  console.log('Starting app...')
+  // Mongo
+  await startMongo()
+  console.log('Mongo connected')
+  // Middlewares
+  bot.use(sequentialize())
+  bot.use(ignoreOld())
+  bot.use(attachChat)
+  bot.use(i18n.middleware())
+  bot.use(configureI18n)
+  // Commands
+  bot.command(['help', 'start'], handleHelp)
+  bot.command('language', sendLanguage)
+  bot.command(
+    'randy',
+    onlyPublic(),
+    onlyAdmin(onlyAdminErrorHandler),
+    handleRandy
+  )
+  // Actions
+  bot.callbackQuery(localeActions, setLanguage)
+  // Errors
+  bot.catch(console.error)
+  // Start bot
+  await bot.init()
+  run(bot)
+  console.info(`Bot ${bot.botInfo.username} is up and running`)
+}
 
-// Setup commands
-setupStartAndHelp(bot)
-setupRandy(bot)
-setupLanguage(bot)
-setupNumber(bot)
-setupTestLocale(bot)
-setupSubscribe(bot)
-setupNosubscribe(bot)
-setupRaffleMessage(bot)
-setupWinnerMessage(bot)
-setupNodelete(bot)
-setupConfigRaffle(bot)
-setupAddChat(bot)
-setupId(bot)
-setupDebug(bot)
+void runApp()
 
-// Setup callbacks
-setupLanguageCallback(bot)
-setupNumberCallback(bot)
+// // Setup callback
+// setupCallback(bot)
+// // Setup listeners
+// setupListener(bot)
+// setupListenForForwards(bot)
 
-bot.catch(console.error)
+// // Setup commands
+// setupStartAndHelp(bot)
+// setupRandy(bot)
+// setupLanguage(bot)
+// setupNumber(bot)
+// setupTestLocale(bot)
+// setupSubscribe(bot)
+// setupNosubscribe(bot)
+// setupRaffleMessage(bot)
+// setupWinnerMessage(bot)
+// setupNodelete(bot)
+// setupConfigRaffle(bot)
+// setupAddChat(bot)
+// setupId(bot)
+// setupDebug(bot)
 
-process.on('unhandledRejection', (reason) => {
-  console.log('Unhandled Rejection at:', reason)
-})
+// // Setup callbacks
+// setupLanguageCallback(bot)
+// setupNumberCallback(bot)
+
+// bot.catch(console.error)

@@ -1,5 +1,5 @@
-import { findChat } from '../models/chat'
 import { ContextMessageUpdate, Telegraf } from 'telegraf'
+import { findChat } from '../models/Chat'
 import { loc } from '../helpers/locale'
 
 export function setupAddChat(bot: Telegraf<ContextMessageUpdate>) {

@@ -1,5 +1,5 @@
-import { findChat } from '../models/chat'
 import { ContextMessageUpdate, Telegraf } from 'telegraf'
+import { findChat } from '../models/Chat'
 import { loc } from '../helpers/locale'
 
 export function setupConfigRaffle(bot: Telegraf<ContextMessageUpdate>) {
