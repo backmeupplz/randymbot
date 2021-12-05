@@ -10,6 +10,8 @@ export class MessageToDelete {
   messageId!: number
   @prop({ required: true })
   deleteInSeconds!: number
+
+  createdAt!: Date
 }
 
 export const MessageToDeleteModel = getModelForClass(MessageToDelete)
