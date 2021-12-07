@@ -2,6 +2,7 @@ import * as findorcreate from 'mongoose-findorcreate'
 import { FindOrCreate } from '@typegoose/typegoose/lib/defaultClasses'
 import { Message } from '@grammyjs/types'
 import {
+  Severity,
   getModelForClass,
   modelOptions,
   plugin,
@@ -9,7 +10,12 @@ import {
 } from '@typegoose/typegoose'
 
 @plugin(findorcreate)
-@modelOptions({ schemaOptions: { timestamps: true } })
+@modelOptions({
+  schemaOptions: { timestamps: true },
+  options: {
+    allowMixed: Severity.ALLOW,
+  },
+})
 export class Chat extends FindOrCreate {
   @prop({ required: true, index: true })
   chatId!: number

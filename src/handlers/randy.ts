@@ -1,4 +1,4 @@
-import { startRaffle } from '@/helpers/raffle'
+// import { startRaffle } from '@/helpers/raffle'
 import Context from '@/models/Context'
 
 export default async function handleRandy(ctx: Context) {
@@ -7,5 +7,5 @@ export default async function handleRandy(ctx: Context) {
   } catch {
     // Do nothing
   }
-  return startRaffle(ctx)
+  // return startRaffle(ctx)
 }

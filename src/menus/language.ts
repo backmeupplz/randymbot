@@ -21,7 +21,7 @@ const setLanguage = (languageCode: string) => async (ctx: Context) => {
   ctx.dbchat.language = languageCode
   await ctx.dbchat.save()
   ctx.i18n.locale(languageCode)
-  return ctx.editMessageText(ctx.i18n.t('language_selected'), {
+  return ctx.editMessageTextWithLocalization('language_selected', {
     parse_mode: 'HTML',
     reply_markup: undefined,
   })

@@ -2,7 +2,7 @@ import { MessageToDeleteModel } from '@/models/MessageToDelete'
 import Context from '@/models/Context'
 
 export default async function onlyAdminErrorHandler(ctx: Context) {
-  const sentMessage = await ctx.reply(ctx.i18n.t('only_admin_error'), {
+  const sentMessage = await ctx.replyWithLocalization('only_admin_error', {
     reply_to_message_id: ctx.msg?.message_id,
   })
   await MessageToDeleteModel.create({

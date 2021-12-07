@@ -1,21 +1,30 @@
 import 'module-alias/register'
+import 'reflect-metadata'
 import 'source-map-support/register'
 
 import {
   ignoreOld,
   onlyAdmin,
   onlyPublic,
+  onlySuperAdmin,
   sequentialize,
 } from 'grammy-middlewares'
 import { run } from '@grammyjs/runner'
 import attachChat from '@/middlewares/attachChat'
 import bot from '@/helpers/bot'
 import configureI18n from '@/middlewares/configureI18n'
-import handleHelp from '@/handlers/handleHelp'
+import env from '@/helpers/env'
+import handleDebug from '@/handlers/debug'
+import handleDelete from '@/handlers/delete'
+import handleHelp from '@/handlers/help'
+import handleId from '@/handlers/id'
+import handleKeepRaffleMessage from '@/handlers/keepRaffleMessage'
 import handleLanguage from '@/handlers/language'
+import handleNumberOfWinners from '@/handlers/numberOfWinners'
 import handleRandy from '@/handlers/randy'
 import i18n from '@/helpers/i18n'
 import languageMenu from '@/menus/language'
+import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
 import startMessageDeleter from '@/helpers/messageDeleter'
 import startMongo from '@/helpers/startMongo'
@@ -25,23 +34,29 @@ async function runApp() {
   // Mongo
   await startMongo()
   console.info('Mongo connected')
-  // Middlewares
-  bot.use(sequentialize())
-  bot.use(ignoreOld())
-  bot.use(attachChat)
-  bot.use(i18n.middleware())
-  bot.use(configureI18n)
-  // Menus
-  bot.use(languageMenu)
+  bot
+    // Middlewares
+    .use(sequentialize())
+    .use(ignoreOld())
+    .use(attachChat)
+    .use(i18n.middleware())
+    .use(configureI18n)
+    // Menus
+    .use(languageMenu)
+    .use(numberOfWinnersMenu)
+    // Extra middleware
+    .use(onlyAdmin(onlyAdminErrorHandler))
   // Commands
   bot.command(['help', 'start'], handleHelp)
   bot.command('language', handleLanguage)
-  bot.command(
-    'randy',
-    onlyPublic(),
-    onlyAdmin(onlyAdminErrorHandler),
-    handleRandy
-  )
+  bot.command('randy', onlyPublic(), handleRandy)
+  bot.command('numberOfWinners', handleNumberOfWinners)
+  bot.command('id', handleId)
+  bot.command('keepRaffleMessage', handleKeepRaffleMessage)
+  // Super admin commands
+  const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
+  superAdmin.command('debug', handleDebug)
+  superAdmin.command('delete', handleDelete)
   // Errors
   bot.catch(console.error)
   // Start bot
@@ -62,16 +77,10 @@ void runApp()
 // setupListenForForwards(bot)
 
 // // Setup commands
-// setupStartAndHelp(bot)
-// setupRandy(bot)
-// setupLanguage(bot)
-// setupNumber(bot)
-// setupTestLocale(bot)
 // setupSubscribe(bot)
 // setupNosubscribe(bot)
 // setupRaffleMessage(bot)
 // setupWinnerMessage(bot)
-// setupNodelete(bot)
 // setupConfigRaffle(bot)
 // setupAddChat(bot)
 // setupId(bot)
