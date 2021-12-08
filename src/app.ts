@@ -14,12 +14,15 @@ import attachChat from '@/middlewares/attachChat'
 import bot from '@/helpers/bot'
 import configureI18n from '@/middlewares/configureI18n'
 import env from '@/helpers/env'
+import handleCheckSubscription from '@/handlers/checkSubscription'
 import handleDebug from '@/handlers/debug'
 import handleDelete from '@/handlers/delete'
 import handleHelp from '@/handlers/help'
 import handleId from '@/handlers/id'
 import handleKeepRaffleMessage from '@/handlers/keepRaffleMessage'
 import handleLanguage from '@/handlers/language'
+import handleNoCustomRaffleMessage from '@/handlers/noCustomRaffleMessage'
+import handleNoCustomWinnerMessage from '@/handlers/noCustomWinnerMessage'
 import handleNumberOfWinners from '@/handlers/numberOfWinners'
 import handleRandy from '@/handlers/randy'
 import i18n from '@/helpers/i18n'
@@ -53,6 +56,9 @@ async function runApp() {
   bot.command('numberOfWinners', handleNumberOfWinners)
   bot.command('id', handleId)
   bot.command('keepRaffleMessage', handleKeepRaffleMessage)
+  bot.command('noCustomRaffleMessage', handleNoCustomRaffleMessage)
+  bot.command('noCustomWinnerMessage', handleNoCustomWinnerMessage)
+  bot.command('checkSubscription', handleCheckSubscription)
   // Super admin commands
   const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
   superAdmin.command('debug', handleDebug)
@@ -77,14 +83,10 @@ void runApp()
 // setupListenForForwards(bot)
 
 // // Setup commands
-// setupSubscribe(bot)
-// setupNosubscribe(bot)
 // setupRaffleMessage(bot)
 // setupWinnerMessage(bot)
 // setupConfigRaffle(bot)
 // setupAddChat(bot)
-// setupId(bot)
-// setupDebug(bot)
 
 // // Setup callbacks
 // setupLanguageCallback(bot)

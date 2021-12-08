@@ -9,6 +9,9 @@ import {
   prop,
 } from '@typegoose/typegoose'
 
+// TODO: subscribe -> subscriptions
+// TODO: nodelete -> keepRaffleMessage
+
 @plugin(findorcreate)
 @modelOptions({
   schemaOptions: { timestamps: true },
@@ -23,10 +26,10 @@ export class Chat extends FindOrCreate {
   language!: string
   @prop({ required: true, default: 1 })
   number!: number
-  @prop()
-  subscribe?: string
+  @prop({ required: true, default: [] })
+  subscriptions!: string[]
   @prop({ required: true, default: false })
-  nodelete!: boolean
+  keepRaffleMessage!: boolean
 
   @prop()
   raffleMessage?: Message

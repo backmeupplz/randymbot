@@ -3,17 +3,19 @@ name: English
 help: |
   Hi there! I'm Randy Marsh. I can randomly select a raffle participant (that hit the "Participate" button) in a chat or a channel. My source code is [here](https://github.com/backmeupplz/randymbot).
 
-  /language — change the language
-  /numberOfWinners — select the number of winners
-  /numberOfWinners 10 — change the number of winners to 10
-  /randy — begin the raffle
+  -/language — change the language
+  -/numberOfWinners — select the number of winners
+  -/numberOfWinners 10 — change the number of winners to 10
+  -/randy — begin the raffle
   /checkSubscription @handle, @another_handle, @third_handle — make @randymbot check if participants are subscribed to the specified channels
   /checkSubscription — send it without handles to remove the subscription check
   /customRaffleMessage — set a custom raffle message
-  /noCustomRaffleMessage — remove the custom raffle message and use the default one
+  -/noCustomRaffleMessage — remove the custom raffle message and use the default one
+  /customWinnerMessage — set a custom winner message
+  -/noCustomWinnerMessage — remove the custom winner message and use the default one
   /chooseChannelToConfigure — choose a channel to configure
-  /id — show the ID of the chat
-  /keepRaffleMessage — don't replace the raffle message, instead lock the raffle and send a new message with the results
+  -/id — show the ID of the chat
+  -/keepRaffleMessage — don't replace the raffle message, instead lock the raffle and send a new message with the results
 
   • Reply with any message to the raffle message to finish the raffle
   • I highly recommend to try @randymbot in a private group chat first to see how it works
@@ -30,6 +32,11 @@ number_of_winners: Please, select number of winners for a raffle.
 number_of_winners_selected: Great! Now the number of winners is ${numberOfWinners}.
 keep_raffle_message_true: Now Randy will not edit (delete) original message.
 keep_raffle_message_false: Now Randy will edit (delete) original message.
+no_raffle_message: Randy will use the standard raffle message.
+check_subscription_empty: Randy will not check subscription to any channels.
+check_subscription_success: |
+  Great, now ${bot} will check if participants are subscribed to the following channels before allowing to participate: ${chats}.
 # Errors
 only_admin_error: Only admins can configure me.
 only_public_error: This command only works in group chats and channels.
+bot_not_admin_error: Please, make ${bot} an admin in ${chat}.
