@@ -87,9 +87,3 @@ void runApp()
 // setupWinnerMessage(bot)
 // setupConfigRaffle(bot)
 // setupAddChat(bot)
-
-// // Setup callbacks
-// setupLanguageCallback(bot)
-// setupNumberCallback(bot)
-
-// bot.catch(console.error)
