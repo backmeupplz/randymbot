@@ -1,87 +1,40 @@
-// import { ContextMessageUpdate, Telegraf } from 'telegraf'
-// import { checkIfAdmin } from '../helpers/checkAdmin'
-// import { findChat } from '../models/Chat'
-// import { getChatIdForConfig } from '../helpers/getChatIdForConfig'
-// import { loc } from '../helpers/locale'
+import { Message } from '@grammyjs/types'
+import Context from '@/models/Context'
+import bot from '@/helpers/bot'
 
-// export function setupWinnerMessage(bot: Telegraf<ContextMessageUpdate>) {
-//   bot.command('winnerMessage', async (ctx) => {
-//     // Get chat id
-//     const chatId = await getChatIdForConfig(ctx)
-//     if (!chatId) {
-//       return
-//     }
-//     // Get chat
-//     const chat = await findChat(chatId)
-//     // Send instructions
-//     await ctx.reply(loc('winner_message', chat.language), {
-//       disable_notification: true,
-//     })
-//     // Send current message if there is one
-//     if (chat.winnerMessage) {
-//       return ctx.telegram.sendCopy(ctx.chat.id, chat.winnerMessage)
-//     }
-//   })
+export default async function handleCustomWinnerMessage(ctx: Context) {
+  const answer = await ctx.replyWithLocalization('custom_winner_message', {
+    reply_to_message_id: undefined,
+  })
 
-//   bot.command('noWinnerMessage', async (ctx) => {
-//     // Get chat id
-//     const chatId = await getChatIdForConfig(ctx)
-//     if (!chatId) {
-//       return
-//     }
-//     // Get chat
-//     const chat = await findChat(chatId)
-//     // Turn off raffle message
-//     chat.winnerMessage = undefined
-//     await chat.save()
-//     // Send instructions
-//     return ctx.reply(loc('winner_message_off', chat.language), {
-//       disable_notification: true,
-//     })
-//   })
+  if (ctx.dbchat.winnerMessage) {
+    await ctx.reply(ctx.dbchat.winnerMessage as unknown as string)
+  }
 
-//   bot.use(async (ctx, next) => {
-//     try {
-//       // Check if reply
-//       const message = ctx.message || ctx.channelPost
-//       if (
-//         !message ||
-//         !message.reply_to_message ||
-//         !message.reply_to_message.text ||
-//         !message.text ||
-//         !message.text.includes('$numberOfParticipants') ||
-//         !message.text.includes('$winner') ||
-//         !(
-//           (message.reply_to_message.from &&
-//             message.reply_to_message.from.username === bot.options.username) ||
-//           ctx.chat.type === 'channel'
-//         ) ||
-//         !message.reply_to_message.text ||
-//         !message.reply_to_message.text.includes('🎉')
-//       ) {
-//         return
-//       }
-//       // Get chat id
-//       const chatId = await getChatIdForConfig(ctx)
-//       if (!chatId) {
-//         return
-//       }
-//       // Get chat
-//       const chat = await findChat(chatId)
-//       // Send mesage
-//       await ctx.telegram.sendCopy(ctx.chat.id, message, {
-//         disable_notification: true,
-//         parse_mode: 'HTML',
-//       })
-//       // Setuo message
-//       chat.winnerMessage = message
-//       await chat.save()
-//       // Reply success
-//       ctx.reply(loc('success', chat.language), {
-//         disable_notification: true,
-//       })
-//     } finally {
-//       next()
-//     }
-//   })
-// }
+  const currentUser = ctx.message?.from?.id
+
+  bot
+    .on('message')
+    .filter(
+      (ctx) => ctx.message.reply_to_message?.message_id === answer.message_id
+    )
+    .filter((ctx) =>
+      ctx.message.text?.includes('$numberOfParticipants') &&
+      ctx.message.text?.includes('$winner')
+        ? true
+        : false
+    )
+    .filter(
+      (ctx) => ctx.message.from?.id === currentUser,
+      async (ctx: Context) => {
+        ctx.dbchat.winnerMessage = ctx.message?.text as unknown as Message
+        await ctx.dbchat.save()
+        await ctx.reply(ctx.dbchat.winnerMessage as unknown as string)
+        return ctx.replyWithLocalization('success', {
+          reply_to_message_id: undefined,
+        })
+      }
+    )
+
+  return
+}

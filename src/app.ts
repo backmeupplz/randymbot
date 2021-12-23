@@ -15,6 +15,7 @@ import bot from '@/helpers/bot'
 import configureI18n from '@/middlewares/configureI18n'
 import env from '@/helpers/env'
 import handleCheckSubscription from '@/handlers/checkSubscription'
+import handleCustomWinnerMessage from '@/handlers/winnerMessage'
 import handleDebug from '@/handlers/debug'
 import handleDelete from '@/handlers/delete'
 import handleHelp from '@/handlers/help'
@@ -58,6 +59,7 @@ async function runApp() {
   bot.command('keepRaffleMessage', handleKeepRaffleMessage)
   bot.command('noCustomRaffleMessage', handleNoCustomRaffleMessage)
   bot.command('noCustomWinnerMessage', handleNoCustomWinnerMessage)
+  bot.command('customWinnerMessage', handleCustomWinnerMessage)
   bot.command('checkSubscription', handleCheckSubscription)
   // Super admin commands
   const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
