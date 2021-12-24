@@ -12,6 +12,7 @@ import {
 import { run } from '@grammyjs/runner'
 import attachChat from '@/middlewares/attachChat'
 import bot from '@/helpers/bot'
+import checkReplyWinnerMessage from '@/helpers/checkMessage'
 import configureI18n from '@/middlewares/configureI18n'
 import env from '@/helpers/env'
 import handleCheckSubscription from '@/handlers/checkSubscription'
@@ -65,6 +66,8 @@ async function runApp() {
   const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
   superAdmin.command('debug', handleDebug)
   superAdmin.command('delete', handleDelete)
+  // On message
+  checkReplyWinnerMessage()
   // Errors
   bot.catch(console.error)
   // Start bot
