@@ -34,7 +34,10 @@ export class Chat extends FindOrCreate {
   @prop()
   raffleMessage?: Message
   @prop()
-  winnerMessage?: Message
+  winnerMessage?: string
+
+  @prop()
+  idFixedMessage?: number
 
   @prop({ required: true, default: [] })
   adminChatIds!: number[]
