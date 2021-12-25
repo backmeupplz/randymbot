@@ -1,34 +1,23 @@
 import Context from '@/models/Context'
 import bot from '@/helpers/bot'
+import checkReplyMessageId from '@/filters/checkReplyMessageId'
+import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
+import onlyRepliesToBots from '@/filters/onlyRepliesToBots'
 
 export default function checkReplyWinnerMessage() {
   bot
     .on('message')
-    .filter((ctx: Context) => {
-      return <boolean>ctx.message?.reply_to_message?.from?.is_bot
-    })
-    .filter((ctx: Context) => {
-      return (
-        ctx.message?.reply_to_message?.message_id ===
-        ctx.dbchat.currentIdMessage
-      )
-    })
-    .filter(
-      (ctx: Context) => {
-        if (!ctx.message?.text) {
-          return false
-        }
+    .filter(onlyRepliesToBots)
+    .filter(checkReplyMessageId)
+    .filter(onlyMessageWithParameters, async (ctx: Context) => {
+      ctx.dbchat.winnerMessage = ctx.message
+      await ctx.dbchat.save()
 
-        return (
-          ctx.message.text.includes('$numberOfParticipants') &&
-          ctx.message.text.includes('$winner')
-        )
-      },
-      async (ctx: Context) => {
-        ctx.dbchat.winnerMessage = ctx.message
-        await ctx.dbchat.save()
-        await ctx.reply(<string>ctx.dbchat.winnerMessage?.text)
-        return ctx.replyWithLocalization('success')
+      if (!ctx.dbchat.winnerMessage?.text) {
+        return false
       }
-    )
+
+      await ctx.reply(ctx.dbchat.winnerMessage.text)
+      return ctx.replyWithLocalization('success')
+    })
 }
