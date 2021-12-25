@@ -5,6 +5,9 @@ export default function checkReplyWinnerMessage() {
   bot
     .on('message')
     .filter((ctx: Context) => {
+      return <boolean>ctx.message?.reply_to_message?.from?.is_bot
+    })
+    .filter((ctx: Context) => {
       return (
         ctx.message?.reply_to_message?.message_id ===
         ctx.dbchat.currentIdMessage

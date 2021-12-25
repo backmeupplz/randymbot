@@ -1,44 +1,8 @@
 name: Русский
 help: |
-  Hi there! I'm Randy Marsh. I can randomly select a raffle participant (that hit the "Participate" button) in a chat or a channel. My source code is [here](https://github.com/backmeupplz/randymbot).
-
-  -/language — change the language
-  -/numberOfWinners — select the number of winners
-  -/numberOfWinners 10 — change the number of winners to 10
-  -/randy — begin the raffle
-  /checkSubscription @handle, @another_handle, @third_handle — make @randymbot check if participants are subscribed to the specified channels
-  /checkSubscription — send it without handles to remove the subscription check
-  /customRaffleMessage — set a custom raffle message
-  -/noCustomRaffleMessage — remove the custom raffle message and use the default one
-  /customWinnerMessage — set a custom winner message
-  -/noCustomWinnerMessage — remove the custom winner message and use the default one
-  /chooseChannelToConfigure — choose a channel to configure
-  -/id — show the ID of the chat
-  -/keepRaffleMessage — don't replace the raffle message, instead lock the raffle and send a new message with the results
-
-  • Reply with any message to the raffle message to finish the raffle
-  • I highly recommend to try @randymbot in a private group chat first to see how it works
-  • If you want to configure a channel, you can do so in the private messages with @randymbot, just forward a message from the channel to @randymbot to start the configuration
-  • If you want to configure a group chat, you can also do so in the private messages with @randymbot, use the /addChatToConfigure command to do so
-  • Commands in group chats are only available if you're a group admin
-
-  Still got questions? Go to our support channel — @borodutch\_support 🦄
-
-  Also check out another one of my projects — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). It is a smart todo list app that uses cognitive psychology to trick your brain into finishing projects and showing results. It's free for 30 days with no strings attached, so go give it a shot if you want to improve your productivity. It helped me — it can help you as well.
+  <b>Бот</b> является примером бота на Telegram.
 language: Пожалуйста, выберите язык.
 language_selected: <b>Бот</b> теперь говорит по-русски.
-number_of_winners: Пожалуйста, выберите, сколько победителей должно быть в розыгрыше.
-number_of_winners_selected: Отлично, теперь количество победителей составляет ${numberOfWinners}.
-keep_raffle_message_true: Теперь Ренди не будет редактировать (удалять) оригинальное сообщение.
-keep_raffle_message_false: Теперь Ренди будет редактировать (удалять) оригинальное сообщение.
-no_raffle_message: Теперь Ренди будет использовать стандартное сообщение о розыгрыше.
-check_subscription_empty: Ренди не будет проверять подписку на какой-либо канал.
-check_subscription_success: |
-  Отлично, теперь ${bot} будет проверять подписку пользователя на следующий канал перед разрешением участвовать в конкурсе: ${chats}.
 custom_winner_message: Ответьте на это сообщение, чтобы установить новое сообщение о победе. Именно ответьте (надеемся, что все понимают разницу между обычным сообщением и ответом). Обязательно используйте "$numberOfParticipants" и "$winner" без кавычек в сообщении — иначе установка не сработает. Удачи! 🎉 Текущее сообщение (если оно установленно), приведено ниже.
 no_winner_message: Теперь Ренди будет использовать стандартное сообщение о победе.
-# Errors
-only_admin_error: Только администраторы могут настраивать меня.
-only_public_error: Эта команда работает только в групповых чатах и каналах.
-bot_not_admin_error: Пожалуйста, сделайте ${bot} администраторм в ${chat}.
 success: Успех!
