@@ -12,7 +12,7 @@ import {
 import { run } from '@grammyjs/runner'
 import attachChat from '@/middlewares/attachChat'
 import bot from '@/helpers/bot'
-import checkReplyWinnerMessage from '@/helpers/checkMessage'
+import checkReplyMessageId from '@/filters/checkReplyMessageId'
 import configureI18n from '@/middlewares/configureI18n'
 import env from '@/helpers/env'
 import handleCheckSubscription from '@/handlers/checkSubscription'
@@ -31,6 +31,9 @@ import i18n from '@/helpers/i18n'
 import languageMenu from '@/menus/language'
 import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
+import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
+import onlyRepliesToBots from '@/filters/onlyRepliesToBots'
+import saveWinnerMessage from '@/helpers/saveWinnerMessage'
 import startMessageDeleter from '@/helpers/messageDeleter'
 import startMongo from '@/helpers/startMongo'
 
@@ -67,7 +70,11 @@ async function runApp() {
   superAdmin.command('debug', handleDebug)
   superAdmin.command('delete', handleDelete)
   // On message
-  checkReplyWinnerMessage()
+  bot
+    .on('message')
+    .filter(onlyRepliesToBots)
+    .filter(checkReplyMessageId)
+    .filter(onlyMessageWithParameters, saveWinnerMessage)
   // Errors
   bot.catch(console.error)
   // Start bot
