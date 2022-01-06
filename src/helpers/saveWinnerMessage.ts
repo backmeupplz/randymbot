@@ -8,6 +8,8 @@ export default async function saveWinnerMessage(ctx: Context) {
     return false
   }
 
-  await ctx.reply(ctx.dbchat.winnerMessage.text)
+  await ctx.reply(ctx.dbchat.winnerMessage.text, {
+    entities: ctx.dbchat.winnerMessage.entities,
+  })
   return ctx.replyWithLocalization('success')
 }
