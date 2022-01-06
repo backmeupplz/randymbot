@@ -3,7 +3,7 @@ name: Español
 language: Selecciones el lenguaje.
 language_selected: Gracias! Ahora hablo Español.
 number_of_winners: Por favor, seleccione el número de ganadores para el sorteo.
-number_of_winners_selected: ¡Excelente! ¡Has seleccionado el número de ganadores - ${numberOfWinners}!
+number_of_winners_selected: ¡Excelente! ¡Has seleccionado el número de ganadores — ${numberOfWinners}!
 keep_raffle_message_true: Ahora Randy no editará (eliminará) el mensaje original.
 keep_raffle_message_false: Ahora Randy editará (eliminará) el mensaje original.
 no_raffle_message: Randy usará el mensaje estándar de la rifa ahora.
