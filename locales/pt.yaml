@@ -1,6 +1,7 @@
-name: Turkish
+name: Português
+# Commands
 help: |
-  Merhaba! Ben Randy Marsh. Bir grupta veya kanalda rastgele bir çekiliş katılımcısını (\"Katıl\" düğmesine basan) seçebilirim. Kaynak kodum [burada](https://github.com/backmeupplz/randymbot).
+  Olá! Eu sou Randy Marsh. Eu posso selecionar aleatoriamente um participante de sorteio (quem clica no botão \"Participar\") em um grupo ou canal. Meu código-fonte está [aqui] (https://github.com/backmeupplz/randymbot).
 
   -/language — change the language
   -/numberOfWinners — select the number of winners
@@ -22,20 +23,20 @@ help: |
   • If you want to configure a group chat, you can also do so in the private messages with @randymbot, use the /addChatToConfigure command to do so
   • Commands in group chats are only available if you're a group admin
 
-  Başka soruların mı var? Destek kanalımıza gel — @borodutch\_support 🦄
+  Ainda tem perguntas? Visite nosso canal de suporte — @borodutch\_support 🦄
 
   Also check out another one of my projects — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). It is a smart todo list app that uses cognitive psychology to trick your brain into finishing projects and showing results. It's free for 30 days with no strings attached, so go give it a shot if you want to improve your productivity. It helped me — it can help you as well.
-language: Lütfen dilinizi seçiniz.
-language_selected: Teşekkürler! Artık Türkçe konuşuyorum.
-number_of_winners: Lütfen çekiliş için kazanacak kişi sayısını seçiniz.
-number_of_winners_selected: Harika! Kazanacak kişi sayısını belirledin! ${numberOfWinners}.
-keep_raffle_message_true: Randy artık orijinal mesajı düzenlemeyecek (silmeyecek).
-keep_raffle_message_false: Randy artık orijinal mesajı düzenleyecek (silecek).
-no_raffle_message: Randy, artık varsayılan çekiliş mesajını kullanacak.
-check_subscription_empty: Randy, artık aboneliği kontrol etmeyecek.
+language: Por favor, escolha o idioma.
+language_selected: Obrigado! Agora eu falarei português.
+number_of_winners: Por favor selecione o número de ganhadores do sorteio.
+number_of_winners_selected: Ótimo! Você selecionou o número de ganhadores - ${numberOfWinners}!
+keep_raffle_message_true: Now Randy will not edit (delete) original message.
+keep_raffle_message_false: Now Randy will edit (delete) original message.
+no_raffle_message: Randy will use the standard raffle message.
+check_subscription_empty: Randy will not check subscription to any channels.
 check_subscription_success: |
-  Harika! şimdi ${bot}, katılımcının çekilişe katılmasına izin vermeden önce aşağıdaki kanala abone olup olmadığını kontrol edecek: ${chats}.
+  Great, now ${bot} will check if participants are subscribed to the following channels before allowing to participate: ${chats}.
 # Errors
 only_admin_error: Only admins can configure me.
-only_public_error: Üzgünüm, bu komut özel mesajlarda kullanılamaz.
-bot_not_admin_error: Lütfen, @randymbot u yönetici yapın.
+only_public_error: Desculpe, mas este comando não está disponível em conversas privadas.
+bot_not_admin_error: Please, make ${bot} an admin in ${chat}.
