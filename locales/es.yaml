@@ -1,31 +1,5 @@
 name: Español
 # Commands
-help: |
-  ¡Hola! Soy Randy Marsh. Puedo selecionar aleatoriamente el participante de un sorteo (que toque el botón \\"Participar\\") en un grupo o canal. Mi código fuente está [aqui] (https://github.com/backmeupplz/randymbot).
-
-  -/language — change the language
-  -/numberOfWinners — select the number of winners
-  -/numberOfWinners 10 — change the number of winners to 10
-  -/randy — begin the raffle
-  -/checkSubscription @handle, @another_handle, @third_handle — make @randymbot check if participants are subscribed to the specified channels
-  -/checkSubscription — send it without handles to remove the subscription check
-  -/customRaffleMessage — set a custom raffle message
-  -/noCustomRaffleMessage — remove the custom raffle message and use the default one
-  -/customWinnerMessage — set a custom winner message
-  -/noCustomWinnerMessage — remove the custom winner message and use the default one
-  -/chooseChannelToConfigure — choose a channel to configure
-  -/id — show the ID of the chat
-  -/keepRaffleMessage — don't replace the raffle message, instead lock the raffle and send a new message with the results
-
-  • Reply with any message to the raffle message to finish the raffle
-  • I highly recommend to try @randymbot in a private group chat first to see how it works
-  • If you want to configure a channel, you can do so in the private messages with @randymbot, just forward a message from the channel to @randymbot to start the configuration
-  • If you want to configure a group chat, you can also do so in the private messages with @randymbot, use the /addChatToConfigure command to do so
-  • Commands in group chats are only available if you're a group admin
-
-  ¿Aun tiene perguntas? Visite nuestro canal de soporte - @borodutch\_support 🦄
-
-  También revise otro de mis proyectos — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). Es una aplicación inteligente de gestión de tareas pendientes que usa psicología cognitiva para hacer trampas a su cerebro a fin de terminar proyectos y mostrar los resultados. Es gratuita por 30 días sin obligaciones, así que pruébela si desea aumentar su productividad. Me ha ayudado a mi — podría ayudarle a usted también.
 language: Selecciones el lenguaje.
 language_selected: Gracias! Ahora hablo Español.
 number_of_winners: Por favor, seleccione el número de ganadores para el sorteo.
@@ -37,6 +11,5 @@ check_subscription_empty: Randy no verificará la suscripción.
 check_subscription_success: |
   Genial, ahora el bot verificará si el participante está suscrito al siguiente canal antes de permitir participar: ${chats}.
 # Errors
-only_admin_error: Only admins can configure me.
 only_public_error: Lo sentimos, pero este comando no está disponible en mensajes privados.
 bot_not_admin_error: Por favor, haga de @randymbot un administrador en este grupo.

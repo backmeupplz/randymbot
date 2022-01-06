@@ -1,31 +1,5 @@
-name: English
+name: Українська
 # Commands
-help: |
-  Привіт! Це Ренді Марш. Я вмію випадковим чином вибирати учасника чату або каналу з тих, що натиснули на кнопку \"Взяти участь\". Мій вихідний код [ось тут](https://github.com/backmeupplz/randymbot).
-
-  -/language — change the language
-  -/numberOfWinners — select the number of winners
-  -/numberOfWinners 10 — change the number of winners to 10
-  -/randy — begin the raffle
-  -/checkSubscription @handle, @another_handle, @third_handle — make @randymbot check if participants are subscribed to the specified channels
-  -/checkSubscription — send it without handles to remove the subscription check
-  -/customRaffleMessage — set a custom raffle message
-  -/noCustomRaffleMessage — remove the custom raffle message and use the default one
-  -/customWinnerMessage — set a custom winner message
-  -/noCustomWinnerMessage — remove the custom winner message and use the default one
-  -/chooseChannelToConfigure — choose a channel to configure
-  -/id — show the ID of the chat
-  -/keepRaffleMessage — don't replace the raffle message, instead lock the raffle and send a new message with the results
-
-  • Reply with any message to the raffle message to finish the raffle
-  • I highly recommend to try @randymbot in a private group chat first to see how it works
-  • If you want to configure a channel, you can do so in the private messages with @randymbot, just forward a message from the channel to @randymbot to start the configuration
-  • If you want to configure a group chat, you can also do so in the private messages with @randymbot, use the /addChatToConfigure command to do so
-  • Commands in group chats are only available if you're a group admin
-
-  Залишилися питання? Почитайте наш канал підтримки — @borodutch\_support 🦄
-
-  Also check out another one of my projects — [Todorant](https://todorant.com) ([iOS](https://apps.apple.com/us/app/todorant/id1482078243), [Android](https://play.google.com/store/apps/details?id=com.todorant)). It is a smart todo list app that uses cognitive psychology to trick your brain into finishing projects and showing results. It's free for 30 days with no strings attached, so go give it a shot if you want to improve your productivity. It helped me — it can help you as well.
 language: Будь ласка, оберіть мову.
 language_selected: Дякую, тепер я говорю українською!
 number_of_winners: Будь ласка, виберіть, скільки переможців має бути в розіграші.

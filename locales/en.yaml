@@ -3,19 +3,19 @@ name: English
 help: |
   Hi there! I'm Randy Marsh. I can randomly select a raffle participant (that hit the "Participate" button) in a chat or a channel. My source code is [here](https://github.com/backmeupplz/randymbot).
 
-  -/language — change the language
-  -/numberOfWinners — select the number of winners
-  -/numberOfWinners 10 — change the number of winners to 10
-  -/randy — begin the raffle
-  -/checkSubscription @handle, @another_handle, @third_handle — make @randymbot check if participants are subscribed to the specified channels
-  -/checkSubscription — send it without handles to remove the subscription check
-  -/customRaffleMessage — set a custom raffle message
-  -/noCustomRaffleMessage — remove the custom raffle message and use the default one
-  -/customWinnerMessage — set a custom winner message
-  -/noCustomWinnerMessage — remove the custom winner message and use the default one
-  -/chooseChannelToConfigure — choose a channel to configure
-  -/id — show the ID of the chat
-  -/keepRaffleMessage — don't replace the raffle message, instead lock the raffle and send a new message with the results
+  /language — change the language
+  /numberOfWinners — select the number of winners
+  /numberOfWinners 10 — change the number of winners to 10
+  /randy — begin the raffle
+  /checkSubscription @handle, @another_handle, @third_handle — make @randymbot check if participants are subscribed to the specified channels
+  /checkSubscription — send it without handles to remove the subscription check
+  /customRaffleMessage — set a custom raffle message
+  /noCustomRaffleMessage — remove the custom raffle message and use the default one
+  /customWinnerMessage — set a custom winner message
+  /noCustomWinnerMessage — remove the custom winner message and use the default one
+  /chooseChannelToConfigure — choose a channel to configure
+  /id — show the ID of the chat
+  /keepRaffleMessage — don't replace the raffle message, instead lock the raffle and send a new message with the results
 
   • Reply with any message to the raffle message to finish the raffle
   • I highly recommend to try @randymbot in a private group chat first to see how it works
