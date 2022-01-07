@@ -1,5 +1,15 @@
 name: Turkish
-help: |
-  <b>Bot</b> nasıl Telegram botları yapacağınızı görmenizi sağlıyor.
-language: Lütfen, dili seçin.
-language_selected: <b>Bot</b> Türkçe konuşuyor.
+# Commands
+language: Lütfen dilinizi seçiniz.
+language_selected: Teşekkürler! Artık Türkçe konuşuyorum.
+number_of_winners: Lütfen çekiliş için kazanacak kişi sayısını seçiniz.
+number_of_winners_selected: Harika! Kazanacak kişi sayısını belirledin! ${numberOfWinners}.
+keep_raffle_message_true: Randy artık orijinal mesajı düzenlemeyecek (silmeyecek).
+keep_raffle_message_false: Randy artık orijinal mesajı düzenleyecek (silecek).
+no_raffle_message: Randy, artık varsayılan çekiliş mesajını kullanacak.
+check_subscription_empty: Randy, artık aboneliği kontrol etmeyecek.
+check_subscription_success: |
+  Harika! şimdi ${bot}, katılımcının çekilişe katılmasına izin vermeden önce aşağıdaki kanala abone olup olmadığını kontrol edecek: ${chats}.
+# Errors
+only_public_error: Üzgünüm, bu komut özel mesajlarda kullanılamaz.
+bot_not_admin_error: Lütfen, @randymbot u yönetici yapın.

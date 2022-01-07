@@ -1,0 +1,8 @@
+name: Português
+# Commands
+language: Por favor, escolha o idioma.
+language_selected: Obrigado! Agora eu falarei português.
+number_of_winners: Por favor selecione o número de ganhadores do sorteio.
+number_of_winners_selected: Ótimo! Você selecionou o número de ganhadores — ${numberOfWinners}!
+# Errors
+only_public_error: Desculpe, mas este comando não está disponível em conversas privadas.
