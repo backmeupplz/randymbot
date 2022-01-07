@@ -12,9 +12,11 @@ import {
 import { run } from '@grammyjs/runner'
 import attachChat from '@/middlewares/attachChat'
 import bot from '@/helpers/bot'
+import checkTypeMessage from '@/middlewares/checkTypeMessage'
 import configureI18n from '@/middlewares/configureI18n'
 import env from '@/helpers/env'
 import handleCheckSubscription from '@/handlers/checkSubscription'
+import handleCustomRaffleMessage from '@/handlers/raffleMessage'
 import handleCustomWinnerMessage from '@/handlers/winnerMessage'
 import handleDebug from '@/handlers/debug'
 import handleDelete from '@/handlers/delete'
@@ -32,8 +34,8 @@ import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
 import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
 import onlyRepliesToBots from '@/filters/onlyRepliesToBots'
-import onlyRepliesToWinnerMessageSetupMessage from '@/filters/onlyRepliesToWinnerMessageSetupMessage'
-import saveWinnerMessage from '@/helpers/saveWinnerMessage'
+import onlyRepliesToWinnerAndRaffleMessageSetupMessage from '@/filters/onlyRepliesToWinnerAndRaffleMessageSetupMessage'
+import saveMessage from '@/helpers/saveMessage'
 import startMessageDeleter from '@/helpers/messageDeleter'
 import startMongo from '@/helpers/startMongo'
 
@@ -64,6 +66,7 @@ async function runApp() {
   bot.command('noCustomRaffleMessage', handleNoCustomRaffleMessage)
   bot.command('noCustomWinnerMessage', handleNoCustomWinnerMessage)
   bot.command('customWinnerMessage', handleCustomWinnerMessage)
+  bot.command('customRaffleMessage', handleCustomRaffleMessage)
   bot.command('checkSubscription', handleCheckSubscription)
   // Super admin commands
   const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
@@ -73,8 +76,9 @@ async function runApp() {
   bot
     .on('message')
     .filter(onlyRepliesToBots)
-    .filter(onlyRepliesToWinnerMessageSetupMessage)
-    .filter(onlyMessageWithParameters, saveWinnerMessage)
+    .use(checkTypeMessage)
+    .filter(onlyRepliesToWinnerAndRaffleMessageSetupMessage)
+    .filter(onlyMessageWithParameters, saveMessage)
   // Errors
   bot.catch(console.error)
   // Start bot

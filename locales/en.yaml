@@ -32,7 +32,8 @@ number_of_winners: Please, select number of winners for a raffle.
 number_of_winners_selected: Great! Now the number of winners is ${numberOfWinners}.
 keep_raffle_message_true: Now Randy will not edit (delete) original message.
 keep_raffle_message_false: Now Randy will edit (delete) original message.
-no_raffle_message: Randy will use the standard raffle message.
+custom_raffle_message: Reply to this message to setup a custom raffle message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" without quotation marks in your message — it won\'t work without it. Cheers! 💪 The current raffle message (if set) is below.
+no_raffle_message: Randy will use standard raffle message now.
 check_subscription_empty: Randy will not check subscription to any channels.
 check_subscription_success: |
   Great, now ${bot} will check if participants are subscribed to the following channels before allowing to participate: ${chats}.
