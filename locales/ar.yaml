@@ -1,0 +1,8 @@
+name: اَلْعَرَبِيَّةُ
+# Commands
+language: الرجاء تحديد اللغة
+language_selected: شكرا! الآن أنا أتكلم العربية
+number_of_winners: من فضلك، اختر عدد الفائزين للسحب
+number_of_winners_selected: رائع ! لقد اخترت عدد الفائزين! ${numberOfWinners}
+# Errors
+only_public_error: عذراً، ولكن هذا الأمر غير متوفر في الرسائل الخاصة
