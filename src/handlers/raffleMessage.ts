@@ -7,6 +7,6 @@ export default async function handleCustomRaffleMessage(ctx: Context) {
   await ctx.dbchat.save()
 
   if (ctx.dbchat.raffleMessage?.text) {
-    await ctx.sendCopy(ctx.dbchat.raffleMessage.text)
+    await ctx.sendCopy(ctx.dbchat.raffleMessage)
   }
 }

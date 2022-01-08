@@ -12,7 +12,6 @@ import {
 import { run } from '@grammyjs/runner'
 import attachChat from '@/middlewares/attachChat'
 import bot from '@/helpers/bot'
-import checkTypeMessage from '@/middlewares/checkTypeMessage'
 import configureI18n from '@/middlewares/configureI18n'
 import env from '@/helpers/env'
 import handleCheckSubscription from '@/handlers/checkSubscription'
@@ -34,8 +33,10 @@ import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
 import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
 import onlyRepliesToBots from '@/filters/onlyRepliesToBots'
-import onlyRepliesToWinnerAndRaffleMessageSetupMessage from '@/filters/onlyRepliesToWinnerAndRaffleMessageSetupMessage'
-import saveMessage from '@/helpers/saveMessage'
+import onlyRepliesToRaffleMessageSetupMessage from '@/filters/onlyRepliesToRaffleMessageSetupMessage'
+import onlyRepliesToWinnerMessageSetupMessage from '@/filters/onlyRepliesToWinnerMessageSetupMessage'
+import saveRaffleMessage from '@/helpers/saveRaffleMessage'
+import saveWinnerMessage from '@/helpers/saveWinnerMessage'
 import startMessageDeleter from '@/helpers/messageDeleter'
 import startMongo from '@/helpers/startMongo'
 
@@ -72,13 +73,24 @@ async function runApp() {
   const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
   superAdmin.command('debug', handleDebug)
   superAdmin.command('delete', handleDelete)
-  // On message
+  // On message winnerMessage
   bot
     .on('message')
     .filter(onlyRepliesToBots)
-    .use(checkTypeMessage)
-    .filter(onlyRepliesToWinnerAndRaffleMessageSetupMessage)
-    .filter(onlyMessageWithParameters, saveMessage)
+    .filter(onlyRepliesToWinnerMessageSetupMessage)
+    .filter(
+      onlyMessageWithParameters(['$numberOfParticipants', '$winner']),
+      saveWinnerMessage
+    )
+  // On message raffleMessage
+  bot
+    .on('message')
+    .filter(onlyRepliesToBots)
+    .filter(onlyRepliesToRaffleMessageSetupMessage)
+    .filter(
+      onlyMessageWithParameters(['$numberOfParticipants']),
+      saveRaffleMessage
+    )
   // Errors
   bot.catch(console.error)
   // Start bot

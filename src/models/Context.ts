@@ -2,7 +2,7 @@ import { Context as BaseContext } from 'grammy'
 import { Chat } from '@/models/Chat'
 import { DocumentType } from '@typegoose/typegoose'
 import { I18nContext } from '@grammyjs/i18n/dist/source'
-import optionsForSendCopy from '@/helpers/optionsForSendCopy'
+import { Message } from '@grammyjs/types'
 import sendOptions from '@/helpers/sendOptions'
 
 class Context extends BaseContext {
@@ -14,8 +14,12 @@ class Context extends BaseContext {
     return this.reply(text, { ...sendOptions(this), ...other }, ...rest)
   }
 
-  sendCopy: this['reply'] = (text, other = {}, ...rest) => {
-    return this.reply(text, { ...optionsForSendCopy(this), ...other }, ...rest)
+  sendCopy = (message: Message) => {
+    return !message.text
+      ? false
+      : this.reply(message.text, {
+          entities: message.entities,
+        })
   }
 
   editMessageTextWithLocalization: this['editMessageText'] = (
