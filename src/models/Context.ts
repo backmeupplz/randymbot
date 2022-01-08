@@ -16,7 +16,7 @@ class Context extends BaseContext {
 
   sendCopy = (message: Message) => {
     return !message.text
-      ? false
+      ? undefined
       : this.reply(message.text, {
           entities: message.entities,
         })
