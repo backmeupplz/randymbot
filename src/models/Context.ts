@@ -14,13 +14,12 @@ class Context extends BaseContext {
     return this.reply(text, { ...sendOptions(this), ...other }, ...rest)
   }
 
-  sendCopy = (message: Message) => {
-    return !message.text
+  sendCopy = (message: Message) =>
+    !message.text
       ? undefined
       : this.reply(message.text, {
           entities: message.entities,
         })
-  }
 
   editMessageTextWithLocalization: this['editMessageText'] = (
     text,

@@ -40,6 +40,7 @@ check_subscription_success: |
 custom_winner_message: Reply to this message to setup a custom winner message. Make sure to reply to this message (we hope everyone knows what the word "reply" means by now). Make sure to include "$numberOfParticipants" and "$winner" without quotation marks in your message — it won't work without it. Cheers! 🎉 The current winner message (if set) is below.
 no_winner_message: Randy will use standard winner message now.
 success: Success!
+parameters_missing_message: Please, use ${params} in the message text.
 # Errors
 only_admin_error: Only admins can configure me.
 only_public_error: This command only works in group chats and channels.

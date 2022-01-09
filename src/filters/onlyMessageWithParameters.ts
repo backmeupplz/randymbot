@@ -1,14 +1,21 @@
 import Context from '@/models/Context'
+import sendOptions from '@/helpers/sendOptions'
 
 const onlyMessageWithParameters =
   (parameters: string[]) => async (ctx: Context) => {
-    return (
-      (!!ctx.msg?.text &&
-        !parameters.find((param) => !ctx.msg?.text?.includes(param))) ||
-      !(await ctx.reply(
-        `Please, use ${parameters.join(', ')} in the message text.`
-      ))
+    const msgInclParams = !parameters.find(
+      (param) => !ctx.message?.text?.includes(param)
     )
+
+    if (msgInclParams) return true
+
+    const params = parameters.join(', ')
+    const text = ctx.i18n.t('parameters_missing_message', {
+      params,
+    })
+
+    await ctx.reply(text, sendOptions(ctx))
+    return false
   }
 
 export default onlyMessageWithParameters

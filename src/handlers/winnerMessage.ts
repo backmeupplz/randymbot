@@ -7,6 +7,6 @@ export default async function handleCustomWinnerMessage(ctx: Context) {
   await ctx.dbchat.save()
 
   if (ctx.dbchat.winnerMessage) {
-    await ctx.sendCopy(ctx.dbchat.winnerMessage)
+    return ctx.sendCopy(ctx.dbchat.winnerMessage)
   }
 }
