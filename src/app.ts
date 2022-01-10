@@ -15,6 +15,8 @@ import bot from '@/helpers/bot'
 import configureI18n from '@/middlewares/configureI18n'
 import env from '@/helpers/env'
 import handleCheckSubscription from '@/handlers/checkSubscription'
+import handleCustomRaffleMessage from '@/handlers/raffleMessage'
+import handleCustomWinnerMessage from '@/handlers/winnerMessage'
 import handleDebug from '@/handlers/debug'
 import handleDelete from '@/handlers/delete'
 import handleHelp from '@/handlers/help'
@@ -29,6 +31,12 @@ import i18n from '@/helpers/i18n'
 import languageMenu from '@/menus/language'
 import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
+import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
+import onlyRepliesToBots from '@/filters/onlyRepliesToBots'
+import onlyRepliesToRaffleMessageSetupMessage from '@/filters/onlyRepliesToRaffleMessageSetupMessage'
+import onlyRepliesToWinnerMessageSetupMessage from '@/filters/onlyRepliesToWinnerMessageSetupMessage'
+import saveRaffleMessage from '@/helpers/saveRaffleMessage'
+import saveWinnerMessage from '@/helpers/saveWinnerMessage'
 import startMessageDeleter from '@/helpers/messageDeleter'
 import startMongo from '@/helpers/startMongo'
 
@@ -58,11 +66,31 @@ async function runApp() {
   bot.command('keepRaffleMessage', handleKeepRaffleMessage)
   bot.command('noCustomRaffleMessage', handleNoCustomRaffleMessage)
   bot.command('noCustomWinnerMessage', handleNoCustomWinnerMessage)
+  bot.command('customWinnerMessage', handleCustomWinnerMessage)
+  bot.command('customRaffleMessage', handleCustomRaffleMessage)
   bot.command('checkSubscription', handleCheckSubscription)
   // Super admin commands
   const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
   superAdmin.command('debug', handleDebug)
   superAdmin.command('delete', handleDelete)
+  // On message winnerMessage
+  bot
+    .on('message')
+    .filter(onlyRepliesToBots)
+    .filter(onlyRepliesToWinnerMessageSetupMessage)
+    .filter(
+      onlyMessageWithParameters(['$numberOfParticipants', '$winner']),
+      saveWinnerMessage
+    )
+  // On message raffleMessage
+  bot
+    .on('message')
+    .filter(onlyRepliesToBots)
+    .filter(onlyRepliesToRaffleMessageSetupMessage)
+    .filter(
+      onlyMessageWithParameters(['$numberOfParticipants']),
+      saveRaffleMessage
+    )
   // Errors
   bot.catch(console.error)
   // Start bot

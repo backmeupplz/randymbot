@@ -2,6 +2,7 @@ import { Context as BaseContext } from 'grammy'
 import { Chat } from '@/models/Chat'
 import { DocumentType } from '@typegoose/typegoose'
 import { I18nContext } from '@grammyjs/i18n/dist/source'
+import { Message } from '@grammyjs/types'
 import sendOptions from '@/helpers/sendOptions'
 
 class Context extends BaseContext {
@@ -12,6 +13,13 @@ class Context extends BaseContext {
     text = this.i18n.t(text)
     return this.reply(text, { ...sendOptions(this), ...other }, ...rest)
   }
+
+  sendCopy = (message: Message) =>
+    !message.text
+      ? undefined
+      : this.reply(message.text, {
+          entities: message.entities,
+        })
 
   editMessageTextWithLocalization: this['editMessageText'] = (
     text,
