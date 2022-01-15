@@ -1,11 +1,11 @@
 import Context from '@/models/Context'
 
 export default async function saveWinnerMessage(ctx: Context) {
-  if (!ctx.message?.text) return
+  if (!ctx.msg?.text) return
 
-  await ctx.sendCopy(ctx.message)
+  await ctx.sendCopy(ctx.msg)
 
-  ctx.dbchat.winnerMessage = ctx.message
+  ctx.dbchat.winnerMessage = ctx.msg
   await ctx.dbchat.save()
 
   return ctx.replyWithLocalization('success')

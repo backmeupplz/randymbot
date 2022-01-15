@@ -1,45 +1,32 @@
-// import { ContextMessageUpdate, Telegraf } from 'telegraf'
-// import { findChat } from '../models/Chat'
-// import { loc } from '../helpers/locale'
+import { ChatFromGetChat } from 'grammy/out/platform.node'
+import { findOrCreateChat } from '@/models/Chat'
+import Context from '@/models/Context'
 
-// export function setupAddChat(bot: Telegraf<ContextMessageUpdate>) {
-//   bot.command('addChat', async (ctx) => {
-//     // Check if private
-//     if (!ctx.message || ctx.message.chat.type !== 'private') {
-//       return
-//     }
-//     // Get randy
-//     const randy = await ctx.telegram.getMe()
-//     const thisChat = await findChat(ctx.chat.id)
-//     // Get chat id
-//     let chatId: string | number = ctx.message.text.split(' ')[1]
-//     if (!chatId) {
-//       return
-//     }
-//     if (!isNaN(+chatId)) {
-//       chatId = +chatId
-//     }
-//     // Check if randy is an admin there
-//     try {
-//       const randyMember = await ctx.telegram.getChatMember(chatId, randy.id)
-//       if (randyMember.status !== 'administrator') {
-//         return ctx.reply(loc('bot_not_admin_chat', thisChat.language))
-//       }
-//     } catch {
-//       return ctx.reply(loc('bot_not_admin_chat', thisChat.language))
-//     }
-//     // Check if user is administrator in that chat
-//     const chatMember = await ctx.telegram.getChatMember(chatId, ctx.from.id)
-//     if (!['administrator', 'creator'].includes(chatMember.status)) {
-//       return ctx.reply(loc('mustBeAnAdmin', thisChat.language))
-//     }
-//     // Add that chat to user's admin privelege
-//     const gotChat = await ctx.telegram.getChat(chatId)
-//     if (!thisChat.adminChatIds.includes(gotChat.id)) {
-//       thisChat.adminChatIds.push(gotChat.id)
-//     }
-//     await thisChat.save()
-//     // Reply with success
-//     return ctx.reply(loc('config_raffle_instructions', thisChat.language))
-//   })
-// }
+export default async function handleAddChat(ctx: Context) {
+  if (!ctx.match || ctx.chat?.type !== 'private') {
+    return
+  }
+
+  let chat: ChatFromGetChat
+
+  if (ctx.match.includes('@')) {
+    chat = await ctx.api.getChat(`${ctx.match}`)
+  } else {
+    chat = await ctx.api.getChat(`-${ctx.match}`)
+  }
+
+  const chatMember = await ctx.api.getChatMember(chat.id, ctx.me.id)
+
+  if (chatMember.status !== 'administrator') {
+    await ctx.replyWithLocalization('bot_not_admin_chat')
+    return
+  }
+
+  if (!ctx.dbchat.adminChatIds.includes(chat.id)) {
+    ctx.dbchat.adminChatIds.push(chat.id)
+    await ctx.dbchat.save()
+    await findOrCreateChat(chat.id)
+  }
+
+  return ctx.replyWithLocalization('config_raffle_instructions')
+}

@@ -45,10 +45,16 @@ export class Chat extends FindOrCreate {
   adminChatIds!: number[]
   @prop()
   editedChatId?: number
+  @prop()
+  creatorId?: number
 }
 
 const ChatModel = getModelForClass(Chat)
 
 export function findOrCreateChat(chatId: number) {
   return ChatModel.findOrCreate({ chatId })
+}
+
+export function findChat(chatId: number) {
+  return ChatModel.findOne({ chatId })
 }
