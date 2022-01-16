@@ -1,9 +1,9 @@
-import { updateAdminChatIds, updateEditedChatId } from '@/models/Chat'
+import { deleteAdminChatIds, deleteEditedChatId } from '@/models/Chat'
 import Context from '@/models/Context'
 
 export default async function removeChatFromConfigurableChats(ctx: Context) {
   if (!ctx.chat) return
 
-  await updateAdminChatIds(ctx.chat.id)
-  return updateEditedChatId(ctx.chat.id)
+  await deleteAdminChatIds(ctx.chat.id)
+  return deleteEditedChatId(ctx.chat.id)
 }

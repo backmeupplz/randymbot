@@ -2,7 +2,6 @@ import 'module-alias/register'
 import 'reflect-metadata'
 import 'source-map-support/register'
 
-import { BotError, NextFunction } from 'grammy'
 import {
   ignoreOld,
   onlyAdmin,
@@ -61,45 +60,26 @@ async function runApp() {
     .use(sequentialize())
     .use(ignoreOld())
     .use(attachChat)
-
-  // Added
-  bot
-    .on('my_chat_member')
-    .filter(onlyIfBotDesignatedAdmin, addChatFromConfigurableChats)
-
-  // Removed
-  bot.on('my_chat_member').filter(onlyKickedMe, removeChatFromConfigurableChats)
-
-  bot
     // Middlewares
     .use(i18n.middleware())
     .use(configureI18n)
     // Menus
     .use(languageMenu)
     .use(numberOfWinnersMenu)
-
-  // Extra middleware
-  bot
-    .errorBoundary((err: BotError, next: NextFunction) => {
-      console.error(err.message)
-      return next()
-    })
     .use(onlyAdmin(onlyAdminErrorHandler))
-
+  // Added
+  bot
+    .on('my_chat_member')
+    .filter(onlyIfBotDesignatedAdmin, addChatFromConfigurableChats)
+  // Removed
+  bot.on('my_chat_member').filter(onlyKickedMe, removeChatFromConfigurableChats)
   // Commands
   bot.command(['help', 'start'], handleHelp)
   bot.command('language', handleLanguage)
   bot.command('randy', onlyPublic(), handleRandy)
+  bot.command('numberOfWinners', onlyWithEditedChatId, handleNumberOfWinners)
   bot.command('id', handleId)
   bot.command('keepRaffleMessage', handleKeepRaffleMessage)
-  bot.command('addChat', handleAddChat)
-  bot.command('chooseChannelToConfigure', onlyPrivateChats, handleConfigRaffle)
-  bot.command('numberOfWinners', onlyWithEditedChatId, handleNumberOfWinners)
-  bot.command(
-    'checkSubscription',
-    onlyWithEditedChatId,
-    handleCheckSubscription
-  )
   bot.command(
     'noCustomRaffleMessage',
     onlyWithEditedChatId,
@@ -120,7 +100,13 @@ async function runApp() {
     onlyWithEditedChatId,
     handleCustomRaffleMessage
   )
-
+  bot.command(
+    'checkSubscription',
+    onlyWithEditedChatId,
+    handleCheckSubscription
+  )
+  bot.command('addChat', handleAddChat)
+  bot.command('chooseChannelToConfigure', onlyPrivateChats, handleConfigRaffle)
   // On message winnerMessage
   bot
     .on('msg')
@@ -130,7 +116,6 @@ async function runApp() {
       onlyMessageWithParameters(['$numberOfParticipants', '$winner']),
       saveWinnerMessage
     )
-
   // On message raffleMessage
   bot
     .on('msg')
@@ -140,15 +125,12 @@ async function runApp() {
       onlyMessageWithParameters(['$numberOfParticipants']),
       saveRaffleMessage
     )
-
   // Super admin commands
   const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
   superAdmin.command('debug', handleDebug)
   superAdmin.command('delete', handleDelete)
-
   // Inline menu callbacks
   bot.callbackQuery(/chat:.+/, botRemovedFromAdminChatIds, setEditedChat)
-
   // Errors
   bot.catch(console.error)
   // Start bot

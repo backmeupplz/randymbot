@@ -57,19 +57,21 @@ export function findChat(chatId: number) {
   return ChatModel.findOne({ chatId })
 }
 
-export function updateAdminChatIds(chatId: number) {
+export function deleteAdminChatIds(chatId: number) {
   return ChatModel.updateMany(
-    {},
+    {
+      adminChatIds: chatId,
+    },
     {
       $pull: { adminChatIds: chatId },
     }
   )
 }
 
-export function updateEditedChatId(chatId: number) {
+export function deleteEditedChatId(chatId: number) {
   return ChatModel.updateMany(
     {
-      editedChatId: { $eq: chatId },
+      editedChatId: chatId,
     },
     {
       $unset: { editedChatId: '' },

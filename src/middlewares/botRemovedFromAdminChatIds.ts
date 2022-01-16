@@ -1,18 +1,15 @@
 import { NextFunction } from 'grammy'
 import Context from '@/models/Context'
+import getChatIdFromCallbackQuery from '@/helpers/getChatIdFromCallbackQuery'
 
 export default async function botRemovedFromAdminChatIds(
   ctx: Context,
   next: NextFunction
 ) {
-  ctx.chatId = ctx.callbackQuery?.data?.replace('chat:', '')
+  await ctx.answerCallbackQuery()
+  const chatId = getChatIdFromCallbackQuery(ctx)
 
-  if (!ctx.chatId) {
-    throw new Error('faulty processing chatId')
-  }
-
-  if (!ctx.dbchat.adminChatIds.includes(Number(ctx.chatId))) {
-    await ctx.answerCallbackQuery()
+  if (!ctx.dbchat.adminChatIds.includes(Number(chatId))) {
     return ctx.replyWithLocalization('bot_not_admin_chat')
   }
 

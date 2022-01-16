@@ -1,5 +1,4 @@
 import { NextFunction } from 'grammy'
-// import { findChat, findOrCreateChat } from '@/models/Chat'
 import { findOrCreateChat } from '@/models/Chat'
 import Context from '@/models/Context'
 
