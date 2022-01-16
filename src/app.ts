@@ -2,6 +2,7 @@ import 'module-alias/register'
 import 'reflect-metadata'
 import 'source-map-support/register'
 
+import { BotError, NextFunction } from 'grammy'
 import {
   ignoreOld,
   onlyAdmin,
@@ -9,16 +10,13 @@ import {
   onlySuperAdmin,
   sequentialize,
 } from 'grammy-middlewares'
-import { matchFilter } from 'grammy'
 import { run } from '@grammyjs/runner'
-import addAdminChatIds from '@/helpers/addAdminChatIds'
+import addChatFromConfigurableChats from '@/helpers/addChatFromConfigurableChats'
 import attachChat from '@/middlewares/attachChat'
 import bot from '@/helpers/bot'
-import checkEditedChatId from '@/middlewares/checkEditedChatId'
+import botRemovedFromAdminChatIds from '@/middlewares/botRemovedFromAdminChatIds'
 import configureI18n from '@/middlewares/configureI18n'
-import deregisterAdminChatIds from '@/helpers/deregisterAdminChatIds'
 import env from '@/helpers/env'
-import gotKickedMe from '@/filters/gotKickedMe'
 import handleAddChat from '@/handlers/addChat'
 import handleCheckSubscription from '@/handlers/checkSubscription'
 import handleConfigRaffle from '@/handlers/configRaffle'
@@ -38,16 +36,20 @@ import i18n from '@/helpers/i18n'
 import languageMenu from '@/menus/language'
 import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
+import onlyIfBotDesignatedAdmin from '@/filters/onlyIfBotDesignatedAdmin'
+import onlyKickedMe from '@/filters/onlyKickedMe'
 import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
+import onlyPrivateChats from '@/middlewares/onlyPrivateChats'
 import onlyRepliesToBots from '@/filters/onlyRepliesToBots'
 import onlyRepliesToRaffleMessageSetupMessage from '@/filters/onlyRepliesToRaffleMessageSetupMessage'
 import onlyRepliesToWinnerMessageSetupMessage from '@/filters/onlyRepliesToWinnerMessageSetupMessage'
+import onlyWithEditedChatId from '@/middlewares/onlyWithEditedChatId'
+import removeChatFromConfigurableChats from '@/helpers/removeChatFromConfigurableChats'
 import saveRaffleMessage from '@/helpers/saveRaffleMessage'
 import saveWinnerMessage from '@/helpers/saveWinnerMessage'
 import setEditedChat from '@/helpers/setEditedChat'
 import startMessageDeleter from '@/helpers/messageDeleter'
 import startMongo from '@/helpers/startMongo'
-import statusEqAdm from '@/filters/statusEqAdm'
 
 async function runApp() {
   console.log('Starting app...')
@@ -59,11 +61,14 @@ async function runApp() {
     .use(sequentialize())
     .use(ignoreOld())
     .use(attachChat)
-    .filter(matchFilter('my_chat_member'))
-    .filter(statusEqAdm, addAdminChatIds)
 
-  // Bot is excluded from a group or channel
-  bot.on('my_chat_member').filter(gotKickedMe, deregisterAdminChatIds)
+  // Added
+  bot
+    .on('my_chat_member')
+    .filter(onlyIfBotDesignatedAdmin, addChatFromConfigurableChats)
+
+  // Removed
+  bot.on('my_chat_member').filter(onlyKickedMe, removeChatFromConfigurableChats)
 
   bot
     // Middlewares
@@ -72,35 +77,49 @@ async function runApp() {
     // Menus
     .use(languageMenu)
     .use(numberOfWinnersMenu)
-    // Extra middleware
+
+  // Extra middleware
+  bot
+    .errorBoundary((err: BotError, next: NextFunction) => {
+      console.error(err.message)
+      return next()
+    })
     .use(onlyAdmin(onlyAdminErrorHandler))
 
   // Commands
   bot.command(['help', 'start'], handleHelp)
   bot.command('language', handleLanguage)
   bot.command('randy', onlyPublic(), handleRandy)
-  bot.command('numberOfWinners', checkEditedChatId, handleNumberOfWinners)
   bot.command('id', handleId)
-  bot.command('keepRaffleMessage', checkEditedChatId, handleKeepRaffleMessage)
+  bot.command('keepRaffleMessage', handleKeepRaffleMessage)
+  bot.command('addChat', handleAddChat)
+  bot.command('chooseChannelToConfigure', onlyPrivateChats, handleConfigRaffle)
+  bot.command('numberOfWinners', onlyWithEditedChatId, handleNumberOfWinners)
+  bot.command(
+    'checkSubscription',
+    onlyWithEditedChatId,
+    handleCheckSubscription
+  )
   bot.command(
     'noCustomRaffleMessage',
-    checkEditedChatId,
+    onlyWithEditedChatId,
     handleNoCustomRaffleMessage
   )
-  bot.command('noCustomWinnerMessage', handleNoCustomWinnerMessage)
+  bot.command(
+    'noCustomWinnerMessage',
+    onlyWithEditedChatId,
+    handleNoCustomWinnerMessage
+  )
   bot.command(
     'customWinnerMessage',
-    checkEditedChatId,
+    onlyWithEditedChatId,
     handleCustomWinnerMessage
   )
   bot.command(
     'customRaffleMessage',
-    checkEditedChatId,
+    onlyWithEditedChatId,
     handleCustomRaffleMessage
   )
-  bot.command('checkSubscription', checkEditedChatId, handleCheckSubscription)
-  bot.command('addChat', handleAddChat)
-  bot.command('chooseChannelToConfigure', handleConfigRaffle)
 
   // On message winnerMessage
   bot
@@ -127,8 +146,8 @@ async function runApp() {
   superAdmin.command('debug', handleDebug)
   superAdmin.command('delete', handleDelete)
 
-  //
-  bot.callbackQuery(/chat:.+/, setEditedChat)
+  // Inline menu callbacks
+  bot.callbackQuery(/chat:.+/, botRemovedFromAdminChatIds, setEditedChat)
 
   // Errors
   bot.catch(console.error)

@@ -3,13 +3,7 @@ import Context from '@/models/Context'
 export default async function setEditedChat(ctx: Context) {
   await ctx.answerCallbackQuery()
 
-  const chatId = ctx.callbackQuery?.data?.replace('chat:', '')
-
-  if (!chatId) {
-    return
-  }
-
-  const chat = await ctx.api.getChat(chatId)
+  const chat = await ctx.api.getChat(Number(ctx.chatId))
 
   if (chat.type === 'private') {
     ctx.dbchat.editedChatId = undefined

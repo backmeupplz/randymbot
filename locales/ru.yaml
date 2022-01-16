@@ -51,8 +51,11 @@ bot_not_admin_chat: Пожалуйста, сделайте @randymbot админ
 config_raffle_instructions: Успех! Теперь выберите канал или чат, который хотите настроить, при помощи команды /chooseChannelToConfigure
 select_chat: Выберите чат или канал, который хотите настроить.
 private_messages: Приватные сообщения
-now_editing_this_chat: Отлично! Теперь вы редактируете настройки этого чата.
+now_editing_this_private_chat: Отлично! Теперь вы редактируете настройки этого чата.
+now_editing_this_chat: |
+  Отлично! Теперь вы редактируете настройки этого чата: ${chat}.
 # Errors
 only_admin_error: Команда доступна только админу.
 only_public_error: Эта команда работает только в групповом чате или канале.
 bot_not_admin_error: Пожалуйста, сделайте ${bot} админом в ${chat}.
+only_private_error: Эта команда работает только в приватном чате с ботом.

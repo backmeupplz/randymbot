@@ -45,8 +45,6 @@ export class Chat extends FindOrCreate {
   adminChatIds!: number[]
   @prop()
   editedChatId?: number
-  @prop()
-  creatorId?: number
 }
 
 const ChatModel = getModelForClass(Chat)
@@ -57,4 +55,24 @@ export function findOrCreateChat(chatId: number) {
 
 export function findChat(chatId: number) {
   return ChatModel.findOne({ chatId })
+}
+
+export function updateAdminChatIds(chatId: number) {
+  return ChatModel.updateMany(
+    {},
+    {
+      $pull: { adminChatIds: chatId },
+    }
+  )
+}
+
+export function updateEditedChatId(chatId: number) {
+  return ChatModel.updateMany(
+    {
+      editedChatId: { $eq: chatId },
+    },
+    {
+      $unset: { editedChatId: '' },
+    }
+  )
 }
