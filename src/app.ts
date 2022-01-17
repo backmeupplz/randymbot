@@ -59,7 +59,6 @@ async function runApp() {
     .use(sequentialize())
     .use(ignoreOld())
     .use(attachChat)
-    // Middlewares
     .use(i18n.middleware())
     .use(configureI18n)
     // Menus
