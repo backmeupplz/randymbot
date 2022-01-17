@@ -57,7 +57,7 @@ export function findChat(chatId: number) {
   return ChatModel.findOne({ chatId })
 }
 
-export function deleteAdminChatIds(chatId: number) {
+export function deleteFromAdminChatIds(chatId: number) {
   return ChatModel.updateMany(
     {
       adminChatIds: chatId,
@@ -68,13 +68,13 @@ export function deleteAdminChatIds(chatId: number) {
   )
 }
 
-export function deleteEditedChatId(chatId: number) {
+export function deleteFromEditedChatId(chatId: number) {
   return ChatModel.updateMany(
     {
       editedChatId: chatId,
     },
     {
-      $unset: { editedChatId: '' },
+      $unset: { editedChatId: 1 },
     }
   )
 }

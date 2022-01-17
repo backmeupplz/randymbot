@@ -2,7 +2,13 @@ import Context from '@/models/Context'
 import getChatIdFromCallbackQuery from '@/helpers/getChatIdFromCallbackQuery'
 
 export default async function setEditedChat(ctx: Context) {
+  await ctx.answerCallbackQuery()
   const chatId = getChatIdFromCallbackQuery(ctx)
+
+  if (ctx.me.id !== chatId && !ctx.dbchat.adminChatIds.includes(chatId)) {
+    return ctx.replyWithLocalization('bot_not_admin_chat')
+  }
+
   const chat = await ctx.api.getChat(chatId)
 
   if (chat.type === 'private') {

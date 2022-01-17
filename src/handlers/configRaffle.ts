@@ -8,11 +8,12 @@ export default async function handleConfigRaffle(ctx: Context) {
 
   const inlineKeyboard = new InlineKeyboard()
 
-  for (let i = 0; i < ctx.dbchat.adminChatIds.length; i++) {
-    const chatId = ctx.dbchat.adminChatIds[i]
+  for (const chatId of ctx.dbchat.adminChatIds) {
     const chat = await ctx.api.getChat(chatId)
 
-    if (chat.type === 'private') return
+    if (chat.type === 'private') {
+      throw new Error('chat type should not be set to private')
+    }
 
     inlineKeyboard.text(chat.title, `chat:${chat.id}`).row()
   }

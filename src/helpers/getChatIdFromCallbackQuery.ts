@@ -7,5 +7,5 @@ export default function getChatIdFromCallbackQuery(ctx: Context) {
     throw new Error('No chat id in callback query')
   }
 
-  return chatId
+  return Number(chatId)
 }

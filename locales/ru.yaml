@@ -54,8 +54,11 @@ private_messages: Приватные сообщения
 now_editing_this_private_chat: Отлично! Теперь вы редактируете настройки этого чата.
 now_editing_this_chat: |
   Отлично! Теперь вы редактируете настройки этого чата: ${chat}.
+arguments_missing: Укажите username или id.
 # Errors
 only_admin_error: Команда доступна только админу.
 only_public_error: Эта команда работает только в групповом чате или канале.
 bot_not_admin_error: Пожалуйста, сделайте ${bot} админом в ${chat}.
 only_private_error: Эта команда работает только в приватном чате с ботом.
+chat_not_found_error: Не удалось найти чат.
+incorrect_id: Неправильный username или id.

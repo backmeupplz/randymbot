@@ -1,6 +1,6 @@
 import Context from '@/models/Context'
 
-export default function onlyKickedMe(ctx: Context) {
+export default function onlyKickedOrRemovedAdminMe(ctx: Context) {
   return (
     ctx.myChatMember?.new_chat_member.status === 'left' ||
     ctx.myChatMember?.new_chat_member.status === 'kicked' ||
