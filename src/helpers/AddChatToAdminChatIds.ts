@@ -1,11 +1,10 @@
-import { findOrCreateChat } from '@/models/Chat'
+import { addChatIdFromAdminChatIds, findOrCreateChat } from '@/models/Chat'
 import Context from '@/models/Context'
 
-export default async function AddChatToAdminChatIds(ctx: Context) {
+export default async function addChatToAdminChatIds(ctx: Context) {
   if (!ctx.chat || !ctx.from) return
 
-  const { doc: chat } = await findOrCreateChat(ctx.from.id)
+  const { doc: from } = await findOrCreateChat(ctx.from.id)
 
-  chat.adminChatIds.push(ctx.chat.id)
-  return chat.save()
+  return addChatIdFromAdminChatIds(from.chatId, ctx.chat.id)
 }

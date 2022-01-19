@@ -29,13 +29,21 @@ export default async function handleAddChat(ctx: Context) {
     }
   }
 
-  if (!chat) return
-
-  const chatMember = await ctx.api.getChatMember(chat.id, ctx.me.id)
-
-  if (chatMember.status !== 'administrator') {
+  if (!chat) {
     return ctx.replyWithLocalization('bot_not_admin_chat')
   }
 
-  return ctx.replyWithLocalization('config_raffle_instructions')
+  const chatMember = await ctx.api.getChatMember(chat.id, ctx.me.id)
+
+  if (
+    chatMember.status === 'administrator' &&
+    (chatMember.can_delete_messages ||
+      (chatMember.can_delete_messages &&
+        chatMember.can_post_messages &&
+        chatMember.can_edit_messages))
+  ) {
+    return ctx.replyWithLocalization('config_raffle_instructions')
+  }
+
+  return ctx.replyWithLocalization('bot_not_admin_chat')
 }

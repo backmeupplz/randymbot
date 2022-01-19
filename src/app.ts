@@ -10,7 +10,7 @@ import {
   sequentialize,
 } from 'grammy-middlewares'
 import { run } from '@grammyjs/runner'
-import AddChatToAdminChatIds from '@/helpers/AddChatToAdminChatIds'
+import addChatToAdminChatIds from '@/helpers/addChatToAdminChatIds'
 import attachChat from '@/middlewares/attachChat'
 import bot from '@/helpers/bot'
 import configureI18n from '@/middlewares/configureI18n'
@@ -69,7 +69,7 @@ async function runApp() {
   // Added bot as admin
   bot
     .on('my_chat_member')
-    .filter(onlyIfBotDesignatedAdmin, AddChatToAdminChatIds)
+    .filter(onlyIfBotDesignatedAdmin, addChatToAdminChatIds)
   // Kicked or removed bot
   bot
     .on('my_chat_member')
@@ -111,7 +111,7 @@ async function runApp() {
     handleCheckSubscription
   )
   bot.command('addChat', onlyPrivateChats, handleAddChat)
-  bot.command('chooseChannelToConfigure', onlyPrivateChats, handleConfigRaffle)
+  bot.command('chooseChatToCongigure', onlyPrivateChats, handleConfigRaffle)
   // On message winnerMessage
   bot
     .on('msg')

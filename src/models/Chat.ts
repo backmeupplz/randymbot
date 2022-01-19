@@ -78,3 +78,14 @@ export function deleteFromEditedChatId(chatId: number) {
     }
   )
 }
+
+export function addChatIdFromAdminChatIds(fromId: number, chatId: number) {
+  return ChatModel.updateOne(
+    {
+      chatId: fromId,
+    },
+    {
+      $addToSet: { adminChatIds: chatId },
+    }
+  )
+}
