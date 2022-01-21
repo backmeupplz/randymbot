@@ -89,3 +89,25 @@ export function addChatIdFromAdminChatIds(fromId: number, chatId: number) {
     }
   )
 }
+
+export function setChatIdEditedChatId(fromId: number, chatId: number) {
+  return ChatModel.updateOne(
+    {
+      chatId: fromId,
+    },
+    {
+      $set: { editedChatId: chatId },
+    }
+  )
+}
+
+export function deleteOneFromAdminChatIds(fromId: number, chatId: number) {
+  return ChatModel.updateOne(
+    {
+      chatId: fromId,
+    },
+    {
+      $pull: { adminChatIds: chatId },
+    }
+  )
+}

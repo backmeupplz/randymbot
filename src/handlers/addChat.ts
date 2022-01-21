@@ -1,7 +1,10 @@
 import { GrammyError } from 'grammy'
+import { addChatIdFromAdminChatIds } from '@/models/Chat'
 import Context from '@/models/Context'
 
 export default async function handleAddChat(ctx: Context) {
+  if (!ctx.from) return
+
   if (!ctx.match) {
     return ctx.replyWithLocalization('arguments_missing')
   }
@@ -35,15 +38,29 @@ export default async function handleAddChat(ctx: Context) {
 
   const chatMember = await ctx.api.getChatMember(chat.id, ctx.me.id)
 
-  if (
-    chatMember.status === 'administrator' &&
-    (chatMember.can_delete_messages ||
-      (chatMember.can_delete_messages &&
-        chatMember.can_post_messages &&
-        chatMember.can_edit_messages))
-  ) {
-    return ctx.replyWithLocalization('config_raffle_instructions')
-  }
+  try {
+    const { status: isChatAdmin } = await ctx.api.getChatMember(
+      chat.id,
+      ctx.from.id
+    )
 
-  return ctx.replyWithLocalization('bot_not_admin_chat')
+    if (!['creator', 'administrator'].includes(isChatAdmin)) {
+      return ctx.replyWithLocalization('not_is_admin')
+    }
+
+    if (
+      chatMember.status === 'administrator' &&
+      (chatMember.can_delete_messages ||
+        (chatMember.can_delete_messages &&
+          chatMember.can_post_messages &&
+          chatMember.can_edit_messages))
+    ) {
+      await addChatIdFromAdminChatIds(ctx.from.id, chat.id)
+      return ctx.replyWithLocalization('config_raffle_instructions')
+    }
+
+    return ctx.replyWithLocalization('bot_not_admin_chat')
+  } catch (err) {
+    return ctx.replyWithLocalization('bot_not_admin_chat')
+  }
 }

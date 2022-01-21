@@ -1,11 +1,11 @@
 import Context from '@/models/Context'
 
 export default function getChatIdFromCallbackQuery(ctx: Context) {
-  const chatId = ctx.callbackQuery?.data?.replace('chat:', '')
+  const chatId = Number(ctx.callbackQuery?.data?.replace('chat:', ''))
 
-  if (!chatId) {
+  if (isNaN(chatId)) {
     throw new Error('No chat id in callback query')
   }
 
-  return Number(chatId)
+  return chatId
 }

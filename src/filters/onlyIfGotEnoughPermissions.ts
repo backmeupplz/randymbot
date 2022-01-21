@@ -1,8 +1,9 @@
 import Context from '@/models/Context'
 
-export default function onlyIfBotDesignatedAdmin(ctx: Context) {
+export default function onlyIfGotEnoughPermissions(ctx: Context) {
   if (
     ctx.chat &&
+    ctx.myChatMember?.new_chat_member.user.id === ctx.me.id &&
     ctx.myChatMember?.new_chat_member.status === 'administrator'
   ) {
     if (['group', 'supergroup'].includes(ctx.chat.type)) {

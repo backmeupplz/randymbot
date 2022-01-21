@@ -2,7 +2,10 @@ import Context from '@/models/Context'
 
 export default function onlyKickedOrRemovedAdminMe(ctx: Context) {
   if (ctx.myChatMember) {
-    if (['left', 'kicked'].includes(ctx.myChatMember.new_chat_member.status)) {
+    if (
+      ctx.myChatMember?.new_chat_member.user.id === ctx.me.id &&
+      ['left', 'kicked'].includes(ctx.myChatMember.new_chat_member.status)
+    ) {
       return true
     }
 

@@ -34,7 +34,7 @@ import i18n from '@/helpers/i18n'
 import languageMenu from '@/menus/language'
 import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
-import onlyIfBotDesignatedAdmin from '@/filters/onlyIfBotDesignatedAdmin'
+import onlyIfGotEnoughPermissions from '@/filters/onlyIfGotEnoughPermissions'
 import onlyKickedOrRemovedAdminMe from '@/filters/onlyKickedOrRemovedAdminMe'
 import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
 import onlyPrivateChats from '@/middlewares/onlyPrivateChats'
@@ -69,7 +69,7 @@ async function runApp() {
   // Added bot as admin
   bot
     .on('my_chat_member')
-    .filter(onlyIfBotDesignatedAdmin, addChatToAdminChatIds)
+    .filter(onlyIfGotEnoughPermissions, addChatToAdminChatIds)
   // Kicked or removed bot
   bot
     .on('my_chat_member')
@@ -130,12 +130,12 @@ async function runApp() {
       onlyMessageWithParameters(['$numberOfParticipants']),
       saveRaffleMessage
     )
+  // Inline menu callbacks
+  bot.callbackQuery(/chat:.+/, setEditedChat)
   // Super admin commands
   const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
   superAdmin.command('debug', handleDebug)
   superAdmin.command('delete', handleDelete)
-  // Inline menu callbacks
-  bot.callbackQuery(/chat:.+/, setEditedChat)
   // Errors
   bot.catch(console.error)
   // Start bot

@@ -55,6 +55,7 @@ now_editing_this_private_chat: Great! Now you're configuring this chat.
 now_editing_this_chat: |
   Great! Now you're configuring this chat: ${chat}.
 arguments_missing: Specify a username or id
+not_is_admin: You are not the administrator of this chat.
 # Errors
 only_admin_error: Only admins can configure me.
 only_public_error: This command only works in group chats and channels.
