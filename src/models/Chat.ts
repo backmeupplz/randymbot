@@ -111,3 +111,14 @@ export function deleteOneFromAdminChatIds(fromId: number, chatId: number) {
     }
   )
 }
+
+export function deleteOneFromEditedChatId(fromId: number) {
+  return ChatModel.updateOne(
+    {
+      chatId: fromId,
+    },
+    {
+      $unset: { editedChatId: 1 },
+    }
+  )
+}

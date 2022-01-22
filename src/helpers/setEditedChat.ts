@@ -1,6 +1,7 @@
 import {
   deleteFromEditedChatId,
   deleteOneFromAdminChatIds,
+  deleteOneFromEditedChatId,
   setChatIdEditedChatId,
 } from '@/models/Chat'
 import Context from '@/models/Context'
@@ -13,17 +14,19 @@ export default async function setEditedChat(ctx: Context) {
   if (!ctx.from) throw new Error('author not found')
 
   if (ctx.me.id === chatId) {
-    await deleteFromEditedChatId(ctx.from.id)
+    await deleteOneFromEditedChatId(ctx.from.id)
     return ctx.replyWithLocalization('now_editing_this_private_chat')
   }
 
-  const { status: isNotAdmin } = await ctx.api.getChatMember(
+  const { status: userChatMemberStatus } = await ctx.api.getChatMember(
     chatId,
     ctx.from.id
   )
 
-  if (['left', 'kicked', 'member', 'restricted'].includes(isNotAdmin)) {
-    await deleteFromEditedChatId(ctx.from.id)
+  if (
+    ['left', 'kicked', 'member', 'restricted'].includes(userChatMemberStatus)
+  ) {
+    await deleteFromEditedChatId(chatId)
     await deleteOneFromAdminChatIds(ctx.from.id, chatId)
     return ctx.replyWithLocalization('not_is_admin')
   }

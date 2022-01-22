@@ -39,12 +39,12 @@ export default async function handleAddChat(ctx: Context) {
   const chatMember = await ctx.api.getChatMember(chat.id, ctx.me.id)
 
   try {
-    const { status: isChatAdmin } = await ctx.api.getChatMember(
+    const { status: userChatMemberStatus } = await ctx.api.getChatMember(
       chat.id,
       ctx.from.id
     )
 
-    if (!['creator', 'administrator'].includes(isChatAdmin)) {
+    if (!['creator', 'administrator'].includes(userChatMemberStatus)) {
       return ctx.replyWithLocalization('not_is_admin')
     }
 
