@@ -4,7 +4,7 @@ import sendOptions from '@/helpers/sendOptions'
 const onlyMessageWithParameters =
   (parameters: string[]) => async (ctx: Context) => {
     const msgInclParams = !parameters.find(
-      (param) => !ctx.message?.text?.includes(param)
+      (param) => !ctx.msg?.text?.includes(param)
     )
 
     if (msgInclParams) return true

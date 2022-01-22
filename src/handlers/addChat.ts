@@ -1,45 +1,66 @@
-// import { ContextMessageUpdate, Telegraf } from 'telegraf'
-// import { findChat } from '../models/Chat'
-// import { loc } from '../helpers/locale'
+import { GrammyError } from 'grammy'
+import { addChatIdFromAdminChatIds } from '@/models/Chat'
+import Context from '@/models/Context'
 
-// export function setupAddChat(bot: Telegraf<ContextMessageUpdate>) {
-//   bot.command('addChat', async (ctx) => {
-//     // Check if private
-//     if (!ctx.message || ctx.message.chat.type !== 'private') {
-//       return
-//     }
-//     // Get randy
-//     const randy = await ctx.telegram.getMe()
-//     const thisChat = await findChat(ctx.chat.id)
-//     // Get chat id
-//     let chatId: string | number = ctx.message.text.split(' ')[1]
-//     if (!chatId) {
-//       return
-//     }
-//     if (!isNaN(+chatId)) {
-//       chatId = +chatId
-//     }
-//     // Check if randy is an admin there
-//     try {
-//       const randyMember = await ctx.telegram.getChatMember(chatId, randy.id)
-//       if (randyMember.status !== 'administrator') {
-//         return ctx.reply(loc('bot_not_admin_chat', thisChat.language))
-//       }
-//     } catch {
-//       return ctx.reply(loc('bot_not_admin_chat', thisChat.language))
-//     }
-//     // Check if user is administrator in that chat
-//     const chatMember = await ctx.telegram.getChatMember(chatId, ctx.from.id)
-//     if (!['administrator', 'creator'].includes(chatMember.status)) {
-//       return ctx.reply(loc('mustBeAnAdmin', thisChat.language))
-//     }
-//     // Add that chat to user's admin privelege
-//     const gotChat = await ctx.telegram.getChat(chatId)
-//     if (!thisChat.adminChatIds.includes(gotChat.id)) {
-//       thisChat.adminChatIds.push(gotChat.id)
-//     }
-//     await thisChat.save()
-//     // Reply with success
-//     return ctx.reply(loc('config_raffle_instructions', thisChat.language))
-//   })
-// }
+export default async function handleAddChat(ctx: Context) {
+  if (!ctx.from) return
+
+  if (!ctx.match) {
+    return ctx.replyWithLocalization('arguments_missing')
+  }
+
+  let chat
+  const regExUsernameOrId = /^[@][a-zA-Z]\w+|^[-]?\d+/g
+
+  try {
+    const chatId = regExUsernameOrId.exec(`${ctx.match}`)
+
+    if (!chatId?.length) return ctx.replyWithLocalization('incorrect_id')
+
+    chat = await ctx.api.getChat(chatId[0])
+  } catch (err) {
+    if (err instanceof GrammyError) {
+      if (err.description.includes('Bad Request: chat not found')) {
+        return ctx.replyWithLocalization('chat_not_found_error')
+      } else if (
+        err.description.includes(
+          'Forbidden: bot was kicked from the channel chat'
+        )
+      ) {
+        return ctx.replyWithLocalization('bot_not_admin_chat')
+      }
+    }
+  }
+
+  if (!chat) {
+    return ctx.replyWithLocalization('bot_not_admin_chat')
+  }
+
+  const chatMember = await ctx.api.getChatMember(chat.id, ctx.me.id)
+
+  try {
+    const { status: userChatMemberStatus } = await ctx.api.getChatMember(
+      chat.id,
+      ctx.from.id
+    )
+
+    if (!['creator', 'administrator'].includes(userChatMemberStatus)) {
+      return ctx.replyWithLocalization('not_is_admin')
+    }
+
+    if (
+      chatMember.status === 'administrator' &&
+      (chatMember.can_delete_messages ||
+        (chatMember.can_delete_messages &&
+          chatMember.can_post_messages &&
+          chatMember.can_edit_messages))
+    ) {
+      await addChatIdFromAdminChatIds(ctx.from.id, chat.id)
+      return ctx.replyWithLocalization('config_raffle_instructions')
+    }
+
+    return ctx.replyWithLocalization('bot_not_admin_chat')
+  } catch (err) {
+    return ctx.replyWithLocalization('bot_not_admin_chat')
+  }
+}

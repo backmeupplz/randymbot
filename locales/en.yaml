@@ -41,7 +41,25 @@ custom_winner_message: Reply to this message to setup a custom winner message. M
 no_winner_message: Randy will use standard winner message now.
 success: Success!
 parameters_missing_message: Please, use ${params} in the message text.
+raffle_text: Raffle has begun! Press the button below to participate. The winner will be randomly selected from the participants when an admin replies to this message. Good luck!
+raffle_text_multiple: Raffle has begun! Press the button below to participate. The winners will be randomly selected from the participants when an admin replies to this message. Good luck!
+participate_button: Participate!
+participated: Great, you are now participating in this raffle!
+already_participating: You are already participating, wonderful!
+config_raffle_no_chats: First, forward me a message from a channel or a chat you want to configure.
+bot_not_admin_chat: Please make @randymbot an admin in the chat.
+config_raffle_instructions: Success! Now select the chat or the channel you want to configure with /chooseChannelToConfigure
+select_chat: Select a chat or a channel to configure.
+private_messages: Private messages
+now_editing_this_private_chat: Great! Now you're configuring this chat.
+now_editing_this_chat: |
+  Great! Now you're configuring this chat: ${chat}.
+arguments_missing: Specify a username or id
+not_is_admin: You are not the administrator of this chat.
 # Errors
 only_admin_error: Only admins can configure me.
 only_public_error: This command only works in group chats and channels.
 bot_not_admin_error: Please, make ${bot} an admin in ${chat}.
+only_private_error: This command only works in private chat with the bot.
+chat_not_found_error: Failed to find chat.
+incorrect_id: Incorrect username or id

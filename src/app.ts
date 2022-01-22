@@ -10,11 +10,14 @@ import {
   sequentialize,
 } from 'grammy-middlewares'
 import { run } from '@grammyjs/runner'
+import addChatToAdminChatIds from '@/helpers/addChatToAdminChatIds'
 import attachChat from '@/middlewares/attachChat'
 import bot from '@/helpers/bot'
 import configureI18n from '@/middlewares/configureI18n'
 import env from '@/helpers/env'
+import handleAddChat from '@/handlers/addChat'
 import handleCheckSubscription from '@/handlers/checkSubscription'
+import handleConfigRaffle from '@/handlers/configRaffle'
 import handleCustomRaffleMessage from '@/handlers/raffleMessage'
 import handleCustomWinnerMessage from '@/handlers/winnerMessage'
 import handleDebug from '@/handlers/debug'
@@ -31,12 +34,18 @@ import i18n from '@/helpers/i18n'
 import languageMenu from '@/menus/language'
 import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
+import onlyIfGotEnoughPermissions from '@/filters/onlyIfGotEnoughPermissions'
+import onlyKickedOrRemovedAdminMe from '@/filters/onlyKickedOrRemovedAdminMe'
 import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
-import onlyRepliesToBots from '@/filters/onlyRepliesToBots'
+import onlyPrivateChats from '@/middlewares/onlyPrivateChats'
+import onlyRepliesToBotsOrChannelPosts from '@/filters/onlyRepliesToBotsOrChannelPosts'
 import onlyRepliesToRaffleMessageSetupMessage from '@/filters/onlyRepliesToRaffleMessageSetupMessage'
 import onlyRepliesToWinnerMessageSetupMessage from '@/filters/onlyRepliesToWinnerMessageSetupMessage'
+import onlyWithEditedChatIdOrPublicChat from '@/middlewares/onlyWithEditedChatIdOrPublicChat'
+import removeChatFromConfigurableChats from '@/helpers/removeChatFromConfigurableChats'
 import saveRaffleMessage from '@/helpers/saveRaffleMessage'
 import saveWinnerMessage from '@/helpers/saveWinnerMessage'
+import setEditedChat from '@/helpers/setEditedChat'
 import startMessageDeleter from '@/helpers/messageDeleter'
 import startMongo from '@/helpers/startMongo'
 
@@ -57,26 +66,56 @@ async function runApp() {
     .use(numberOfWinnersMenu)
     // Extra middleware
     .use(onlyAdmin(onlyAdminErrorHandler))
+  // Added bot as admin
+  bot
+    .on('my_chat_member')
+    .filter(onlyIfGotEnoughPermissions, addChatToAdminChatIds)
+  // Kicked or removed bot
+  bot
+    .on('my_chat_member')
+    .filter(onlyKickedOrRemovedAdminMe, removeChatFromConfigurableChats)
   // Commands
   bot.command(['help', 'start'], handleHelp)
   bot.command('language', handleLanguage)
   bot.command('randy', onlyPublic(), handleRandy)
-  bot.command('numberOfWinners', handleNumberOfWinners)
+  bot.command(
+    'numberOfWinners',
+    onlyWithEditedChatIdOrPublicChat,
+    handleNumberOfWinners
+  )
   bot.command('id', handleId)
   bot.command('keepRaffleMessage', handleKeepRaffleMessage)
-  bot.command('noCustomRaffleMessage', handleNoCustomRaffleMessage)
-  bot.command('noCustomWinnerMessage', handleNoCustomWinnerMessage)
-  bot.command('customWinnerMessage', handleCustomWinnerMessage)
-  bot.command('customRaffleMessage', handleCustomRaffleMessage)
-  bot.command('checkSubscription', handleCheckSubscription)
-  // Super admin commands
-  const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
-  superAdmin.command('debug', handleDebug)
-  superAdmin.command('delete', handleDelete)
+  bot.command(
+    'noCustomRaffleMessage',
+    onlyWithEditedChatIdOrPublicChat,
+    handleNoCustomRaffleMessage
+  )
+  bot.command(
+    'noCustomWinnerMessage',
+    onlyWithEditedChatIdOrPublicChat,
+    handleNoCustomWinnerMessage
+  )
+  bot.command(
+    'customWinnerMessage',
+    onlyWithEditedChatIdOrPublicChat,
+    handleCustomWinnerMessage
+  )
+  bot.command(
+    'customRaffleMessage',
+    onlyWithEditedChatIdOrPublicChat,
+    handleCustomRaffleMessage
+  )
+  bot.command(
+    'checkSubscription',
+    onlyWithEditedChatIdOrPublicChat,
+    handleCheckSubscription
+  )
+  bot.command('addChat', onlyPrivateChats, handleAddChat)
+  bot.command('chooseChatToCongigure', onlyPrivateChats, handleConfigRaffle)
   // On message winnerMessage
   bot
-    .on('message')
-    .filter(onlyRepliesToBots)
+    .on('msg')
+    .filter(onlyRepliesToBotsOrChannelPosts)
     .filter(onlyRepliesToWinnerMessageSetupMessage)
     .filter(
       onlyMessageWithParameters(['$numberOfParticipants', '$winner']),
@@ -84,13 +123,19 @@ async function runApp() {
     )
   // On message raffleMessage
   bot
-    .on('message')
-    .filter(onlyRepliesToBots)
+    .on('msg')
+    .filter(onlyRepliesToBotsOrChannelPosts)
     .filter(onlyRepliesToRaffleMessageSetupMessage)
     .filter(
       onlyMessageWithParameters(['$numberOfParticipants']),
       saveRaffleMessage
     )
+  // Inline menu callbacks
+  bot.callbackQuery(/chat:.+/, setEditedChat)
+  // Super admin commands
+  const superAdmin = bot.use(onlySuperAdmin(env.SUPER_ADMIN_ID))
+  superAdmin.command('debug', handleDebug)
+  superAdmin.command('delete', handleDelete)
   // Errors
   bot.catch(console.error)
   // Start bot

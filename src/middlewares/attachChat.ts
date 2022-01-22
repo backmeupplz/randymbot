@@ -3,10 +3,11 @@ import { findOrCreateChat } from '@/models/Chat'
 import Context from '@/models/Context'
 
 export default async function attachChat(ctx: Context, next: NextFunction) {
-  if (!ctx.from) {
+  if (!ctx.chat) {
     return
   }
-  const { doc: chat } = await findOrCreateChat(ctx.from.id)
+
+  const { doc: chat } = await findOrCreateChat(ctx.chat.id)
   ctx.dbchat = chat
   return next()
 }

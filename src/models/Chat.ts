@@ -52,3 +52,73 @@ const ChatModel = getModelForClass(Chat)
 export function findOrCreateChat(chatId: number) {
   return ChatModel.findOrCreate({ chatId })
 }
+
+export function findChat(chatId: number) {
+  return ChatModel.findOne({ chatId })
+}
+
+export function deleteFromAdminChatIds(chatId: number) {
+  return ChatModel.updateMany(
+    {
+      adminChatIds: chatId,
+    },
+    {
+      $pull: { adminChatIds: chatId },
+    }
+  )
+}
+
+export function deleteFromEditedChatId(chatId: number) {
+  return ChatModel.updateMany(
+    {
+      editedChatId: chatId,
+    },
+    {
+      $unset: { editedChatId: 1 },
+    }
+  )
+}
+
+export function addChatIdFromAdminChatIds(fromId: number, chatId: number) {
+  return ChatModel.updateOne(
+    {
+      chatId: fromId,
+    },
+    {
+      $addToSet: { adminChatIds: chatId },
+    }
+  )
+}
+
+export function setChatIdEditedChatId(fromId: number, chatId: number) {
+  return ChatModel.updateOne(
+    {
+      chatId: fromId,
+    },
+    {
+      $set: { editedChatId: chatId },
+    }
+  )
+}
+
+export function deleteOneFromAdminChatIds(fromId: number, chatId: number) {
+  return ChatModel.updateOne(
+    {
+      chatId: fromId,
+    },
+    {
+      $pull: { adminChatIds: chatId },
+    }
+  )
+}
+
+export function deleteOneFromEditedChatId(fromId: number) {
+  return ChatModel.updateOne(
+    {
+      chatId: fromId,
+    },
+    {
+      $unset: { editedChatId: 1 },
+    }
+  )
+}
