@@ -66,8 +66,8 @@ async function runApp() {
     // Menus
     .use(languageMenu)
     .use(numberOfWinnersMenu)
-  // Extra middleware
-  // .use(onlyAdmin(onlyAdminErrorHandler))
+    // Extra middleware
+    .use(onlyAdmin(onlyAdminErrorHandler))
   // Kicked or removed admin
   bot
     .on('chat_member')
