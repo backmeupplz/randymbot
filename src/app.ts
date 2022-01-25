@@ -35,6 +35,7 @@ import languageMenu from '@/menus/language'
 import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
 import onlyIfGotEnoughPermissions from '@/filters/onlyIfGotEnoughPermissions'
+import onlyKickedAdmin from '@/filters/onlyKickedAdmin'
 import onlyKickedOrRemovedAdminMe from '@/filters/onlyKickedOrRemovedAdminMe'
 import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
 import onlyPrivateChats from '@/middlewares/onlyPrivateChats'
@@ -43,6 +44,7 @@ import onlyRepliesToRaffleMessageSetupMessage from '@/filters/onlyRepliesToRaffl
 import onlyRepliesToWinnerMessageSetupMessage from '@/filters/onlyRepliesToWinnerMessageSetupMessage'
 import onlyWithEditedChatIdOrPublicChat from '@/middlewares/onlyWithEditedChatIdOrPublicChat'
 import removeChatFromConfigurableChats from '@/helpers/removeChatFromConfigurableChats'
+import removeChatIdFromAdminChatIdsAndEditedChatId from '@/helpers/removeChatIdFromAdminChatIdsAndEditedChatId'
 import saveRaffleMessage from '@/helpers/saveRaffleMessage'
 import saveWinnerMessage from '@/helpers/saveWinnerMessage'
 import setEditedChat from '@/helpers/setEditedChat'
@@ -64,8 +66,12 @@ async function runApp() {
     // Menus
     .use(languageMenu)
     .use(numberOfWinnersMenu)
-    // Extra middleware
-    .use(onlyAdmin(onlyAdminErrorHandler))
+  // Extra middleware
+  // .use(onlyAdmin(onlyAdminErrorHandler))
+  // Kicked or removed admin
+  bot
+    .on('chat_member')
+    .filter(onlyKickedAdmin, removeChatIdFromAdminChatIdsAndEditedChatId)
   // Added bot as admin
   bot
     .on('my_chat_member')
@@ -111,7 +117,7 @@ async function runApp() {
     handleCheckSubscription
   )
   bot.command('addChat', onlyPrivateChats, handleAddChat)
-  bot.command('chooseChatToCongigure', onlyPrivateChats, handleConfigRaffle)
+  bot.command('chooseChatToConfigure', onlyPrivateChats, handleConfigRaffle)
   // On message winnerMessage
   bot
     .on('msg')
@@ -140,7 +146,22 @@ async function runApp() {
   bot.catch(console.error)
   // Start bot
   await bot.init()
-  run(bot)
+  const allowed_updates = [
+    'update_id',
+    'message',
+    'edited_message',
+    'channel_post',
+    'edited_channel_post',
+    'inline_query',
+    'chosen_inline_result',
+    'callback_query',
+    'my_chat_member',
+    'chat_member',
+    'chat_join_request',
+  ]
+  run(bot, 500, {
+    allowed_updates,
+  })
   console.info(`Bot ${bot.botInfo.username} is up and running`)
   // Start message deleter
   startMessageDeleter()
