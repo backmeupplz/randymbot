@@ -5,21 +5,21 @@ export default function onlyIfGotEnoughPermissions(ctx: Context) {
     throw new Error('Chat or ChatMemberUpdated is undefined')
   }
 
-  const myNewInf = ctx.myChatMember.new_chat_member
+  const newInformationAboutMe = ctx.myChatMember.new_chat_member
 
-  if (myNewInf.status !== 'administrator') {
+  if (newInformationAboutMe.status !== 'administrator') {
     return false
   }
 
   if (['group', 'supergroup'].includes(ctx.chat.type)) {
-    return myNewInf.can_delete_messages
+    return newInformationAboutMe.can_delete_messages
   }
 
   if (['channel'].includes(ctx.chat.type)) {
     return (
-      myNewInf.can_delete_messages &&
-      !!myNewInf.can_post_messages &&
-      !!myNewInf.can_edit_messages
+      newInformationAboutMe.can_delete_messages &&
+      !!newInformationAboutMe.can_post_messages &&
+      !!newInformationAboutMe.can_edit_messages
     )
   }
 

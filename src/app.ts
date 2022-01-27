@@ -35,7 +35,7 @@ import languageMenu from '@/menus/language'
 import numberOfWinnersMenu from '@/menus/numberOfWinners'
 import onlyAdminErrorHandler from '@/helpers/onlyAdminErrorHandler'
 import onlyIfGotEnoughPermissions from '@/filters/onlyIfGotEnoughPermissions'
-import onlyKickedAdmin from '@/filters/onlyKickedAdmin'
+import onlyKickedAdminOrRemovedAdminIsNotBot from '@/filters/onlyKickedAdminOrRemovedAdminIsNotBot'
 import onlyKickedOrRemovedAdminMe from '@/filters/onlyKickedOrRemovedAdminMe'
 import onlyMessageWithParameters from '@/filters/onlyMessageWithParameters'
 import onlyPrivateChats from '@/middlewares/onlyPrivateChats'
@@ -68,10 +68,13 @@ async function runApp() {
     .use(numberOfWinnersMenu)
     // Extra middleware
     .use(onlyAdmin(onlyAdminErrorHandler))
-  // Kicked or removed admin
+  // Kicked or removed user with a role admin
   bot
     .on('chat_member')
-    .filter(onlyKickedAdmin, removeChatIdFromAdminChatIdsAndEditedChatId)
+    .filter(
+      onlyKickedAdminOrRemovedAdminIsNotBot,
+      removeChatIdFromAdminChatIdsAndEditedChatId
+    )
   // Added bot as admin
   bot
     .on('my_chat_member')
@@ -152,12 +155,9 @@ async function runApp() {
     'edited_message',
     'channel_post',
     'edited_channel_post',
-    'inline_query',
-    'chosen_inline_result',
     'callback_query',
     'my_chat_member',
     'chat_member',
-    'chat_join_request',
   ]
   run(bot, 500, {
     allowed_updates,

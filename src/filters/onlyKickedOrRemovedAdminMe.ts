@@ -5,22 +5,25 @@ export default function onlyKickedOrRemovedAdminMe(ctx: Context) {
     throw new Error('ChatMemberUpdated is undefined')
   }
 
-  const myOldInf = ctx.myChatMember.old_chat_member
-  const myNewInf = ctx.myChatMember.new_chat_member
+  const oldInformationAboutMe = ctx.myChatMember.old_chat_member
+  const newInformationAboutMe = ctx.myChatMember.new_chat_member
 
-  if (['left', 'kicked'].includes(myNewInf.status)) {
-    return true
-  }
-
-  if (myNewInf.status === 'member' && myOldInf.status === 'administrator') {
+  if (['left', 'kicked'].includes(newInformationAboutMe.status)) {
     return true
   }
 
   if (
-    myNewInf.status === 'administrator' &&
-    (!myNewInf.can_delete_messages ||
-      !myNewInf.can_post_messages ||
-      !myNewInf.can_edit_messages)
+    newInformationAboutMe.status === 'member' &&
+    oldInformationAboutMe.status === 'administrator'
+  ) {
+    return true
+  }
+
+  if (
+    newInformationAboutMe.status === 'administrator' &&
+    (!newInformationAboutMe.can_delete_messages ||
+      !newInformationAboutMe.can_post_messages ||
+      !newInformationAboutMe.can_edit_messages)
   ) {
     return true
   }

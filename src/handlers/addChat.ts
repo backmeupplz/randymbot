@@ -34,7 +34,7 @@ export default async function handleAddChat(ctx: Context) {
       chatMember.status === 'administrator' &&
       // For chat type group or supergroup
       (chatMember.can_delete_messages ||
-        //For chat type channel
+        // For chat type channel
         (chatMember.can_delete_messages &&
           chatMember.can_post_messages &&
           chatMember.can_edit_messages))

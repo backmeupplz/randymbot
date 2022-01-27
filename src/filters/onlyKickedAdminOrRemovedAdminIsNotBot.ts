@@ -1,6 +1,6 @@
 import Context from '@/models/Context'
 
-export default function onlyKickedAdmin(ctx: Context) {
+export default function onlyKickedAdminOrRemovedAdminIsNotBot(ctx: Context) {
   if (!ctx.chatMember) {
     throw new Error('ChatMemberUpdated is undefined')
   }
