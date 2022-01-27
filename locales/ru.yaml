@@ -13,7 +13,7 @@ help: |
   /noCustomRaffleMessage — удалить собственное сообщение о розыгрыше
   /customWinnerMessage — настроить собственное сообщение о победителе
   /noCustomWinnerMessage — удалить собственное сообщение о победителе
-  /chooseChannelToConfigure — выбрать канал для настройки
+  /chooseChatToConfigure — выбрать чат для настройки
   /id — узнать ID чата
   /keepRaffleMessage — не менять сообщение о розыгрыше, вместо этого завершить розыгрыш и отправить новое сообщение с результатом
 

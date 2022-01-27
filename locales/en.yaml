@@ -13,7 +13,7 @@ help: |
   /noCustomRaffleMessage — remove the custom raffle message and use the default one
   /customWinnerMessage — set a custom winner message
   /noCustomWinnerMessage — remove the custom winner message and use the default one
-  /chooseChannelToConfigure — choose a channel to configure
+  /chooseChatToConfigure — choose a chat to configure
   /id — show the ID of the chat
   /keepRaffleMessage — don't replace the raffle message, instead lock the raffle and send a new message with the results
 

@@ -1,29 +1,31 @@
 import Context from '@/models/Context'
 
 export default function onlyKickedOrRemovedAdminMe(ctx: Context) {
-  if (ctx.myChatMember) {
-    if (
-      ctx.myChatMember?.new_chat_member.user.id === ctx.me.id &&
-      ['left', 'kicked'].includes(ctx.myChatMember.new_chat_member.status)
-    ) {
-      return true
-    }
+  if (!ctx.myChatMember) {
+    throw new Error('ChatMemberUpdated is undefined')
+  }
 
-    if (
-      ctx.myChatMember.new_chat_member.status === 'member' &&
-      ctx.myChatMember.old_chat_member.status === 'administrator'
-    ) {
-      return true
-    }
+  const oldInformationAboutMe = ctx.myChatMember.old_chat_member
+  const newInformationAboutMe = ctx.myChatMember.new_chat_member
 
-    if (
-      ctx.myChatMember.new_chat_member.status === 'administrator' &&
-      (!ctx.myChatMember.new_chat_member.can_delete_messages ||
-        !ctx.myChatMember.new_chat_member.can_post_messages ||
-        !ctx.myChatMember.new_chat_member.can_edit_messages)
-    ) {
-      return true
-    }
+  if (['left', 'kicked'].includes(newInformationAboutMe.status)) {
+    return true
+  }
+
+  if (
+    newInformationAboutMe.status === 'member' &&
+    oldInformationAboutMe.status === 'administrator'
+  ) {
+    return true
+  }
+
+  if (
+    newInformationAboutMe.status === 'administrator' &&
+    (!newInformationAboutMe.can_delete_messages ||
+      !newInformationAboutMe.can_post_messages ||
+      !newInformationAboutMe.can_edit_messages)
+  ) {
+    return true
   }
 
   return false
