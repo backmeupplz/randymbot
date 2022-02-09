@@ -1,6 +1,9 @@
 import {
   addChatIdToEditedChatId,
   deleteOneFromEditedChatId,
+  findChat,
+  setRaffleMessageForChat,
+  setWinnerMessageForChat,
 } from '@/models/Chat'
 import Context from '@/models/Context'
 import getChatIdFromCallbackQuery from '@/helpers/getChatIdFromCallbackQuery'
@@ -36,6 +39,17 @@ export default async function setEditedChat(ctx: Context) {
   }
 
   await addChatIdToEditedChatId(ctx.from.id, chatId)
+  const foundChat = await findChat(chatId)
+  const winnerMessage = foundChat?.winnerMessage
+  const raffleMessage = foundChat?.raffleMessage
+
+  if (winnerMessage) {
+    await setWinnerMessageForChat(ctx.from.id, winnerMessage)
+  }
+
+  if (raffleMessage) {
+    await setRaffleMessageForChat(ctx.from.id, raffleMessage)
+  }
 
   return ctx.reply(
     ctx.i18n.t('now_editing_this_chat', {

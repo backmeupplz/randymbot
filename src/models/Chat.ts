@@ -122,3 +122,47 @@ export function deleteOneFromEditedChatId(fromId: number) {
     }
   )
 }
+
+export function setWinnerMessageForChats(chatId: number, msg: Message) {
+  return ChatModel.updateMany(
+    {
+      editedChatId: chatId,
+    },
+    {
+      $set: { winnerMessage: msg },
+    }
+  )
+}
+
+export function setWinnerMessageForChat(chatId: number, msg: Message) {
+  return ChatModel.updateOne(
+    {
+      chatId,
+    },
+    {
+      $set: { winnerMessage: msg },
+    }
+  )
+}
+
+export function setRaffleMessageForChats(chatId: number, msg: Message) {
+  return ChatModel.updateMany(
+    {
+      editedChatId: chatId,
+    },
+    {
+      $set: { raffleMessage: msg },
+    }
+  )
+}
+
+export function setRaffleMessageForChat(chatId: number, msg: Message) {
+  return ChatModel.updateOne(
+    {
+      chatId,
+    },
+    {
+      $set: { raffleMessage: msg },
+    }
+  )
+}

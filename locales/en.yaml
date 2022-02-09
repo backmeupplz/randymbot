@@ -48,7 +48,7 @@ participated: Great, you are now participating in this raffle!
 already_participating: You are already participating, wonderful!
 config_raffle_no_chats: First, forward me a message from a channel or a chat you want to configure.
 bot_not_admin_chat: Please make @randymbot an admin in the chat.
-config_raffle_instructions: Success! Now select the chat or the channel you want to configure with /chooseChannelToConfigure
+config_raffle_instructions: Success! Now select the chat or the channel you want to configure with /chooseChatToConfigure
 select_chat: Select a chat or a channel to configure.
 private_messages: Private messages
 now_editing_this_private_chat: Great! Now you're configuring this chat.

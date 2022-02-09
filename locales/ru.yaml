@@ -48,7 +48,7 @@ participated: Отлично, вы отметились, как участник
 already_participating: Вы уже принимаете участие, отлично!
 config_raffle_no_chats: Сначала перешлите мне форвард сообщения из чата или канала, который хотите настроить.
 bot_not_admin_chat: Пожалуйста, сделайте @randymbot админом в этом чате.
-config_raffle_instructions: Успех! Теперь выберите канал или чат, который хотите настроить, при помощи команды /chooseChannelToConfigure
+config_raffle_instructions: Успех! Теперь выберите канал или чат, который хотите настроить, при помощи команды /chooseChatToConfigure
 select_chat: Выберите чат или канал, который хотите настроить.
 private_messages: Приватные сообщения
 now_editing_this_private_chat: Отлично! Теперь вы редактируете настройки этого чата.
