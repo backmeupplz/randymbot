@@ -1,5 +1,11 @@
 import { GrammyError } from 'grammy'
-import { addChatIdToAdminChatIds } from '@/models/Chat'
+import {
+  addChatIdToAdminChatIds,
+  addChatIdToEditedChatId,
+  findChat,
+  setRaffleMessageForChat,
+  setWinnerMessageForChat,
+} from '@/models/Chat'
 import Context from '@/models/Context'
 
 export default async function handleAddChat(ctx: Context) {
@@ -40,6 +46,19 @@ export default async function handleAddChat(ctx: Context) {
           chatMember.can_edit_messages))
     ) {
       await addChatIdToAdminChatIds(ctx.from.id, chat.id)
+      await addChatIdToEditedChatId(ctx.from.id, chat.id)
+      const foundChat = await findChat(chat.id)
+      const winnerMessage = foundChat?.winnerMessage
+      const raffleMessage = foundChat?.raffleMessage
+
+      if (winnerMessage) {
+        await setWinnerMessageForChat(ctx.from.id, winnerMessage)
+      }
+
+      if (raffleMessage) {
+        await setRaffleMessageForChat(ctx.from.id, raffleMessage)
+      }
+
       return ctx.replyWithLocalization('config_raffle_instructions')
     }
 
