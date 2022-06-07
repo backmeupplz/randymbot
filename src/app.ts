@@ -6,7 +6,7 @@ dotenv.config({ path: `${__dirname}/../.env` })
 import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { setupStartAndHelp } from './commands/startAndHelp'
 import { setupRandy } from './commands/randy'
-import { setupCallback, setupListener } from './helpers/raffle'
+import { finishRaffle, setupCallback, setupListener } from './helpers/raffle'
 import { setupLanguage, setupLanguageCallback } from './commands/language'
 import { setupNumberCallback, setupNumber } from './commands/number'
 import { setupTestLocale } from './commands/testLocales'
@@ -20,6 +20,8 @@ import { setupConfigRaffle } from './commands/configRaffle'
 import { setupAddChat } from './commands/addChat'
 import { setupId } from './commands/id'
 import { setupDebug } from './commands/debug'
+import { RaffleModel } from './models'
+import { findChat } from './models/chat'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -51,6 +53,23 @@ setupConfigRaffle(bot)
 setupAddChat(bot)
 setupId(bot)
 setupDebug(bot)
+bot.on('message', async (ctx) => {
+  if (!ctx.chat || !ctx.chat.type || ctx.chat.type !== 'private' || !ctx.message || !ctx.message.forward_from_chat || ctx.message.forward_from_chat.type !== 'channel') {
+    return
+  }
+  const chatMember = await ctx.telegram.getChatMember(ctx.message.forward_from_chat.id, ctx.from.id)
+  if (chatMember.status !== 'creator' && chatMember.status !== 'administrator') {
+    return
+  }
+  const raffle = await RaffleModel.findOne({ chatId: ctx.message.forward_from_chat.id, messageId: ctx.message.forward_from_message_id })
+  if (!raffle) {
+    return
+  }
+  await finishRaffle(raffle, ctx, await findChat(ctx.message.forward_from_chat.id))
+  await ctx.reply('👍', {
+    reply_to_message_id: ctx.message.message_id,
+  })
+})
 
 // Setup callbacks
 setupLanguageCallback(bot)

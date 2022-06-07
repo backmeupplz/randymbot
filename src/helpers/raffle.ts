@@ -8,7 +8,7 @@ import {
 } from 'telegraf/typings/telegram-types'
 import { shuffle, random } from 'lodash'
 import { checkIfAdmin } from './checkAdmin'
-import { findChat } from '../models/chat'
+import { Chat, findChat } from '../models/chat'
 import { loc } from './locale'
 import { InstanceType } from 'typegoose'
 
@@ -300,13 +300,13 @@ function getButtons(raffle: InstanceType<Raffle>, language: string) {
  * @param raffle Raffle to finish
  * @param ctx Context of message that finished raffle
  */
-async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate) {
+export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, defaultChat?: Chat) {
   console.log(`Finishing raffle for chat ${raffle.chatId}`)
   // Get participants ids
   let ids = raffle.participantsIds
   const idsOriginalLength = ids.length
   // Get chat
-  const chat = await findChat(ctx.chat.id)
+  const chat = defaultChat || await findChat(ctx.chat.id)
   const nodelete = chat.nodelete
   // Check if there were participants
   if (ids.length <= 0) {

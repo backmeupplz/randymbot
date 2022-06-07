@@ -48,6 +48,7 @@ export function setupListenForForwards(bot: Telegraf<ContextMessageUpdate>) {
     }
     await thisChat.save()
     // Reply with success
-    return ctx.reply(loc('config_raffle_instructions', thisChat.language))
+    await ctx.reply(loc('config_raffle_instructions', thisChat.language))
+    return next()
   })
 }
