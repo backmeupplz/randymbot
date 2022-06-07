@@ -1,6 +1,6 @@
 // Dependencies
 import { ContextMessageUpdate, Telegraf } from 'telegraf'
-import { addRaffle, getRaffle, Raffle } from '../models'
+import { addRaffle, getRaffle, Raffle, getRaffleWithoutParticipantIds, RaffleModel } from '../models'
 import {
   ExtraEditMessage,
   ChatMember,
@@ -80,7 +80,7 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
     const datas = data.split('~')
     if (['l', 'n', 'c'].indexOf(datas[0]) > -1) return
     const chatId = Number(datas[0])
-    let raffle = await getRaffle(chatId, datas[1])
+    let raffle = await getRaffleWithoutParticipantIds(chatId, datas[1])
     // Get chat
     const chat = await findChat(ctx.chat.id)
     // Check if raffle is there
@@ -110,7 +110,12 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       return
     }
     // Check if already in
-    if (raffle.participantsIds.indexOf(ctx.from.id) > -1) {
+    const raffleWithThisParticipant = await RaffleModel.findOne({
+      chatId: raffle.chatId,
+      messageId: raffle.messageId,
+      participantsIds: ctx.from.id,
+    })
+    if (raffleWithThisParticipant) {
       try {
         await (<any>ctx).answerCbQuery(
           loc('already_participating', chat.language),
@@ -154,8 +159,14 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       }
     }
     // Add participant and update number
-    raffle.participantsIds.push(ctx.from.id)
-    raffle = await raffle.save()
+    await RaffleModel.updateOne({
+      chatId: raffle.chatId,
+      messageId: raffle.messageId,
+    }, {
+      $push : {
+        participantsIds: ctx.from.id,
+      },
+    })
     // Reply that they are in
     try {
       await (<any>ctx).answerCbQuery(
@@ -167,6 +178,11 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
       // do nothing
     }
     // Update counter of participants
+    // Get length of RaffleModel.participantsIds
+    const participantsIdsLength = (await RaffleModel.aggregate([
+      { $match: { chatId: raffle.chatId, messageId: raffle.messageId } },
+      { $project : { participantsIds: { $size: '$participantsIds' } } },
+    ]))[0].participantsIds
     try {
       // Add buttons
       const options: ExtraEditMessage = {
@@ -180,18 +196,18 @@ export function setupCallback(bot: Telegraf<ContextMessageUpdate>) {
         text = raffleMessage.text
           ? raffleMessage.text.replace(
               '$numberOfParticipants',
-              `${raffle.participantsIds.length}`
+              `${participantsIdsLength}`
             )
           : raffleMessage.caption.replace(
               '$numberOfParticipants',
-              `${raffle.participantsIds.length}`
+              `${participantsIdsLength}`
             )
       } else {
         text = `${loc(
           chat.number > 1 ? 'raffle_text_multiple' : 'raffle_text',
           chat.language
         )}\n\n${loc('participants_number', chat.language)}: ${
-          raffle.participantsIds.length
+          participantsIdsLength
         }`
       }
       if (!raffle.raffleMessage || raffle.raffleMessage.text) {

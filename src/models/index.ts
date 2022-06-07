@@ -8,6 +8,6 @@ mongoose.connect(process.env.MONGO, {
 })
 
 // Get models
-import { addRaffle, getRaffle, Raffle } from './raffle'
+import { addRaffle, getRaffle, Raffle, getRaffleWithoutParticipantIds, RaffleModel } from './raffle'
 // Export models
-export { addRaffle, getRaffle, Raffle }
+export { addRaffle, getRaffle, Raffle, getRaffleWithoutParticipantIds, RaffleModel }

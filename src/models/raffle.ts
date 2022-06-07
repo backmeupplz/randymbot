@@ -21,7 +21,7 @@ export class Raffle extends Typegoose {
 }
 
 // Get Raffle model
-const RaffleModel = new Raffle().getModelForClass(Raffle)
+export const RaffleModel = new Raffle().getModelForClass(Raffle)
 
 /**
  * Adding new raffle
@@ -43,6 +43,23 @@ export async function addRaffle(chatId: number) {
 export async function getRaffle(chatId: number, id: string | number) {
   try {
     const raffle = await RaffleModel.findById(id)
+    if (raffle) {
+      return raffle
+    }
+  } catch (err) {
+    return RaffleModel.findOne({ chatId, messageId: Number(id) })
+  }
+}
+
+/**
+ * Getting existing raffle without the participant ids
+ * @param chatId Chat id of the raffle
+ * @param messageId Message id of the raffle
+ * @returns requested raffle
+ */
+export async function getRaffleWithoutParticipantIds(chatId: number, id: string | number) {
+  try {
+    const raffle = await RaffleModel.findById(id).select('-participantsIds')
     if (raffle) {
       return raffle
     }
