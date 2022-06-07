@@ -65,10 +65,16 @@ bot.on('message', async (ctx) => {
   if (!raffle) {
     return
   }
-  await finishRaffle(raffle, ctx, await findChat(ctx.message.forward_from_chat.id))
-  await ctx.reply('👍', {
-    reply_to_message_id: ctx.message.message_id,
-  })
+  try {
+    await finishRaffle(raffle, ctx, await findChat(ctx.message.forward_from_chat.id))
+    await ctx.reply('👍', {
+      reply_to_message_id: ctx.message.message_id,
+    })
+  } catch {
+    await ctx.reply('👎 try again', {
+      reply_to_message_id: ctx.message.message_id,
+    })
+  }
 })
 
 // Setup callbacks
