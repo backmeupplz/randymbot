@@ -70,7 +70,8 @@ bot.on('message', async (ctx) => {
     await ctx.reply('👍', {
       reply_to_message_id: ctx.message.message_id,
     })
-  } catch {
+  } catch (err) {
+    console.error(err)
     await ctx.reply('👎 try again', {
       reply_to_message_id: ctx.message.message_id,
     })
