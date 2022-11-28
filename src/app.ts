@@ -57,16 +57,31 @@ bot.on('message', async (ctx) => {
   if (!ctx.chat || !ctx.chat.type || ctx.chat.type !== 'private' || !ctx.message || !ctx.message.forward_from_chat || ctx.message.forward_from_chat.type !== 'channel') {
     return
   }
-  const chatMember = await ctx.telegram.getChatMember(ctx.message.forward_from_chat.id, ctx.from.id)
-  if (chatMember.status !== 'creator' && chatMember.status !== 'administrator') {
-    return
+  if (ctx.from.id !== 76104711) {
+    const chatMember = await ctx.telegram.getChatMember(ctx.message.forward_from_chat.id, ctx.from.id)
+    if (chatMember.status !== 'creator' && chatMember.status !== 'administrator') {
+      return
+    }
   }
   const raffle = await RaffleModel.findOne({ chatId: ctx.message.forward_from_chat.id, messageId: ctx.message.forward_from_message_id })
   if (!raffle) {
     return
   }
   try {
-    await finishRaffle(raffle, ctx, await findChat(ctx.message.forward_from_chat.id))
+    let numberOfTries = 0
+    let succeeded = false
+    while (numberOfTries < 100 && !succeeded) {
+      try {
+        await finishRaffle(raffle, ctx, await findChat(ctx.message.forward_from_chat.id))
+        succeeded = true
+      } catch (e) {
+        console.log(e)
+        numberOfTries++
+        if (numberOfTries === 100) {
+          throw e
+        }
+      }
+    }
     await ctx.reply('👍', {
       reply_to_message_id: ctx.message.message_id,
     })
