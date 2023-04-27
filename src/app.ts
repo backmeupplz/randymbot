@@ -54,7 +54,6 @@ setupAddChat(bot)
 setupId(bot)
 setupDebug(bot)
 bot.on('message', async (ctx) => {
-  console.log(ctx.update)
   if (!ctx.chat || !ctx.chat.type || ctx.chat.type !== 'private' || !ctx.message || !ctx.message.forward_from_chat) {
     return
   }
