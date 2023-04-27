@@ -54,7 +54,7 @@ setupAddChat(bot)
 setupId(bot)
 setupDebug(bot)
 bot.on('message', async (ctx) => {
-  if (!ctx.chat || !ctx.chat.type || ctx.chat.type !== 'private' || !ctx.message || !ctx.message.forward_from_chat || ctx.message.forward_from_chat.type !== 'channel') {
+  if (!ctx.chat || !ctx.chat.type || ctx.chat.type !== 'private' || !ctx.message || !ctx.message.forward_from_chat) {
     return
   }
   if (ctx.from.id !== 76104711) {
