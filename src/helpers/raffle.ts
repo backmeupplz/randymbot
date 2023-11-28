@@ -12,6 +12,8 @@ import { Chat, findChat } from '../models/chat'
 import { loc } from './locale'
 import { InstanceType } from 'typegoose'
 
+const promo = "Randy's bonus: you can get free crypto signals by joining the Hall-Of-Fame trader: <a href=\"https://t.me/+lokvZ8w0itEyNzQ0\">Join now</a>"
+
 /**
  * Starting a new raffle
  * @param ctx Context of the message that started
@@ -330,7 +332,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
         )
       }
     } else {
-      await ctx.telegram.sendMessage(raffle.chatId, text, {
+      await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
         parse_mode: 'HTML',
         disable_web_page_preview: true,
       })
@@ -366,7 +368,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           )
         }
       } else {
-        await ctx.telegram.sendMessage(raffle.chatId, text, {
+        await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
           parse_mode: 'HTML',
           disable_web_page_preview: true,
         })
@@ -448,7 +450,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
         )
       }
     } else {
-      await ctx.telegram.sendMessage(raffle.chatId, text, {
+      await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
         parse_mode: 'HTML',
         disable_web_page_preview: true,
       })
@@ -506,7 +508,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           )
         }
       } else {
-        await ctx.telegram.sendMessage(raffle.chatId, text, {
+        await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
           parse_mode: 'HTML',
           disable_web_page_preview: true,
         })
@@ -550,7 +552,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           )
         }
       } else {
-        await ctx.telegram.sendMessage(raffle.chatId, text, {
+        await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
           parse_mode: 'HTML',
           disable_web_page_preview: true,
         })
