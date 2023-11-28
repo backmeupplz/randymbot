@@ -319,7 +319,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           raffle.chatId,
           raffle.messageId,
           undefined,
-          text,
+          `${text}\n\n${promo}`,
           { disable_web_page_preview: true, parse_mode: 'HTML' }
         )
       } else {
@@ -327,7 +327,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           raffle.chatId,
           raffle.messageId,
           undefined,
-          text,
+          `${text}\n\n${promo}`,
           { disable_web_page_preview: true, parse_mode: 'HTML' } as any
         )
       }
@@ -355,7 +355,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            text,
+            `${text}\n\n${promo}`,
             { disable_web_page_preview: true, parse_mode: 'HTML' }
           )
         } else {
@@ -363,7 +363,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            text,
+            `${text}\n\n${promo}`,
             { disable_web_page_preview: true, parse_mode: 'HTML' } as any
           )
         }
@@ -431,7 +431,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           raffle.chatId,
           raffle.messageId,
           undefined,
-          text,
+          `${text}\n\n${promo}`,
           {
             parse_mode: 'HTML',
             disable_web_page_preview: true,
@@ -442,7 +442,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           raffle.chatId,
           raffle.messageId,
           undefined,
-          text,
+          `${text}\n\n${promo}`,
           {
             parse_mode: 'HTML',
             disable_web_page_preview: true,
@@ -489,7 +489,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            text,
+            `${text}\n\n${promo}`,
             {
               parse_mode: 'HTML',
               disable_web_page_preview: true,
@@ -500,7 +500,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            text,
+            `${text}\n\n${promo}`,
             {
               parse_mode: 'HTML',
               disable_web_page_preview: true,
@@ -533,7 +533,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            text,
+            `${text}\n\n${promo}`,
             {
               parse_mode: 'HTML',
               disable_web_page_preview: true,
@@ -544,7 +544,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            text,
+            `${text}\n\n${promo}`,
             {
               parse_mode: 'HTML',
               disable_web_page_preview: true,
