@@ -12,7 +12,7 @@ import { Chat, findChat } from '../models/chat'
 import { loc } from './locale'
 import { InstanceType } from 'typegoose'
 
-const promo = "Randy's bonus: you can get free crypto signals by joining the Hall-Of-Fame trader: <a href=\"https://t.me/+lokvZ8w0itEyNzQ0\">Join now</a>"
+const promo = "<a href=\"https://t.me/+QcQ3ixtsDToxNWQx\">Join Lunchbreak!</a>"
 
 /**
  * Starting a new raffle
