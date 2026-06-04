@@ -12,8 +12,6 @@ import { Chat, findChat } from '../models/chat'
 import { loc } from './locale'
 import { InstanceType } from 'typegoose'
 
-const promo = "<a href=\"https://t.me/+QcQ3ixtsDToxNWQx\">Join Lunchbreak!</a>"
-
 /**
  * Starting a new raffle
  * @param ctx Context of the message that started
@@ -319,7 +317,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           raffle.chatId,
           raffle.messageId,
           undefined,
-          `${text}\n\n${promo}`,
+          text,
           { disable_web_page_preview: true, parse_mode: 'HTML' }
         )
       } else {
@@ -327,12 +325,12 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           raffle.chatId,
           raffle.messageId,
           undefined,
-          `${text}\n\n${promo}`,
+          text,
           { disable_web_page_preview: true, parse_mode: 'HTML' } as any
         )
       }
     } else {
-      await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
+      await ctx.telegram.sendMessage(raffle.chatId, text, {
         parse_mode: 'HTML',
         disable_web_page_preview: true,
       })
@@ -355,7 +353,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            `${text}\n\n${promo}`,
+            text,
             { disable_web_page_preview: true, parse_mode: 'HTML' }
           )
         } else {
@@ -363,12 +361,12 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            `${text}\n\n${promo}`,
+            text,
             { disable_web_page_preview: true, parse_mode: 'HTML' } as any
           )
         }
       } else {
-        await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
+        await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
           disable_web_page_preview: true,
         })
@@ -431,7 +429,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           raffle.chatId,
           raffle.messageId,
           undefined,
-          `${text}\n\n${promo}`,
+          text,
           {
             parse_mode: 'HTML',
             disable_web_page_preview: true,
@@ -442,7 +440,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           raffle.chatId,
           raffle.messageId,
           undefined,
-          `${text}\n\n${promo}`,
+          text,
           {
             parse_mode: 'HTML',
             disable_web_page_preview: true,
@@ -450,7 +448,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
         )
       }
     } else {
-      await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
+      await ctx.telegram.sendMessage(raffle.chatId, text, {
         parse_mode: 'HTML',
         disable_web_page_preview: true,
       })
@@ -489,7 +487,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            `${text}\n\n${promo}`,
+            text,
             {
               parse_mode: 'HTML',
               disable_web_page_preview: true,
@@ -500,7 +498,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            `${text}\n\n${promo}`,
+            text,
             {
               parse_mode: 'HTML',
               disable_web_page_preview: true,
@@ -508,7 +506,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           )
         }
       } else {
-        await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
+        await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
           disable_web_page_preview: true,
         })
@@ -533,7 +531,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            `${text}\n\n${promo}`,
+            text,
             {
               parse_mode: 'HTML',
               disable_web_page_preview: true,
@@ -544,7 +542,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
             raffle.chatId,
             raffle.messageId,
             undefined,
-            `${text}\n\n${promo}`,
+            text,
             {
               parse_mode: 'HTML',
               disable_web_page_preview: true,
@@ -552,7 +550,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           )
         }
       } else {
-        await ctx.telegram.sendMessage(raffle.chatId, `${text}\n\n${promo}`, {
+        await ctx.telegram.sendMessage(raffle.chatId, text, {
           parse_mode: 'HTML',
           disable_web_page_preview: true,
         })
