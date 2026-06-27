@@ -3,6 +3,7 @@ import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { checkIfAdmin } from '../helpers/checkAdmin'
 import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
+import { markdownishToTelegramHtml, replyWithHtml } from '../helpers/telegramHtml'
 
 /**
  * Setting up the start and help commands
@@ -17,7 +18,7 @@ export function setupStartAndHelp(bot: Telegraf<ContextMessageUpdate>) {
     const chat = await findChat(ctx.chat.id)
     // Reply
     const text = loc('public_help_start', chat.language)
-    ctx.replyWithMarkdown(text, {
+    return replyWithHtml(ctx, markdownishToTelegramHtml(text), {
       disable_notification: true,
       disable_web_page_preview: true,
     })

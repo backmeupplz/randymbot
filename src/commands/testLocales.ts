@@ -1,6 +1,6 @@
 // Dependencies
-import { Telegraf, ContextMessageUpdate, Extra } from 'telegraf'
-import { ExtraReplyMessage } from 'telegraf/typings/telegram-types'
+import { Telegraf, ContextMessageUpdate } from 'telegraf'
+import { markdownishToTelegramHtml, replyWithHtml } from '../helpers/telegramHtml'
 
 export function setupTestLocale(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('testLocales', async ctx => {
@@ -12,9 +12,7 @@ export function setupTestLocale(bot: Telegraf<ContextMessageUpdate>) {
       const value = localizations[key]
       for (const local of Object.keys(value)) {
         try {
-          await ctx.reply(loc(key, local), Extra.markdown(
-            true
-          ) as ExtraReplyMessage)
+          await replyWithHtml(ctx, markdownishToTelegramHtml(loc(key, local)))
         } catch (err) {
           console.log(key, local, err.message)
         }

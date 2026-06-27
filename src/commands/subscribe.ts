@@ -2,6 +2,11 @@ import { Telegraf, ContextMessageUpdate } from 'telegraf'
 import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
 import { getChatIdForConfig } from '../helpers/getChatIdForConfig'
+import {
+  formatChannelHandles,
+  markdownishToTelegramHtml,
+  replyWithHtml,
+} from '../helpers/telegramHtml'
 
 export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
   bot.command('subscribe', async (ctx) => {
@@ -18,10 +23,13 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
       .trim()
       .replace(/@/g, '')
     if (!subscribeStringTemp) {
-      return ctx.reply(loc('subscribe_format', chat.language), {
-        disable_notification: true,
-        parse_mode: 'Markdown',
-      } as any)
+      return replyWithHtml(
+        ctx,
+        markdownishToTelegramHtml(loc('subscribe_format', chat.language)),
+        {
+          disable_notification: true,
+        }
+      )
     }
     // Check if bot is admin in this chat
     try {
@@ -29,7 +37,7 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
       if (!isBotAdmin) {
         const chatAdmins = await ctx.getChatAdministrators()
         isBotAdmin = chatAdmins
-          .map((m) => m.user.username)
+          .map((m: any) => m.user.username)
           .includes(bot.options.username)
       }
       if (!isBotAdmin) {
@@ -40,7 +48,9 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
         disable_notification: true,
       })
     }
-    const subscribeStrings = subscribeStringTemp.split(',').map((s) => s.trim())
+    const subscribeStrings: string[] = subscribeStringTemp
+      .split(',')
+      .map((s: string) => s.trim())
     for (const subscribeString of subscribeStrings) {
       // Check if bot is admin in subscribe chat
       try {
@@ -48,16 +58,17 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
           `${!isNaN(+subscribeString) ? '' : '@'}${subscribeString}`
         )
         const isBotAdmin = subscribeChatAdmins
-          .map((m) => m.user.username)
+          .map((m: any) => m.user.username)
           .includes(bot.options.username)
         if (!isBotAdmin) {
           throw new Error()
         }
       } catch (err) {
-        return ctx.reply(
-          `${loc('bot_not_admin_chat', chat.language)}${subscribeStrings
-            .map((s) => `${!isNaN(+s) ? '' : '@'}${s}`)
-            .join(', ')}`,
+        return replyWithHtml(
+          ctx,
+          `${markdownishToTelegramHtml(loc('bot_not_admin_chat', chat.language))}${formatChannelHandles(
+            subscribeStrings
+          )}`,
           {
             disable_notification: true,
           }
@@ -68,10 +79,11 @@ export function setupSubscribe(bot: Telegraf<ContextMessageUpdate>) {
     chat.subscribe = subscribeStrings.join(',')
     await chat.save()
     // Report success
-    return ctx.reply(
-      `${loc('subscribe_success', chat.language)}${subscribeStrings
-        .map((s) => `${!isNaN(+s) ? '' : '@'}${s}`)
-        .join(', ')}`,
+    return replyWithHtml(
+      ctx,
+      `${markdownishToTelegramHtml(loc('subscribe_success', chat.language))}${formatChannelHandles(
+        subscribeStrings
+      )}`,
       {
         disable_notification: true,
       }
