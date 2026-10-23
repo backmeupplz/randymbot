@@ -39,7 +39,7 @@ export async function checkIfAdmin(
     // Return result
     return isAdmin
   } catch (err) {
-    console.log(err)
+    console.log('checkIfAdmin failed:', err.description || err)
     // Delete message
     try {
       if (shouldDelete) {

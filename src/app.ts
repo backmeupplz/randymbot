@@ -29,7 +29,13 @@ const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, {
   username: process.env.USERNAME,
   channelMode: true,
 })
-bot.startPolling()
+// Telegraf 3 stops polling for good on 401/409 from getUpdates and the process
+// then exits 0, which Swarm (restart on-failure) treats as done. Exit 1 instead.
+// (the typings omit the stopCallback argument)
+;(bot as any).startPolling(30, 100, undefined, () => {
+  console.error('Polling stopped, exiting so the bot gets restarted')
+  process.exit(1)
+})
 console.log('Bot is up and running')
 
 // Setup callback
