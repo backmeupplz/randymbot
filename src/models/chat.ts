@@ -1,32 +1,36 @@
 // Dependencies
-import { arrayProp, prop, Typegoose } from 'typegoose'
+import { Schema, model } from 'mongoose'
 import { Message } from 'telegram-typings'
 
-export class Chat extends Typegoose {
-  @prop({ required: true, index: true })
+export class Chat {
   chatId: number
-  @prop({ required: true, default: 'en' })
   language: string
-  @prop({ required: true, default: 1 })
   number: number
-  @prop()
   subscribe?: string
-  @prop({ required: true, default: false })
   nodelete: boolean
 
-  @prop()
   raffleMessage?: Message
-  @prop()
   winnerMessage?: Message
 
-  @arrayProp({ required: true, default: [], items: Number })
   adminChatIds: number[]
-  @prop()
   editedChatId?: number
 }
 
 // Get Chat model
-const ChatModel = new Chat().getModelForClass(Chat)
+const ChatModel = model<Chat>(
+  'Chat',
+  new Schema<Chat>({
+    chatId: { type: Number, required: true, index: true },
+    language: { type: String, required: true, default: 'en' },
+    number: { type: Number, required: true, default: 1 },
+    subscribe: String,
+    nodelete: { type: Boolean, required: true, default: false },
+    raffleMessage: Schema.Types.Mixed,
+    winnerMessage: Schema.Types.Mixed,
+    adminChatIds: { type: [Number], required: true, default: [] },
+    editedChatId: Number,
+  })
+)
 
 /**
  * Returns chat, creates one if required

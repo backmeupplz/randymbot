@@ -1,27 +1,31 @@
 // Dependencies
-import { prop, arrayProp, Typegoose } from 'typegoose'
+import { Schema, model } from 'mongoose'
 import { Message } from 'telegram-typings'
 
 // Winner class definition
-export class Raffle extends Typegoose {
-  @prop({ required: true, index: true })
+export class Raffle {
   chatId: number
-  @prop({ index: true })
   messageId?: number
-  @arrayProp({ required: true, default: [], items: Number })
   participantsIds: number[]
 
-  @prop()
   winners?: string
 
-  @prop()
   raffleMessage?: Message
-  @prop()
   winnerMessage?: Message
 }
 
 // Get Raffle model
-export const RaffleModel = new Raffle().getModelForClass(Raffle)
+export const RaffleModel = model<Raffle>(
+  'Raffle',
+  new Schema<Raffle>({
+    chatId: { type: Number, required: true, index: true },
+    messageId: { type: Number, index: true },
+    participantsIds: { type: [Number], required: true, default: [] },
+    winners: String,
+    raffleMessage: Schema.Types.Mixed,
+    winnerMessage: Schema.Types.Mixed,
+  })
+)
 
 /**
  * Adding new raffle

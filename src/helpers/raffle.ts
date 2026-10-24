@@ -10,7 +10,7 @@ import { shuffle, random } from 'lodash'
 import { checkIfAdmin } from './checkAdmin'
 import { Chat, findChat } from '../models/chat'
 import { loc } from './locale'
-import { InstanceType } from 'typegoose'
+import { HydratedDocument } from 'mongoose'
 
 /**
  * Starting a new raffle
@@ -282,7 +282,7 @@ export function setupListener(bot: Telegraf<ContextMessageUpdate>) {
  * @param language Languageof thebuttons
  * @returns buttons for a raffle
  */
-function getButtons(raffle: InstanceType<Raffle>, language: string) {
+function getButtons(raffle: HydratedDocument<Raffle>, language: string) {
   return {
     inline_keyboard: [
       [
