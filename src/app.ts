@@ -22,6 +22,7 @@ import { setupId } from './commands/id'
 import { setupDebug } from './commands/debug'
 import { RaffleModel } from './models'
 import { findChat } from './models/chat'
+import { pollWithHandover } from './helpers/handover'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -29,14 +30,15 @@ const bot: Telegraf<ContextMessageUpdate> = new telegraf(process.env.TOKEN, {
   username: process.env.USERNAME,
   channelMode: true,
 })
-// Telegraf 3 stops polling for good on 401/409 from getUpdates and the process
-// then exits 0, which Swarm (restart on-failure) treats as done. Exit 1 instead.
-// (the typings omit the stopCallback argument)
-;(bot as any).startPolling(30, 100, undefined, () => {
-  console.error('Polling stopped, exiting so the bot gets restarted')
-  process.exit(1)
+// The newest update fetched and the handlers still running, for handing polling over on deploys
+let lastUpdate = 0
+let handling = 0
+let stopping = false
+bot.use((ctx, next) => {
+  lastUpdate = Math.max(lastUpdate, ctx.update.update_id)
+  handling++
+  return next().finally(() => handling--)
 })
-console.log('Bot is up and running')
 
 // Setup callback
 setupCallback(bot)
@@ -123,6 +125,30 @@ setupLanguageCallback(bot)
 setupNumberCallback(bot)
 
 bot.catch(console.error)
+
+pollWithHandover(
+  () => {
+    // Telegraf 3 stops polling for good on 401/409 from getUpdates and the process
+    // then exits 0, which Swarm (restart on-failure) treats as done. Exit 1 instead.
+    // (the typings omit the stopCallback argument)
+    ;(bot as any).startPolling(30, 100, undefined, () => {
+      if (stopping) return
+      console.error('Polling stopped, exiting so the bot gets restarted')
+      process.exit(1)
+    })
+    console.log('Bot is up and running')
+  },
+  async () => {
+    stopping = true
+    bot.stop()
+    // Telegraf 3 cannot abort its long poll: a zero-timeout getUpdates ends it
+    // and confirms every update fetched, so the next poller does not get them again
+    await (bot.telegram as any).getUpdates(0, 1, lastUpdate + 1, undefined)
+  },
+  async () => {
+    while (handling) await new Promise((resolve) => setTimeout(resolve, 100))
+  }
+)
 
 process.on('unhandledRejection', (reason) => {
   console.log('Unhandled Rejection at:', reason)

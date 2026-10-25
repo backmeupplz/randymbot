@@ -16,22 +16,22 @@
   "author": "backmeupplz <backmeupplz@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@types/dotenv": "^6.1.1",
-    "@types/lodash": "^4.14.138",
-    "@types/node": "^22.20.5",
-    "concurrently": "^4.1.2",
     "dotenv": "^8.1.0",
     "lodash": "^4.17.21",
     "mongoose": "^6.13.12",
-    "nodemon": "^1.19.1",
     "reflect-metadata": "^0.1.13",
-    "telegraf": "^3.32.0",
-    "tslint": "^5.19.0",
-    "typescript": "^5.9.3"
+    "telegraf": "^3.32.0"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/lodash": "^4.14.138",
+    "@types/node": "^22.20.5",
     "axios": "^0.34.0",
+    "concurrently": "^4.1.2",
     "flat": "^5.0.0",
-    "prettier": "^2.0.5"
+    "nodemon": "^1.19.1",
+    "prettier": "^2.0.5",
+    "tslint": "^5.19.0",
+    "typescript": "^5.9.3"
   }
 }
