@@ -29,4 +29,5 @@ jobs:
           key: modules-${{ runner.os }}-${{ hashFiles('yarn.lock', '.nvmrc') }}
       - if: steps.modules.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile --non-interactive --cache-folder "$RUNNER_TOOL_CACHE/yarn"
-      - run: yarn -s tsc --skipLibCheck --noEmit
+      - run: yarn -s tsc --skipLibCheck
+      - run: node --test test/promo.test.js

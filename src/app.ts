@@ -23,6 +23,7 @@ import { setupDebug } from './commands/debug'
 import { RaffleModel } from './models'
 import { findChat } from './models/chat'
 import { pollWithHandover } from './helpers/handover'
+import { promo } from './helpers/promoBot'
 const telegraf = require('telegraf')
 
 // Setup the bot
@@ -39,6 +40,32 @@ bot.use((ctx, next) => {
   handling++
   return next().finally(() => handling--)
 })
+// Cross-promo measurement (helpers/promo.ts): a private chat blocking Randy is
+// the harm check; adding Randy to a group counts as use for people another
+// bot's campaign brought here
+const ACTIVE = ['member', 'administrator', 'creator']
+bot.use((ctx, next) => {
+  const m = (ctx.update as any).my_chat_member
+  if (m && m.chat.type === 'private' && m.new_chat_member.status === 'kicked')
+    promo.blocked(m.from.id)
+  else if (
+    m &&
+    m.chat.type !== 'private' &&
+    ACTIVE.includes(m.new_chat_member.status) &&
+    !ACTIVE.includes(m.old_chat_member.status)
+  )
+    void promo.used(m.from.id)
+  return next()
+})
+// Updates Randy asks for, my_chat_member included (Telegram keeps the last list)
+const ALLOWED_UPDATES = [
+  'message',
+  'edited_message',
+  'channel_post',
+  'edited_channel_post',
+  'callback_query',
+  'my_chat_member',
+]
 
 // Setup callback
 setupCallback(bot)
@@ -131,11 +158,12 @@ pollWithHandover(
     // Telegraf 3 stops polling for good on 401/409 from getUpdates and the process
     // then exits 0, which Swarm (restart on-failure) treats as done. Exit 1 instead.
     // (the typings omit the stopCallback argument)
-    ;(bot as any).startPolling(30, 100, undefined, () => {
+    ;(bot as any).startPolling(30, 100, ALLOWED_UPDATES, () => {
       if (stopping) return
       console.error('Polling stopped, exiting so the bot gets restarted')
       process.exit(1)
     })
+    promo.start()
     console.log('Bot is up and running')
   },
   async () => {
@@ -147,6 +175,7 @@ pollWithHandover(
   },
   async () => {
     while (handling) await new Promise((resolve) => setTimeout(resolve, 100))
+    await promo.stop()
   }
 )
 

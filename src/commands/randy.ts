@@ -4,6 +4,7 @@ import { checkIfAdmin } from '../helpers/checkAdmin'
 import { startRaffle } from '../helpers/raffle'
 import { findChat } from '../models/chat'
 import { loc } from '../helpers/locale'
+import { promo } from '../helpers/promoBot'
 
 /**
  * Setting up the randy command
@@ -20,6 +21,8 @@ export function setupRandy(bot: Telegraf<ContextMessageUpdate>) {
       ctx.reply(loc('no_work_private', chat.language))
       return
     } else {
+      // a raffle within 7 days of arriving from another bot's campaign
+      void promo.used(ctx.from && ctx.from.id)
       startRaffle(ctx)
       try {
         await ctx.deleteMessage()
