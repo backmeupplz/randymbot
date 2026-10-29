@@ -1,10 +1,12 @@
 [![@randymbot](/img/logo.png?raw=true)](https://t.me/randymbot)
 
-# [@randymbot](https://t.me/randymbot) Telegram bot code
+# [@randymbot](https://t.me/randymbot): raffles and giveaways in Telegram
+
+**[@randymbot](https://t.me/randymbot)** runs raffles and giveaways in Telegram groups and channels. Add it to your group or channel as an administrator and send `/randy`: it posts a raffle with a Participate button, people join with one tap, and when an admin replies to the raffle message the bot picks a random winner. Open source (MIT).
 
 Website: **[randy.borodutch.com](https://randy.borodutch.com)** (raffles and giveaways in Telegram groups and channels: how it works, settings, FAQ).
 
-This is the code for the raffle Telegram bot I've built. Enjoy and feel free to reuse!
+The code follows. Feel free to reuse it.
 
 # Installation and local launch
 1. Clone this repo: `git clone https://github.com/backmeupplz/randymbot`
