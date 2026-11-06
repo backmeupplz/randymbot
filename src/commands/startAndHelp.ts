@@ -30,7 +30,11 @@ export function setupStartAndHelp(bot: Telegraf<ContextMessageUpdate>) {
       ? await promo.decide(ctx.from && ctx.from.id, 'private', chat.language)
       : null
     // Reply
-    const text = loc('public_help_start', chat.language)
+    // what group promos do and how to turn them off (commands/promos.ts)
+    const text = `${loc('public_help_start', chat.language)}\n\n${loc(
+      'promos_help',
+      chat.language
+    )}`
     await ctx.replyWithMarkdown(text + markdown(d && d.promo), {
       disable_notification: true,
       disable_web_page_preview: true,

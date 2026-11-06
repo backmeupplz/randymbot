@@ -11,6 +11,8 @@ import { checkIfAdmin } from './checkAdmin'
 import { Chat, findChat } from '../models/chat'
 import { loc } from './locale'
 import { HydratedDocument } from 'mongoose'
+import { keyboard } from './promo'
+import { promo } from './promoBot'
 
 /**
  * Starting a new raffle
@@ -423,36 +425,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
         chat.language
       )} — ${idsOriginalLength}.`
     }
-    if (!nodelete) {
-      if (!raffle.raffleMessage || raffle.raffleMessage.text) {
-        await ctx.telegram.editMessageText(
-          raffle.chatId,
-          raffle.messageId,
-          undefined,
-          text,
-          {
-            parse_mode: 'HTML',
-            disable_web_page_preview: true,
-          }
-        )
-      } else {
-        await ctx.telegram.editMessageCaption(
-          raffle.chatId,
-          raffle.messageId,
-          undefined,
-          text,
-          {
-            parse_mode: 'HTML',
-            disable_web_page_preview: true,
-          } as any
-        )
-      }
-    } else {
-      await ctx.telegram.sendMessage(raffle.chatId, text, {
-        parse_mode: 'HTML',
-        disable_web_page_preview: true,
-      })
-    }
+    await announceWinners(ctx, raffle, chat, text)
   } else {
     const names = winners.map((w) => w.name.replace('<', '').replace('>', ''))
     if (names.length <= 50 || raffle.winnerMessage) {
@@ -481,36 +454,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
           chat.language
         )} — ${idsOriginalLength}.`
       }
-      if (!nodelete) {
-        if (!raffle.raffleMessage || raffle.raffleMessage.text) {
-          await ctx.telegram.editMessageText(
-            raffle.chatId,
-            raffle.messageId,
-            undefined,
-            text,
-            {
-              parse_mode: 'HTML',
-              disable_web_page_preview: true,
-            }
-          )
-        } else {
-          await ctx.telegram.editMessageCaption(
-            raffle.chatId,
-            raffle.messageId,
-            undefined,
-            text,
-            {
-              parse_mode: 'HTML',
-              disable_web_page_preview: true,
-            } as any
-          )
-        }
-      } else {
-        await ctx.telegram.sendMessage(raffle.chatId, text, {
-          parse_mode: 'HTML',
-          disable_web_page_preview: true,
-        })
-      }
+      await announceWinners(ctx, raffle, chat, text)
     } else {
       let commonI = 0
       let text = `🎉 ${loc('winners', chat.language)}:\n`
@@ -525,36 +469,7 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
         chat.language
       )} — ${idsOriginalLength}.`
       console.log(`Announcing winners for ${raffle.chatId}`, raffle.messageId)
-      if (!nodelete) {
-        if (!raffle.raffleMessage || raffle.raffleMessage.text) {
-          await ctx.telegram.editMessageText(
-            raffle.chatId,
-            raffle.messageId,
-            undefined,
-            text,
-            {
-              parse_mode: 'HTML',
-              disable_web_page_preview: true,
-            }
-          )
-        } else {
-          await ctx.telegram.editMessageCaption(
-            raffle.chatId,
-            raffle.messageId,
-            undefined,
-            text,
-            {
-              parse_mode: 'HTML',
-              disable_web_page_preview: true,
-            } as any
-          )
-        }
-      } else {
-        await ctx.telegram.sendMessage(raffle.chatId, text, {
-          parse_mode: 'HTML',
-          disable_web_page_preview: true,
-        })
-      }
+      await announceWinners(ctx, raffle, chat, text)
       while (names.length > 0) {
         let text = ``
         const nextNames = names.splice(0, 50)
@@ -570,4 +485,87 @@ export async function finishRaffle(raffle: Raffle, ctx: ContextMessageUpdate, de
       }
     }
   }
+}
+
+/**
+ * The group promo for a raffle's winners (promo.ts): only when the raffle ends
+ * in its own group (not by a forward in a private chat), never in channels,
+ * matched against the raffle's message and the reply that ends it, in memory
+ * @param raffle Raffle that ends
+ * @param ctx Context of the message that ended it
+ * @param chat Chat of the raffle
+ */
+function promoFor(raffle: Raffle, ctx: ContextMessageUpdate, chat: Chat) {
+  if (!ctx.chat || ctx.chat.id !== raffle.chatId) return Promise.resolve(null)
+  const start = raffle.raffleMessage
+  const end = ctx.message
+  const text = [
+    start && (start.text || start.caption),
+    end && (end.text || end.caption),
+  ]
+    .filter(Boolean)
+    .join('\n')
+  return promo.group(raffle.chatId, ctx.chat.type, chat.language, text)
+}
+
+/**
+ * Announcing the winners: the raffle message edited (or, with /nodelete, a
+ * new message), with a button for another bot by the same maker when the
+ * raffle matched a group campaign's topic
+ * @param ctx Context of the message that ended the raffle
+ * @param raffle Raffle that ends
+ * @param chat Chat of the raffle
+ * @param text Announcement
+ */
+async function announceWinners(
+  ctx: ContextMessageUpdate,
+  raffle: Raffle,
+  chat: Chat,
+  text: string
+) {
+  const d = await promoFor(raffle, ctx, chat)
+  const markup = keyboard(d && d.promo)
+  const announce = async (extra: any) => {
+    if (chat.nodelete) {
+      await ctx.telegram.sendMessage(raffle.chatId, text, extra)
+    } else if (!raffle.raffleMessage || raffle.raffleMessage.text) {
+      await ctx.telegram.editMessageText(
+        raffle.chatId,
+        raffle.messageId,
+        undefined,
+        text,
+        extra
+      )
+    } else {
+      await ctx.telegram.editMessageCaption(
+        raffle.chatId,
+        raffle.messageId,
+        undefined,
+        text,
+        extra
+      )
+    }
+  }
+  const extra: any = { parse_mode: 'HTML', disable_web_page_preview: true }
+  try {
+    await announce(markup ? { ...extra, reply_markup: markup } : extra)
+  } catch (err) {
+    // Telegram may refuse the button itself (a 400 such as
+    // BUTTON_URL_INVALID): the winners still go out once more without it,
+    // and the group's cap isn't used up. Not after other errors: a message
+    // that did go out (/nodelete) would be posted twice
+    if (!markup || !err || err.code !== 400) {
+      promo.release(d)
+      throw err
+    }
+    try {
+      await announce(extra)
+    } catch (again) {
+      promo.release(d)
+      throw again
+    }
+    await promo.record(d, false)
+    return
+  }
+  await promo.record(d)
 }

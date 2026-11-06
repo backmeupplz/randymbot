@@ -318,4 +318,44 @@ export const localizations: { [index: string]: { [index: string]: string } } = {
     en: 'Great! Now you are editting the config of this chat',
     ru: 'Отлично! Теперь вы редактируете настройки этого чата',
   },
+  promos_privacy: {
+    en: "In groups, Randy may add one button under a raffle's winners that points to another bot by the same maker, picked by matching the raffle's message and the reply that ends it to that bot's topic. The text is only matched in memory and is never stored or logged for this, and it happens at most once a week per group across all our bots, never in channels. Group admins can turn this off with /promos off.",
+    ru: "В группах Randy может добавить под победителями розыгрыша одну кнопку другого бота того же автора, если слова сообщения розыгрыша и ответа, который его завершает, совпадают с темой этого бота. Текст для этого сверяется только в памяти и никогда не сохраняется и не попадает в логи, а кнопка появляется не чаще раза в неделю на группу во всех наших ботах вместе и никогда в каналах. Админы группы могут выключить это командой /promos off.",
+    uk: "У групах Randy може додати під переможцями розіграшу одну кнопку іншого бота того ж автора, якщо слова повідомлення розіграшу й відповіді, що його завершує, збігаються з темою цього бота. Текст для цього звіряється лише в пам'яті й ніколи не зберігається і не потрапляє в логи, а кнопка з'являється не частіше разу на тиждень на групу в усіх наших ботах разом і ніколи в каналах. Адміни групи можуть вимкнути це командою /promos off.",
+  },
+  promos_help: {
+    en: "/promos — Turn buttons for our other bots in this group on or off\n/privacy — How Randy handles your data",
+    ru: "/promos — Включить или выключить кнопки других наших ботов в этой группе\n/privacy — Как Randy обращается с данными",
+    uk: "/promos — Увімкнути або вимкнути кнопки інших наших ботів у цій групі\n/privacy — Як Randy поводиться з даними",
+  },
+  promos_status_on: {
+    en: "📣 Randy may add one button for another bot by the same maker under a raffle's winners in this group, at most once a week, when the raffle is about that bot's topic. Group admins can turn this off with /promos off.",
+    ru: "📣 Randy может добавить под победителями розыгрыша в этой группе одну кнопку другого бота того же автора, не чаще раза в неделю, если розыгрыш касается темы этого бота. Админы группы могут выключить это командой /promos off.",
+    uk: "📣 Randy може додати під переможцями розіграшу в цій групі одну кнопку іншого бота того ж автора, не частіше разу на тиждень, якщо розіграш стосується теми цього бота. Адміни групи можуть вимкнути це командою /promos off.",
+  },
+  promos_status_off: {
+    en: "🔕 Buttons for other bots are off in this group. Group admins can turn them back on with /promos on.",
+    ru: "🔕 Кнопки других ботов в этой группе выключены. Админы группы могут включить их снова командой /promos on.",
+    uk: "🔕 Кнопки інших ботів у цій групі вимкнені. Адміни групи можуть увімкнути їх знову командою /promos on.",
+  },
+  promos_off: {
+    en: "🔕 Done: Randy won't add buttons for other bots in this group.",
+    ru: "🔕 Готово: Randy не будет добавлять кнопки других ботов в этой группе.",
+    uk: "🔕 Готово: Randy не додаватиме кнопки інших ботів у цій групі.",
+  },
+  promos_on: {
+    en: "📣 Done: Randy may again add a button for another bot by the same maker under a raffle's winners, at most once a week.",
+    ru: "📣 Готово: Randy снова может добавить под победителями розыгрыша кнопку другого бота того же автора, не чаще раза в неделю.",
+    uk: "📣 Готово: Randy знову може додати під переможцями розіграшу кнопку іншого бота того ж автора, не частіше разу на тиждень.",
+  },
+  promos_error: {
+    en: "😥 Randy couldn't do that. Please try again later.",
+    ru: "😥 Randy не удалось это сделать. Попробуйте позже.",
+    uk: "😥 Randy не вдалося це зробити. Спробуйте пізніше.",
+  },
+  promos_group_only: {
+    en: "😅 This command only works in group chats.",
+    ru: "😅 Эта команда работает только в групповых чатах.",
+    uk: "😅 Ця команда працює лише в групових чатах.",
+  },
 }

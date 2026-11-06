@@ -20,6 +20,7 @@ import { setupConfigRaffle } from './commands/configRaffle'
 import { setupAddChat } from './commands/addChat'
 import { setupId } from './commands/id'
 import { setupDebug } from './commands/debug'
+import { setupPromos } from './commands/promos'
 import { RaffleModel } from './models'
 import { findChat } from './models/chat'
 import { pollWithHandover } from './helpers/handover'
@@ -48,6 +49,13 @@ bot.use((ctx, next) => {
   const m = (ctx.update as any).my_chat_member
   if (m && m.chat.type === 'private' && m.new_chat_member.status === 'kicked')
     promo.blocked(m.from.id)
+  // removed from a group: the harm numbers of the group promos
+  else if (
+    m &&
+    ['group', 'supergroup'].includes(m.chat.type) &&
+    ['left', 'kicked'].includes(m.new_chat_member.status)
+  )
+    void promo.removed(m.chat.id)
   else if (
     m &&
     m.chat.type !== 'private' &&
@@ -88,6 +96,7 @@ setupConfigRaffle(bot)
 setupAddChat(bot)
 setupId(bot)
 setupDebug(bot)
+setupPromos(bot)
 bot.on('message', async (ctx) => {
   if (
     !ctx.chat ||
