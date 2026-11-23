@@ -13,5 +13,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn,sharing=locked yarn install --frozen-lockfile --production
 COPY --from=build /app/dist dist
+# The runtime only runs node: drop the bundled npm, whose own dependencies carry CVEs no Node 22 release fixes
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 ENV NODE_ENV=production
 CMD ["node", "dist/app.js"]
